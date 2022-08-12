@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android/webOS/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2185" />
+        <entry key="..\:/Android/webOS/app/src/main/res/drawable/ic_launcher_background.xml" value="0.332" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/activity_recycler.xml" value="0.33016304347826086" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/apps_drawer.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/fragment_apps_drawer.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/fragment_home_screen.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/fragment_homescreen.xml" value="0.2489754098360656" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/homescreen.xml" value="0.2489754098360656" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/item_row_list_view.xml" value="0.33016304347826086" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/item_row_view_list.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/row.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1735" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

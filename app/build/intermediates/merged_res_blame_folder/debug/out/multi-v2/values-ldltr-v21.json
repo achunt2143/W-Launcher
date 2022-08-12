@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-17:/values-ldltr-v21/values-ldltr-v21.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\5dde970b1729ca206195f6b1dfead0f7\\transformed\\appcompat-1.3.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "112",
+                        "endOffsets": "163"
+                    }
+                }
+            ]
+        }
+    ]
+}

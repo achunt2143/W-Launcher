@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-17:/values-w600dp-land-v13/values-w600dp-land-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\083bd3f816816850587c63c88084f85c\\transformed\\material-1.4.0\\res\\values-w600dp-land-v13\\values-w600dp-land-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "54",
+                        "endOffsets": "105"
+                    }
+                }
+            ]
+        }
+    ]
+}

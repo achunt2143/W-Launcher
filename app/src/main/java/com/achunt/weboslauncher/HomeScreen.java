@@ -1,27 +1,20 @@
 package com.achunt.weboslauncher;
 
-import android.animation.LayoutTransition;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Messenger;
 import android.provider.ContactsContract;
-import android.provider.Settings;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.textclassifier.ConversationActions;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.transition.Fade;
-import androidx.transition.Slide;
 
 public class HomeScreen extends Fragment {
-        //implements View.OnClickListener{
 
     ImageView imageViewDrawer;
     ImageView imageViewPhone;
@@ -29,8 +22,7 @@ public class HomeScreen extends Fragment {
     ImageView imageViewMessages;
     ImageView imageViewBrowser;
 
-    public HomeScreen() {
-    }
+    public HomeScreen() {}
 
     @Nullable
     @Override
@@ -73,6 +65,7 @@ public class HomeScreen extends Fragment {
                 Intent msg = new Intent(Intent.ACTION_MAIN);
                 msg.addCategory(Intent.CATEGORY_APP_MESSAGING);
                 startActivity(msg);
+
             }
         });
         imageViewBrowser = view.findViewById(R.id.brs);
@@ -82,6 +75,7 @@ public class HomeScreen extends Fragment {
                 Intent browser = new Intent(Intent.ACTION_MAIN);
                 browser.addCategory(Intent.CATEGORY_APP_BROWSER);
                 startActivity(browser);
+
             }
         });
     }
@@ -89,6 +83,8 @@ public class HomeScreen extends Fragment {
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
         if (fragment != null) {
+            fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+            fragment.setExitTransition(new Slide(Gravity.BOTTOM));
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)

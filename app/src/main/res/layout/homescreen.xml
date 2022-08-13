@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -27,8 +29,6 @@
                 android:layout_toLeftOf="@id/cnt"
                 app:srcCompat="@drawable/phone"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -38,8 +38,6 @@
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/msg"
                 app:srcCompat="@drawable/cnt"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -49,8 +47,6 @@
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/brs"
                 app:srcCompat="@drawable/msg"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -60,8 +56,6 @@
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/icon_drawer"
                 app:srcCompat="@drawable/brs"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -71,9 +65,10 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/applauncher"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
+
                 tools:ignore="MissingConstraints" />
+            <!--android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"-->
 
         </RelativeLayout>
 

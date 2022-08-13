@@ -1,130 +1,138 @@
 [
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_applauncher.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\applauncher.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\xml\\backup_rules.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_bglight.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\bglight.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\transition_change_image_transform.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\transition\\change_image_transform.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\layout_homescreen.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\layout\\homescreen.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-hdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable-v24_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable-v24\\ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\layout_apps_drawer.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\layout\\apps_drawer.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-xxxhdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "com.achunt.weboslauncher.app-merged_res-19:/layout_apps_drawer.xml.flat",
-        "source": "com.achunt.weboslauncher.app-main-21:/layout/apps_drawer.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-mdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-xhdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_cnt.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\cnt.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\xml\\data_extraction_rules.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\layout_homescreen.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\layout\\homescreen.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-xhdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\xml\\data_extraction_rules.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_msg.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\msg.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_phone.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\phone.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-mdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_launcher.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\launcher.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_brs.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\brs.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-hdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-xxhdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-mdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_bg.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\bg.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_bg.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\bg.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_dockbg.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\dockbg.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable-v24\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\ic_launcher_background.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_dockbg.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\dockbg.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\layout\\activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_launcher.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\launcher.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_bglight.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\bglight.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\layout_item_row_list_view.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\layout\\item_row_list_view.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\layout_apps_drawer.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\layout\\apps_drawer.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_itembgfocus.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\itembgfocus.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\layout_item_row_list_view.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\layout\\item_row_list_view.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_msg.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\msg.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_cnt.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\cnt.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\layout\\activity_main.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_dockshadow.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\dockshadow.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_dockshadow.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\dockshadow.png"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_itembgfocus.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\itembgfocus.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\mipmap-hdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\drawable_phone.png.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\drawable\\phone.png"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\navigation_nav_graph.xml.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\navigation\\nav_graph.xml"
     },
     {
-        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-19:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-21:\\xml\\backup_rules.xml"
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_brs.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\brs.png"
+    },
+    {
+        "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-36:\\drawable_applauncher.png.flat",
+        "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-38:\\drawable\\applauncher.png"
+    },
+    {
+        "merged": "com.achunt.weboslauncher.app-merged_res-36:/layout_homescreen.xml.flat",
+        "source": "com.achunt.weboslauncher.app-main-38:/layout/homescreen.xml"
     }
 ]

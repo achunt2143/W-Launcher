@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AppsDrawer extends Fragment {
 
     RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
 
     public AppsDrawer() {
@@ -34,10 +33,10 @@ public class AppsDrawer extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.appDrawer);
-        adapter = new RAdapter(getContext());
         layoutManager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(HomeScreen.adapter);
+
     }
 }
 

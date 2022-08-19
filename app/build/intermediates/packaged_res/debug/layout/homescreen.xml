@@ -11,10 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="@drawable/dockbg"
+        android:gravity="fill"
         android:id="@+id/dock"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:animateLayoutChanges="true">
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,11 +26,14 @@
             <ImageView
                 android:id="@+id/phone"
                 android:background="@drawable/dockshadow"
+                android:gravity="fill"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/cnt"
                 app:srcCompat="@drawable/phone"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -38,6 +43,8 @@
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/msg"
                 app:srcCompat="@drawable/cnt"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -47,6 +54,8 @@
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/brs"
                 app:srcCompat="@drawable/msg"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
@@ -56,16 +65,20 @@
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/icon_drawer"
                 app:srcCompat="@drawable/brs"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 tools:ignore="MissingConstraints" />
 
             <ImageView
                 android:id="@+id/icon_drawer"
                 android:background="@drawable/dockshadow"
                 android:layout_width="64dp"
+                android:gravity="center"
                 android:layout_height="match_parent"
                 android:src="@drawable/applauncher"
                 android:layout_alignParentRight="true"
-
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 tools:ignore="MissingConstraints" />
             <!--android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"-->

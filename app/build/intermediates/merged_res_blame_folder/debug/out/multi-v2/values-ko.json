@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-34:/values-ko/values-ko.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-36:/values-ko/values-ko.xml",
             "map": [
                 {
                     "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\083bd3f816816850587c63c88084f85c\\transformed\\material-1.4.0\\res\\values-ko\\values-ko.xml",

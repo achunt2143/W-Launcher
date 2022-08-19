@@ -2,19 +2,10 @@ package com.achunt.weboslauncher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
         if (fragment != null) {
-            fragment.setEnterTransition(new Slide(Gravity.TOP));
-            fragment.setExitTransition(new Slide(Gravity.TOP));
+            fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+            fragment.setExitTransition(new Slide(Gravity.BOTTOM));
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)

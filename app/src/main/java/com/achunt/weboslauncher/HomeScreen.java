@@ -1,5 +1,6 @@
 package com.achunt.weboslauncher;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeScreen extends Fragment {
 
@@ -21,6 +23,7 @@ public class HomeScreen extends Fragment {
     ImageView imageViewContacts;
     ImageView imageViewMessages;
     ImageView imageViewBrowser;
+    static RecyclerView.Adapter adapter;
 
     public HomeScreen() {}
 
@@ -34,38 +37,48 @@ public class HomeScreen extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        adapter = new RAdapter(getContext());
         imageViewDrawer = view.findViewById(R.id.icon_drawer);
         imageViewDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadFragment(new AppsDrawer());
+
             }
         });
         imageViewPhone = view.findViewById(R.id.phone);
         imageViewPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent phone = new Intent(Intent.ACTION_DIAL);
-                startActivity(phone);
+                //Intent phone = new Intent(Intent.ACTION_DIAL);
+                //startActivity(phone);
+                Context context = v.getContext();
+                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.phone).packageName.toString());
+                context.startActivity(launchIntent);
             }
         });
         imageViewContacts = view.findViewById(R.id.cnt);
         imageViewContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent contacts = new Intent(Intent.ACTION_VIEW);
-                contacts.setType(ContactsContract.Contacts.CONTENT_TYPE);
-                startActivity(contacts);
+                //Intent contacts = new Intent(Intent.ACTION_VIEW);
+                //contacts.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                //startActivity(contacts);
+                Context context = v.getContext();
+                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.contacts).packageName.toString());
+                context.startActivity(launchIntent);
             }
         });
         imageViewMessages = view.findViewById(R.id.msg);
         imageViewMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent msg = new Intent(Intent.ACTION_MAIN);
-                msg.addCategory(Intent.CATEGORY_APP_MESSAGING);
-                startActivity(msg);
-
+               // Intent msg = new Intent(Intent.ACTION_MAIN);
+                //msg.addCategory(Intent.CATEGORY_APP_MESSAGING);
+                //startActivity(msg);
+                Context context = v.getContext();
+                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.messages).packageName.toString());
+                context.startActivity(launchIntent);
             }
         });
         imageViewBrowser = view.findViewById(R.id.brs);
@@ -78,6 +91,7 @@ public class HomeScreen extends Fragment {
 
             }
         });
+
     }
 
     private boolean loadFragment(Fragment fragment) {

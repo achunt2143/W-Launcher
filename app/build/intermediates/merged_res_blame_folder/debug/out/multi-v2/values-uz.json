@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-34:/values-uz/values-uz.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-36:/values-uz/values-uz.xml",
             "map": [
                 {
                     "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\5dde970b1729ca206195f6b1dfead0f7\\transformed\\appcompat-1.3.0\\res\\values-uz\\values-uz.xml",

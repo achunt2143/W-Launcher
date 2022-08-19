@@ -7,6 +7,11 @@ color purple_700
 color teal_200
 color teal_700
 color white
+dimen activity_horizontal_margin
+dimen activity_vertical_margin
+dimen appbar_padding
+dimen appbar_padding_top
+dimen fab_margin
 drawable applauncher
 drawable bg
 drawable bglight
@@ -48,7 +53,14 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 navigation nav_graph
 string app_name
+string tab_text_1
+string tab_text_2
+string title_activity_appsdrawer
+string title_activity_tabview
 style Theme.WebOSLauncher
+style Theme.WebOSLauncher.AppBarOverlay
+style Theme.WebOSLauncher.NoActionBar
+style Theme.WebOSLauncher.PopupOverlay
 transition change_image_transform
 xml backup_rules
 xml data_extraction_rules

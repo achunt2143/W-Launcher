@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,7 +22,10 @@ import java.util.List;
 
 public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
-    private List<AppInfo> appsList;
+    public static List<AppInfo> appsList;
+    public static int phone=0;
+    public static int contacts=0;
+    public static int messages=0;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView;
@@ -31,8 +35,8 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             //Finds the views from our row.xml
-            textView = (TextView) itemView.findViewById(R.id.tv_app_name);
-            img = (ImageView) itemView.findViewById(R.id.app_icon);
+            textView = itemView.findViewById(R.id.tv_app_name);
+            img = itemView.findViewById(R.id.app_icon);
             itemView.setOnClickListener(this);
         }
        @Override
@@ -41,11 +45,12 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             Context context = v.getContext();
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsList.get(pos).packageName.toString());
             context.startActivity(launchIntent);
-            Toast.makeText(v.getContext(), appsList.get(pos).label.toString(), Toast.LENGTH_LONG).show();
-        }
+       }
     }
 
-    public RAdapter(Context c) {
+
+
+    public RAdapter(Context c)  {
         //This is where we build our list of app details, using the app
         //object we created to store the label, package name and icon
         PackageManager pm = c.getPackageManager();
@@ -66,9 +71,19 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
                 return o1.label.toString().compareTo(o2.label.toString());
             }
         });
+        for (int j = 0; j < appsList.size(); j++){
+            if(appsList.get(j).packageName.toString().contains("dialer") || appsList.get(j).packageName.toString().contains("phone")){
+                phone = j;
+            }
+            else if(appsList.get(j).packageName.toString().contains("contacts")){
+                contacts = j;
+            }
+            else if(appsList.get(j).packageName.toString().contains("messag")){
+                messages = j;
+            }
+        }
     }
 
-    @Override
     public void onBindViewHolder(RAdapter.ViewHolder viewHolder, int i) {
         //Here we use the information in the list we created to define the views
         String appLabel = appsList.get(i).label.toString();
@@ -80,14 +95,14 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         imageView.setImageDrawable(appIcon);
     }
 
-    @Override
+
     public int getItemCount() {
         //This method needs to be overridden so that Androids knows how many items
         //will be making it into the list
         return appsList.size();
     }
 
-    @Override
+
     public RAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //This is what adds the code we've written in here to our target view
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());

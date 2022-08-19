@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-34:/values-zh-rTW/values-zh-rTW.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-36:/values-zh-rTW/values-zh-rTW.xml",
             "map": [
                 {
                     "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\172d699a3cea385b2d3041d306f4ec45\\transformed\\navigation-ui-2.5.1\\res\\values-zh-rTW\\values-zh-rTW.xml",

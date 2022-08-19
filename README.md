@@ -14,6 +14,9 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 
 ## Commit History
 
+8/19/2022
+Some animations and layout issued have been adjusted. Dock icons now launch and close appropriately. Some testing may need to be done on this still. Dock background may need to be changed. App launcher will probably need to be its own activity moving forward to do some of the set goals.
+
 8/13/2022
 Added animations, fixed some formating issues with icons, sorting apps alphabetically
 

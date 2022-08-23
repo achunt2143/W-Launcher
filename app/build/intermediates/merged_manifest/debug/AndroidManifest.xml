@@ -13,15 +13,21 @@
     <application
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:clearTaskOnLaunch="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/launcher"
         android:label="@string/app_name"
+        android:launchMode="singleTask"
         android:roundIcon="@drawable/launcher"
+        android:screenOrientation="nosensor"
+        android:stateNotNeeded="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WebOSLauncher" >
+        android:theme="@style/Theme.WebOSLauncher"
+        android:windowSoftInputMode="stateUnspecified|adjustPan" >
+>
         <activity
             android:name="com.achunt.weboslauncher.MainActivity"
             android:exported="true" >
@@ -31,6 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
 

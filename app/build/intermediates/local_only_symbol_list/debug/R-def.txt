@@ -23,6 +23,7 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable itembgfocus
 drawable launcher
+drawable listitem
 drawable msg
 drawable phone
 id action_appsDrawer_to_homeScreen
@@ -53,8 +54,10 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 navigation nav_graph
 string app_name
+string hello_blank_fragment
 string tab_text_1
 string tab_text_2
+string title_activity_applaunch
 string title_activity_appsdrawer
 string title_activity_tabview
 style Theme.WebOSLauncher

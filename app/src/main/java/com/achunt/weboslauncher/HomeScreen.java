@@ -3,7 +3,6 @@ package com.achunt.weboslauncher;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 public class HomeScreen extends Fragment {
 
@@ -30,78 +30,54 @@ public class HomeScreen extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.homescreen,container,false);
-        return view;
+        return inflater.inflate(R.layout.homescreen, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new RAdapter(getContext());
+        adapter = new RAdapter(requireContext());
         imageViewDrawer = view.findViewById(R.id.icon_drawer);
-        imageViewDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new AppsDrawer());
+        imageViewDrawer.setOnClickListener(v -> loadFragment(new AppsDrawer()));
 
-            }
-        });
         imageViewPhone = view.findViewById(R.id.phone);
-        imageViewPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent phone = new Intent(Intent.ACTION_DIAL);
-                //startActivity(phone);
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.phone).packageName.toString());
-                context.startActivity(launchIntent);
-            }
+        imageViewPhone.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.phone).packageName.toString());
+            context.startActivity(launchIntent);
         });
+
         imageViewContacts = view.findViewById(R.id.cnt);
-        imageViewContacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent contacts = new Intent(Intent.ACTION_VIEW);
-                //contacts.setType(ContactsContract.Contacts.CONTENT_TYPE);
-                //startActivity(contacts);
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.contacts).packageName.toString());
-                context.startActivity(launchIntent);
-            }
+        imageViewContacts.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.contacts).packageName.toString());
+            context.startActivity(launchIntent);
         });
+
         imageViewMessages = view.findViewById(R.id.msg);
-        imageViewMessages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // Intent msg = new Intent(Intent.ACTION_MAIN);
-                //msg.addCategory(Intent.CATEGORY_APP_MESSAGING);
-                //startActivity(msg);
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.messages).packageName.toString());
-                context.startActivity(launchIntent);
-            }
+        imageViewMessages.setOnClickListener(v -> {
+            Context context = v.getContext();
+            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.messages).packageName.toString());
+            context.startActivity(launchIntent);
         });
+
         imageViewBrowser = view.findViewById(R.id.brs);
-        imageViewBrowser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browser = new Intent(Intent.ACTION_MAIN);
-                browser.addCategory(Intent.CATEGORY_APP_BROWSER);
-                startActivity(browser);
-
-            }
+        imageViewBrowser.setOnClickListener(v -> {
+            Intent browser = new Intent(Intent.ACTION_MAIN);
+            browser.addCategory(Intent.CATEGORY_APP_BROWSER);
+            startActivity(browser);
         });
-
     }
 
-    private boolean loadFragment(Fragment fragment) {
+    public boolean loadFragment(Fragment fragment) {
         //switching fragment
         if (fragment != null) {
             fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));
-            getActivity().getSupportFragmentManager()
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
+                    .setReorderingAllowed(true)
                     .commit();
             return true;
         }

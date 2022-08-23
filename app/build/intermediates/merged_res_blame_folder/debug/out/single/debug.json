@@ -88,6 +88,10 @@
         "source": "com.achunt.weboslauncher.app-main-40:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
+        "merged": "com.achunt.weboslauncher.app-merged_res-38:/drawable_listitem.png.flat",
+        "source": "com.achunt.weboslauncher.app-main-40:/drawable/listitem.png"
+    },
+    {
         "merged": "com.achunt.weboslauncher.app-merged_res-38:/drawable_ic_launcher_background.xml.flat",
         "source": "com.achunt.weboslauncher.app-main-40:/drawable/ic_launcher_background.xml"
     },

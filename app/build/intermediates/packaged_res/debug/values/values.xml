@@ -13,8 +13,10 @@
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <string name="app_name">webOS Launcher</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_applaunch">ApplaunchActivity</string>
     <string name="title_activity_appsdrawer">AppsdrawerActivity</string>
     <string name="title_activity_tabview">TabviewActivity</string>
     <style name="Theme.WebOSLauncher" parent="Theme.MaterialComponents.DayNight.NoActionBar">

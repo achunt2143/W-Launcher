@@ -16,6 +16,11 @@
         android:roundIcon="@drawable/launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.WebOSLauncher"
+        android:clearTaskOnLaunch="false"
+        android:launchMode="singleTask"
+        android:screenOrientation="nosensor"
+        android:stateNotNeeded="true"
+        android:windowSoftInputMode="stateUnspecified|adjustPan"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
@@ -26,6 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
     </application>

@@ -1769,6 +1769,7 @@ drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable itembgfocus
 drawable launcher
+drawable listitem
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
 drawable material_ic_clear_black_24dp
@@ -2458,6 +2459,7 @@ string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string hello_blank_fragment
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string item_view_role_description
@@ -2527,6 +2529,7 @@ string search_menu_title
 string status_bar_notification_info_overflow
 string tab_text_1
 string tab_text_2
+string title_activity_applaunch
 string title_activity_appsdrawer
 string title_activity_tabview
 style AlertDialog_AppCompat

@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.achunt.weboslauncher.app-merged_res-38:/layout_item_row_list_view.xml.flat",
+        "source": "com.achunt.weboslauncher.app-main-40:/layout/item_row_list_view.xml"
+    },
+    {
         "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-38:\\navigation_nav_graph.xml.flat",
         "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-40:\\navigation\\nav_graph.xml"
     },
@@ -42,10 +46,6 @@
     {
         "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-38:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
         "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-40:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
-        "merged": "com.achunt.weboslauncher.app-merged_res-38:/layout_apps_drawer.xml.flat",
-        "source": "com.achunt.weboslauncher.app-main-40:/layout/apps_drawer.xml"
     },
     {
         "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-38:\\mipmap-xxxhdpi_ic_launcher.webp.flat",

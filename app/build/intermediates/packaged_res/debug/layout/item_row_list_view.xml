@@ -16,9 +16,9 @@
         android:clickable="false"
         android:orientation="vertical"
         app:layout_optimizationLevel="standard"
+        android:columnCount="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:columnCount="4"
         tools:ignore="MissingConstraints">
 
 
@@ -38,8 +38,8 @@
         android:layout_marginTop="16dp"
         android:clickable="false"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:columnCount="4"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints">
 
         <TextView

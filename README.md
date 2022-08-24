@@ -16,6 +16,8 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 
 ## Commit History
 
+8/24/2022 My home button fix was not perfect. After testing on several different devices, sometimes it would launch Gallery app and have no way to go home on my Samsung test devices. LG devices were a mixed bag. Emulator worked just fine. This should be addressed. Some layout changes were also done so things are properly centered and aligned. Dock background has been changed, as well as app drawer page.
+
 8/23/2022 Fixed a weird bug where launching phone when Samsung Level app is installed will launch
 that instead of dialer. On press of home button now works to take user to home screen. Dock
 background has been changed for debug purposes. This will be changed later.

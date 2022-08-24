@@ -25,9 +25,9 @@
         android:screenOrientation="nosensor"
         android:stateNotNeeded="true"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@style/Theme.WebOSLauncher"
         android:windowSoftInputMode="stateUnspecified|adjustPan" >
->
         <activity
             android:name="com.achunt.weboslauncher.MainActivity"
             android:exported="true" >

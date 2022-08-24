@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
 MERGED from [androidx.databinding:viewbinding:7.2.2] C:\Users\achun\.gradle\caches\transforms-3\7c89c8a34c2ecc728308042ac673d46f\transformed\viewbinding-7.2.2\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.navigation:navigation-ui:2.5.1] C:\Users\achun\.gradle\caches\transforms-3\172d699a3cea385b2d3041d306f4ec45\transformed\navigation-ui-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\achun\.gradle\caches\transforms-3\083bd3f816816850587c63c88084f85c\transformed\material-1.4.0\AndroidManifest.xml:17:1-24:12
@@ -54,22 +54,22 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\User
 MERGED from [androidx.print:print:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\f1c1f6112ea6a1f399972dce89bf2eda\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\f981b2b6e245830c4cbabe91d49fc5ad\transformed\tracing-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\achun\.gradle\caches\transforms-3\cdcb8e50109b2c2b9e961e9ab007ca34\transformed\annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
-INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
+INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
 	package
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:4:5-39
 		INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml
 		INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
 		INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml
 	xmlns:tools
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-38:12
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:1-39:12
 		INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:2:11-69
@@ -80,7 +80,7 @@ ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:6:5-8:53
 	android:name
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:7:9-61
 application
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:10:5-36:19
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:10:5-37:19
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\achun\.gradle\caches\transforms-3\083bd3f816816850587c63c88084f85c\transformed\material-1.4.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.4.0] C:\Users\achun\.gradle\caches\transforms-3\083bd3f816816850587c63c88084f85c\transformed\material-1.4.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.4] C:\Users\achun\.gradle\caches\transforms-3\e7dbb16f299d71d4e4275e1eede125d3\transformed\constraintlayout-2.0.4\AndroidManifest.xml:9:5-20
@@ -92,19 +92,19 @@ MERGED from [androidx.core:core:1.8.0] C:\Users\achun\.gradle\caches\transforms-
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\achun\.gradle\caches\transforms-3\06b0c4c23da14e1f45d060a21f70c776\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\achun\.gradle\caches\transforms-3\06b0c4c23da14e1f45d060a21f70c776\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 	android:clearTaskOnLaunch
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:21:9-42
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:19:9-42
 	android:stateNotNeeded
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:22:9-38
 	android:launchMode
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:20:9-40
 	android:windowSoftInputMode
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:24:9-65
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:23:9-65
 	android:roundIcon
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:16:9-47
 	android:icon
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:14:9-42
 	android:screenOrientation
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:23:9-45
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:21:9-45
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.8.0] C:\Users\achun\.gradle\caches\transforms-3\0638d9dacb5fd10604e28ec2b4d3c80b\transformed\core-1.8.0\AndroidManifest.xml:24:18-86
 	android:supportsRtl
@@ -114,7 +114,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\ac
 	android:fullBackupContent
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:13:9-54
 	tools:targetApi
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:19:9-29
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:24:9-29
 	android:allowBackup
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:11:9-35
 	android:theme
@@ -122,33 +122,33 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\ac
 	android:dataExtractionRules
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:12:9-65
 activity#com.achunt.weboslauncher.MainActivity
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:25:9-35:20
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:25:9-36:20
 	android:exported
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:27:13-36
 	android:name
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:26:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.DEFAULT+category:name:android.intent.category.HOME+category:name:android.intent.category.LAUNCHER+category:name:android.intent.category.MONKEY
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:28:13-34:29
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:28:13-35:29
 action#android.intent.action.MAIN
 ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:29:17-69
 	android:name
 		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:29:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:30:17-77
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:31:17-77
 	android:name
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:30:27-74
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:31:27-74
 category#android.intent.category.HOME
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:31:17-73
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:32:17-73
 	android:name
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:31:27-70
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:32:27-70
 category#android.intent.category.DEFAULT
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:32:17-76
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:33:17-76
 	android:name
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:32:27-73
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:33:27-73
 category#android.intent.category.MONKEY
-ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:33:17-75
+ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:34:17-75
 	android:name
-		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:33:27-72
+		ADDED from E:\Android\webOS\app\src\main\AndroidManifest.xml:34:27-72
 uses-sdk
 INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\Android\webOS\app\src\main\AndroidManifest.xml

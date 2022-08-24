@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         System.out.println("*****************RESTART**************************");
-        Intent restart = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+        Intent restart = getPackageManager().getLaunchIntentForPackage("com.achunt.weboslauncher");
         startActivity(restart);
     }
 

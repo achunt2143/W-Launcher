@@ -4,6 +4,7 @@ color black
 color purple_200
 color purple_500
 color purple_700
+color status
 color teal_200
 color teal_700
 color white
@@ -12,6 +13,7 @@ dimen activity_vertical_margin
 dimen appbar_padding
 dimen appbar_padding_top
 dimen fab_margin
+drawable acbodybg
 drawable applauncher
 drawable bg
 drawable bglight
@@ -19,6 +21,7 @@ drawable brs
 drawable cnt
 drawable dockbg
 drawable dockshadow
+drawable drawerbackground
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable itembgfocus
@@ -26,6 +29,7 @@ drawable launcher
 drawable listitem
 drawable msg
 drawable phone
+drawable quicklaunchbg
 id action_appsDrawer_to_homeScreen
 id action_appsDrawer_to_homeScreen2
 id action_homeScreen_to_appsDrawer
@@ -54,7 +58,6 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 navigation nav_graph
 string app_name
-string hello_blank_fragment
 string tab_text_1
 string tab_text_2
 string title_activity_applaunch

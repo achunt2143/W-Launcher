@@ -8,82 +8,98 @@
     app:navGraph="@navigation/nav_graph">
 
     <GridLayout
+        android:id="@+id/dock"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="@drawable/listitem"
-        android:gravity="fill"
-        android:id="@+id/dock"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/quicklaunchbg"
+        android:columnCount="5"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:animateLayoutChanges="true">
+        app:layout_constraintEnd_toEndOf="parent">
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_toStartOf="@id/cnt"
+            android:adjustViewBounds="true"
+            android:background="@drawable/dockshadow"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/phone"
+            tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/phone"
-                android:background="@drawable/dockshadow"
-                android:gravity="fill"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/cnt"
-                app:srcCompat="@drawable/phone"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                tools:ignore="MissingConstraints" />
+        <ImageView
+            android:id="@+id/cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_toStartOf="@id/msg"
+            android:adjustViewBounds="true"
+            android:background="@drawable/dockshadow"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/cnt"
+            tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/cnt"
-                android:background="@drawable/dockshadow"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/msg"
-                app:srcCompat="@drawable/cnt"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                tools:ignore="MissingConstraints" />
+        <ImageView
+            android:id="@+id/msg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_toStartOf="@id/brs"
+            android:adjustViewBounds="true"
+            android:background="@drawable/dockshadow"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/msg"
+            tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/msg"
-                android:background="@drawable/dockshadow"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/brs"
-                app:srcCompat="@drawable/msg"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                tools:ignore="MissingConstraints" />
+        <ImageView
+            android:id="@+id/brs"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_toStartOf="@id/icon_drawer"
+            android:adjustViewBounds="true"
+            android:background="@drawable/dockshadow"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/brs"
+            tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/brs"
-                android:background="@drawable/dockshadow"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/icon_drawer"
-                app:srcCompat="@drawable/brs"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                tools:ignore="MissingConstraints" />
-
-            <ImageView
-                android:id="@+id/icon_drawer"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/dockshadow"
-                android:gravity="center"
-                android:src="@drawable/applauncher"
-                tools:ignore="MissingConstraints" />
-            <!--android:layout_marginLeft="6dp"
+        <ImageView
+            android:id="@+id/icon_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/dockshadow"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/applauncher"
+            tools:ignore="MissingConstraints" />
+        <!--android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"-->
 
-        </RelativeLayout>
 
     </GridLayout>
 

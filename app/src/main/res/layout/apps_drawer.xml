@@ -14,9 +14,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/appDrawer"
-                android:background="@drawable/bg"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/acbodybg">
+
             </androidx.recyclerview.widget.RecyclerView>
 
         </androidx.cardview.widget.CardView>

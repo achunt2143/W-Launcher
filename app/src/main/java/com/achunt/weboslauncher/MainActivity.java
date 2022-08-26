@@ -4,17 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadFragment(new HomeScreen());
+        Window w = getWindow();
+        w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -44,13 +49,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        System.out.println("*****************STARTING**************************");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("*****************RESUMING**************************");
     }
 
     @Override
@@ -61,27 +64,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        System.out.println("*****************STOPPING**************************");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (!this.isFinishing()) {
-            System.out.println("*****************FINISHING**************************");
-        }
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        System.out.println("*****************FOCUS CHANGE**************************");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        System.out.println("*****************RESTART**************************");
         Intent restart = getPackageManager().getLaunchIntentForPackage("com.achunt.weboslauncher");
         startActivity(restart);
     }
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("*****************DESTROY**************************");
     }
 
 }

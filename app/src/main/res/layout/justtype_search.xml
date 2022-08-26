@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchJT"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:actionViewClass="android.widget.SearchView"
+    android:showAsAction="collapseActionView|ifRoom"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg"
+            tools:ignore="NotSibling">
+
+            <ImageView
+                android:id="@+id/justType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="64dp"
+                android:background="@android:color/transparent"
+                android:contextClickable="true"
+                android:cropToPadding="false"
+                android:scaleType="centerInside"
+                android:src="@drawable/searchpill"></ImageView>
+
+            <EditText
+                android:id="@+id/jtInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/justType"
+                android:layout_marginLeft="64dp"
+                android:layout_marginTop="78dp"
+                android:layout_marginRight="72dp"
+                android:background="@android:color/transparent"
+                android:focusedByDefault="true"
+                android:gravity="start"
+                android:hint="Just Type..."
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="italic"></EditText>
+
+            <ImageView
+                android:id="@+id/webSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/justtype_view"
+                android:src="@drawable/searchpillnoicon"></ImageView>
+
+            <TextView
+                android:id="@+id/webText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/webSearch"
+                android:layout_alignStart="@id/webSearch"
+                android:layout_alignLeft="@id/webSearch"
+                android:layout_alignTop="@id/webSearch"
+                android:layout_alignEnd="@id/webSearch"
+                android:layout_alignBottom="@id/webSearch"
+                android:layout_marginLeft="64dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="64dp"
+                android:layout_marginBottom="8dp"
+                android:singleLine="true"
+                android:text="Search the web"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                android:textStyle="italic" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/justtype_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="128dp"
+                android:background="@android:color/transparent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

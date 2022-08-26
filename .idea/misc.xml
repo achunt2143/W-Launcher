@@ -18,9 +18,13 @@
         <entry key="..\:/Android/webOS/app/src/main/res/layout/homescreen.xml" value="0.2489754098360656" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/item_row_list_view.xml" value="0.33016304347826086" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/item_row_view_list.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/jt_item_row_layout.xml" value="0.1828125" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/jt_row_layout.xml" value="0.22644927536231885" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/justtype_search.xml" value="0.33" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/row.xml" value="0.3614583333333333" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/tabview.xml" value="0.33016304347826086" />
         <entry key="..\:/Android/webOS/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1735" />
+        <entry key="..\:/Android/webOS/app/src/main/res/xml/searchable.xml" value="0.18541666666666667" />
       </map>
     </option>
   </component>

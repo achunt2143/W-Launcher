@@ -16,7 +16,7 @@
                 android:id="@+id/appDrawer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/acbodybg">
+                android:background="@drawable/bg">
 
             </androidx.recyclerview.widget.RecyclerView>
 

@@ -9,6 +9,7 @@
         android:targetSdkVersion="32" />
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +26,7 @@
         android:screenOrientation="nosensor"
         android:stateNotNeeded="true"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@style/Theme.WebOSLauncher"
         android:windowSoftInputMode="stateUnspecified|adjustPan" >
         <activity

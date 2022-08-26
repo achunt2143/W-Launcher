@@ -1,6 +1,7 @@
 R_DEF: Internal format may change without notice
 local
 color black
+color empty
 color purple_200
 color purple_500
 color purple_700
@@ -26,10 +27,15 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable itembgfocus
 drawable launcher
+drawable launchermd
+drawable launchersm
 drawable listitem
 drawable msg
 drawable phone
 drawable quicklaunchbg
+drawable searchbglauncher
+drawable searchpill
+drawable searchpillnoicon
 id action_appsDrawer_to_homeScreen
 id action_appsDrawer_to_homeScreen2
 id action_homeScreen_to_appsDrawer
@@ -44,16 +50,25 @@ id container
 id dock
 id homeScreen
 id icon_drawer
+id jtInput
+id jtText
+id justType
+id justtype_view
 id launcher
 id mainActivity
 id msg
 id nav_graph
 id phone
+id searchJT
 id tv_app_name
+id webSearch
+id webText
 layout activity_main
 layout apps_drawer
 layout homescreen
 layout item_row_list_view
+layout jt_item_row_layout
+layout justtype_search
 mipmap ic_launcher
 mipmap ic_launcher_round
 navigation nav_graph

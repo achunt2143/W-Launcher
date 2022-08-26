@@ -1105,6 +1105,7 @@ color dim_foreground_disabled_material_dark
 color dim_foreground_disabled_material_light
 color dim_foreground_material_dark
 color dim_foreground_material_light
+color empty
 color error_color_material_dark
 color error_color_material_light
 color foreground_material_dark
@@ -1772,6 +1773,8 @@ drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable itembgfocus
 drawable launcher
+drawable launchermd
+drawable launchersm
 drawable listitem
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
@@ -1809,6 +1812,9 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable phone
 drawable quicklaunchbg
+drawable searchbglauncher
+drawable searchpill
+drawable searchpillnoicon
 drawable test_custom_background
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
@@ -2021,8 +2027,12 @@ id invisible
 id inward
 id italic
 id item_touch_helper_previous_elevation
+id jtInput
+id jtText
 id jumpToEnd
 id jumpToStart
+id justType
+id justtype_view
 id labeled
 id launcher
 id layout
@@ -2148,6 +2158,7 @@ id scrollIndicatorDown
 id scrollIndicatorUp
 id scrollView
 id scrollable
+id searchJT
 id search_badge
 id search_bar
 id search_button
@@ -2258,6 +2269,8 @@ id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
 id visible
 id visible_removing_fragment_view_tag
+id webSearch
+id webText
 id withText
 id withinBounds
 id wrap
@@ -2351,6 +2364,8 @@ layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout homescreen
 layout item_row_list_view
+layout jt_item_row_layout
+layout justtype_search
 layout material_chip_input_combo
 layout material_clock_display
 layout material_clock_display_divider

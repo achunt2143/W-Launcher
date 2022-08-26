@@ -34,9 +34,9 @@
             android:layout_marginTop="78dp"
             android:gravity="center"
             android:text="Just Type..."
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="italic"
-            android:textColor="@color/white"
             android:visibility="invisible">
 
         </TextView>

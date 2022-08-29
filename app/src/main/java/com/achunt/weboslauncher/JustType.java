@@ -59,6 +59,7 @@ public class JustType extends Fragment implements TextWatcher {
         recyclerView.setLayoutManager(layoutManager);
         jt = view.findViewById(R.id.jtInput);
 
+
         Window w = getActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.status));
 
@@ -71,9 +72,9 @@ public class JustType extends Fragment implements TextWatcher {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 jtAdapter = new JTAdapter(requireContext(), jt.getText().toString());
                 recyclerView.setAdapter(jtAdapter);
+
                 wbjt = view.findViewById(R.id.webText);
                 wbjt.setText("Search the web for " + jt.getText().toString());
 
@@ -113,6 +114,7 @@ public class JustType extends Fragment implements TextWatcher {
 
             @Override
             public void afterTextChanged(Editable s) {
+
             }
         });
     }

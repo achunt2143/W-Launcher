@@ -26,9 +26,13 @@ public class HomeScreen extends Fragment {
     ImageView imageViewMessages;
     ImageView imageViewBrowser;
     ImageView imageJustType;
-    static RecyclerView.Adapter adapter;
+    volatile static RecyclerView.Adapter adapter;
+    volatile static RecyclerView.Adapter adapterSystem;
+    volatile static RecyclerView.Adapter adapterDownloads;
+    volatile static RecyclerView.Adapter adapterSettings;
 
-    public HomeScreen() {}
+    public HomeScreen() {
+    }
 
     @Nullable
     @Override
@@ -41,6 +45,9 @@ public class HomeScreen extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
         adapter = new RAdapter(requireContext());
+        adapterSystem = new RAdapterSystem(requireContext());
+        adapterDownloads = new RAdapterDownloads(requireContext());
+        adapterSettings = new RAdapterSettings(requireContext());
         Window w = getActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.empty));
 

@@ -20,7 +20,7 @@ import java.util.List;
 
 public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
-    public static List<AppInfo> appsList;
+    volatile public static List<AppInfo> appsList;
     public static int phone = 0;
     public static int contacts = 0;
     public static int messages = 0;
@@ -81,20 +81,21 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
-        public ImageView img;
+        volatile public TextView textView;
+        volatile public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.tv_app_name);
             img = itemView.findViewById(R.id.app_icon);
 
-            new Thread(() -> itemView.setOnClickListener(v -> {
+            /*new Thread(() -> */
+            itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsList.get(pos).packageName.toString());
                 context.startActivity(launchIntent);
-            })).start();
+            });/*).start();*/
         }
     }
 }

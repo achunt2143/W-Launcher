@@ -10,13 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+
 
 public class AppsDrawer extends Fragment {
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    volatile TabLayout tabLayout;
+    volatile View view;
+    volatile LinearLayoutManager mLayoutManager;
 
     public AppsDrawer() {
     }
@@ -24,16 +30,40 @@ public class AppsDrawer extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.apps_drawer, container, false);
+        view = inflater.inflate(R.layout.apps_drawer, container, false);
+        tabLayout = view.findViewById(R.id.tabs);
+        final ViewPager viewPager = view.findViewById(R.id.viewpager);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        tabLayout.newTab().setText("System");
+        tabLayout.newTab().setText("Download");
+        viewPager.setAdapter(new PagerAdapter(getFragmentManager(), tabLayout.getTabCount()));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.appDrawer);
-        layoutManager = new GridLayoutManager(getContext(), 4);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(HomeScreen.adapter);
         Window w = getActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.status));
     }
@@ -61,6 +91,41 @@ public class AppsDrawer extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+}
+
+class PagerAdapter extends FragmentStatePagerAdapter {
+    String[] tabTitles = new String[]{"System", "Downloads", "Settings"};
+    int mNumOfTabs;
+
+    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+        super(fm);
+        this.mNumOfTabs = NumOfTabs;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabTitles[position];
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                return new FragmentTab();
+            case 1:
+                return new FragmentTabDownloads();
+            case 2:
+                return new FragmentTabSettings();
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return tabTitles.length;
     }
 }
 

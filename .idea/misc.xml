@@ -8,7 +8,7 @@
         <entry key="..\:/Android/webOS/app/src/main/res/layout/activity_applaunch.xml" value="0.33" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/activity_recycler.xml" value="0.33016304347826086" />
-        <entry key="..\:/Android/webOS/app/src/main/res/layout/apps_drawer.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/apps_drawer.xml" value="0.33" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/appsdrawer.xml" value="0.33016304347826086" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/fragment_apps_drawer.xml" value="0.3614583333333333" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/fragment_blank.xml" value="0.18541666666666667" />
@@ -22,7 +22,9 @@
         <entry key="..\:/Android/webOS/app/src/main/res/layout/jt_row_layout.xml" value="0.22644927536231885" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/justtype_search.xml" value="0.33" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/row.xml" value="0.3614583333333333" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/settings_drawer.xml" value="0.137109375" />
         <entry key="..\:/Android/webOS/app/src/main/res/layout/tabview.xml" value="0.33016304347826086" />
+        <entry key="..\:/Android/webOS/app/src/main/res/layout/viewpage.xml" value="0.1828125" />
         <entry key="..\:/Android/webOS/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1735" />
         <entry key="..\:/Android/webOS/app/src/main/res/xml/searchable.xml" value="0.18541666666666667" />
       </map>

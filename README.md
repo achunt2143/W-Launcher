@@ -18,12 +18,17 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 ## Future Tasks
 
 * ~~Adding the Just Type... functionality~~ Just Type... has been implemented as of 8/26/2022
-* App drawer separation of system and downloaded apps
-* Settings in app drawer
+* ~~App drawer separation of system and downloaded apps~~ Tab layout has been implemented as of
+  8/29/2022
+* Settings in app drawer - Work in progress
 * Allow dock to be customizable
 * ~~Do better on the dock layout~~
 
 ## Commit History
+
+8/29/2022 System and Downloaded apps are now separated. Due to how Android handles flags on apps, it
+is not perfect, but does a good job. Settings tab is there, and does pull some settings for launch,
+but it is not finished.
 
 8/29/2022 Just Type... had some bugs when calling or sending a text to a contact. There was a null
 array error that would cause the launcher to crash. This should be fixed. Some errors also occurred

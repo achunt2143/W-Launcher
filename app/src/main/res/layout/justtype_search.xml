@@ -58,7 +58,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/justtype_view"
-                android:src="@drawable/searchpillnoicon"></ImageView>
+                android:src="@drawable/searchpillnoicon">
+
+            </ImageView>
 
             <TextView
                 android:id="@+id/webText"

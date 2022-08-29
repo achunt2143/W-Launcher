@@ -1746,6 +1746,7 @@ drawable avd_show_password
 drawable bg
 drawable bglight
 drawable brs
+drawable bt
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -1755,14 +1756,18 @@ drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable cnt
+drawable date
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable device
 drawable dockbg
 drawable dockshadow
 drawable drawerbackground
+drawable gps
+drawable help
 drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
@@ -1776,6 +1781,7 @@ drawable launcher
 drawable launchermd
 drawable launchersm
 drawable listitem
+drawable lock
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
 drawable material_ic_clear_black_24dp
@@ -1812,12 +1818,17 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable phone
 drawable quicklaunchbg
+drawable search
 drawable searchbglauncher
 drawable searchpill
 drawable searchpillnoicon
+drawable sound
 drawable test_custom_background
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
+drawable updates
+drawable vpn
+drawable wifi
 id ALT
 id BOTTOM_END
 id BOTTOM_START
@@ -1899,6 +1910,7 @@ id animateToEnd
 id animateToStart
 id appDrawer
 id app_icon
+id appbar
 id apps
 id appsDrawer
 id arc
@@ -2174,6 +2186,8 @@ id search_voice_btn
 id select_dialog_listview
 id selected
 id selection_type
+id settings_icon
+id settings_name
 id shortcut
 id showCustom
 id showHome
@@ -2209,6 +2223,7 @@ id stretch
 id submenuarrow
 id submit_area
 id tabMode
+id tabs
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
 id tag_accessibility_heading
@@ -2269,6 +2284,7 @@ id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
+id viewpager
 id visible
 id visible_removing_fragment_view_tag
 id webSearch
@@ -2420,6 +2436,7 @@ layout notification_template_part_time
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
+layout settings_drawer
 layout support_simple_spinner_dropdown_item
 layout test_action_chip
 layout test_chip_zero_corner_radius

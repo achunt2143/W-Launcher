@@ -23,7 +23,7 @@
 
 
         <ImageView
-            android:id="@+id/app_icon"
+            android:id="@+id/jt_app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="32dp"
@@ -43,7 +43,7 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/tv_app_name"
+            android:id="@+id/jt_app_name"
             android:layout_width="wrap_content"
             android:layout_height="128dp"
             android:layout_columnWeight="1"

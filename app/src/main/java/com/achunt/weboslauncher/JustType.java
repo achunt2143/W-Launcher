@@ -22,6 +22,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 
 public class JustType extends Fragment implements TextWatcher {
 
@@ -30,11 +33,13 @@ public class JustType extends Fragment implements TextWatcher {
     EditText jt;
     TextView wbjt;
     RecyclerView.Adapter jtAdapter;
-    String contactName = "";
-    String contactNumber = "";
+    volatile String contactName = "";
+    volatile String contactNumber = "";
     String numberTest = "";
-    String[] cName;
-    String[] cNumber;
+    volatile String[] cNameTest;
+    volatile String[] cNumberTest;
+    volatile String[] cName;
+    volatile String[] cNumber;
     Intent intent;
 
     public JustType() {
@@ -85,7 +90,7 @@ public class JustType extends Fragment implements TextWatcher {
                     }
 
                     wbjt.setOnClickListener(v -> {
-                        if (wbjt.getText().toString().toLowerCase().contains(contactName)) {
+                        if (wbjt.getText().toString().toLowerCase().startsWith(contactName)) {
                             sendText(wbjt.getText().toString());
                         } else if (Character.isDigit(numberTest.charAt(0))) {
                             sendText(wbjt.getText().toString());
@@ -104,7 +109,6 @@ public class JustType extends Fragment implements TextWatcher {
                 if (jt.getText().toString().toLowerCase().startsWith("call")) {
                     doCall(wbjt.getText().toString());
                 }
-
             }
 
             @Override
@@ -127,16 +131,26 @@ public class JustType extends Fragment implements TextWatcher {
 
     public void contactsSearch() {
         Cursor phones = this.getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-        cName = new String[phones.getCount()];
-        cNumber = new String[phones.getCount()];
+        cNameTest = new String[phones.getCount()];
+        cNumberTest = new String[phones.getCount()];
+        int i = 0;
         while (phones.moveToNext()) {
-            int i = 0;
             contactName = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME) >> 0);
-            cName[i] = contactName;
             contactNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER) >> 0);
-            cNumber[i] = contactNumber;
-            i++;
+            if (i > 0) {
+                if (!cNameTest[i - 1].contains(contactName)) {
+                    cNameTest[i] = contactName;
+                    cNumberTest[i] = contactNumber;
+                    i++;
+                }
+            } else {
+                cNameTest[i] = contactName;
+                cNumberTest[i] = contactNumber;
+                i++;
+            }
         }
+        cName = Arrays.stream(cNameTest).filter(Objects::nonNull).toArray(String[]::new);
+        cNumber = Arrays.stream(cNumberTest).filter(Objects::nonNull).toArray(String[]::new);
         contactNumber = "";
         contactName = "";
         phones.close();
@@ -156,24 +170,24 @@ public class JustType extends Fragment implements TextWatcher {
         String[] split2 = m1.split(" ");
         String m2 = split2[0];
         String m3 = "";
-        for (int i = 1; i < split2.length; i++) {
-            m3 += split2[i] + " ";
+        String cont = "";
+        for (int t = 1; t < split2.length; t++) {
+            m3 += split2[t] + " ";
         }
         m3.trim();
 
-        for (int i = 0; i < cName.length; i++) {
-            if (cName[i].equalsIgnoreCase(m2)) {
-                contactName = cName[i];
-                contactNumber = cNumber[i];
-                System.out.println("Contact " + contactName + " " + contactNumber);
+        for (int t = 0; t < cName.length; t++) {
+            cont = m2.substring(0, 1).toUpperCase() + m2.substring(1);
+            if (cName[t].startsWith(cont)) {
+                contactName = cName[t];
+                contactNumber = cNumber[t];
             }
         }
 
-        if (m2.equalsIgnoreCase(contactName)) {
+        if (contactName.startsWith(cont)) {
             if (m2.length() > 0) {
                 toSend = m3;
                 toSend.toUpperCase();
-                System.out.println("toSend " + toSend);
             }
         }
 
@@ -182,8 +196,8 @@ public class JustType extends Fragment implements TextWatcher {
                 m3 = "";
                 String[] separate = m2.split(" ");
                 contactNumber = separate[0];
-                for (int i = 1; i < split2.length; i++) {
-                    m3 += split2[i] + " ";
+                for (int t = 1; t < split2.length; t++) {
+                    m3 += split2[t] + " ";
                 }
                 toSend = m3;
             }
@@ -245,28 +259,31 @@ public class JustType extends Fragment implements TextWatcher {
 
     public void doCall(String text) {
         String temp = text;
-        String m1 = "";
+        final String[] m1 = {""};
         if (text.contains("Search the web for ")) {
             String[] t = temp.split("Search the web for ");
             temp = t[1];
             wbjt.setText(temp);
         }
-        String[] split1 = temp.split("call ");
-        if (split1.length > 1) {
-            m1 = split1[1];
-            for (int i = 0; i < cName.length; i++) {
-                if (cName[i].equalsIgnoreCase(m1)) {
-                    contactName = cName[i];
-                    contactNumber = cNumber[i];
-                }
-            }
-            if (m1.length() > 3) {
-                if (Character.isDigit(m1.charAt(0))) {
-                    contactNumber = m1;
-                }
-            }
-        }
+        String finalTemp = temp;
         wbjt.setOnClickListener(v -> {
+            String[] split1 = finalTemp.split("call ");
+            if (split1.length > 1) {
+                m1[0] = split1[1];
+                for (int c = 0; c < cName.length; c++) {
+                    String cont = m1[0].substring(0, 1).toUpperCase() + m1[0].substring(1);
+                    if (cName[c].startsWith(cont)) {
+                        contactName = cName[c];
+                        contactNumber = cNumber[c];
+
+                    }
+                }
+                if (m1[0].length() > 3) {
+                    if (Character.isDigit(m1[0].charAt(0))) {
+                        contactNumber = m1[0];
+                    }
+                }
+            }
             intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + contactNumber));
             startActivity(intent);

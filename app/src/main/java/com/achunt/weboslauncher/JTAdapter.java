@@ -34,7 +34,7 @@ public class JTAdapter extends RecyclerView.Adapter<JTAdapter.ViewHolder> {
                 app.label = ri.loadLabel(pm);
                 app.packageName = ri.activityInfo.packageName;
                 app.icon = ri.activityInfo.loadIcon(pm);
-                if (app.label.toString().toLowerCase().contains(q)) {
+                if (app.label.toString().toLowerCase().startsWith(q)) {
                     jtList.add(app);
                 }
             }
@@ -48,12 +48,17 @@ public class JTAdapter extends RecyclerView.Adapter<JTAdapter.ViewHolder> {
     }
 
     public void onBindViewHolder(JTAdapter.ViewHolder viewHolder, int i) {
-        String appLabel = jtList.get(i).label.toString();
-        Drawable appIcon = jtList.get(i).icon;
-        TextView textView = viewHolder.textView;
-        textView.setText(appLabel);
-        ImageView imageView = viewHolder.img;
-        imageView.setImageDrawable(appIcon);
+        try {
+            String appLabel = jtList.get(i).label.toString();
+            Drawable appIcon = jtList.get(i).icon;
+            TextView textView = viewHolder.textView;
+            textView.setText(appLabel);
+            ImageView imageView = viewHolder.img;
+            imageView.setImageDrawable(appIcon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @NonNull
@@ -70,15 +75,16 @@ public class JTAdapter extends RecyclerView.Adapter<JTAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
 
             super(itemView);
-            textView = itemView.findViewById(R.id.tv_app_name);
-            img = itemView.findViewById(R.id.app_icon);
+            textView = itemView.findViewById(R.id.jt_app_name);
+            img = itemView.findViewById(R.id.jt_app_icon);
 
-            new Thread(() -> itemView.setOnClickListener(v -> {
+            /*new Thread(() -> */
+            itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(jtList.get(pos).packageName.toString());
                 context.startActivity(launchIntent);
-            })).start();
+            });/*).start()*/
         }
     }
 }

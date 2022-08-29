@@ -15,6 +15,7 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 * Status bar coloring is a little buggy
 
 ## Future Tasks
+
 * ~~Adding the Just Type... functionality~~ Just Type... has been implemented as of 8/26/2022
 * App drawer separation of system and downloaded apps
 * Settings in app drawer
@@ -23,14 +24,20 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 
 ## Commit History
 
-8/26/2022 Just Type... is here! See release notes for more information about how it works. Screenshots
-have been uploaded now to show the launcher. Multiple pages has been tough to figure out, but that is
-next on the to-do list.
+8/29/2022 Just Type... had some bugs when calling or sending a text to a contact. There was a null
+array error that would cause the launcher to crash. This should be fixed. Some errors also occurred
+when searching that would cause the launcher to crash. This should also be fixed. This is a bug fix
+commit. No new features have come yet.
 
-8/24/2022 My home button fix was not perfect. After testing on several different devices, sometimes 
-it would launch Gallery app and have no way to go home on my Samsung test devices. LG devices were a mixed bag. 
-Emulator worked just fine. This should be addressed. Some layout changes were also done so things are 
-properly centered and aligned. Dock background has been changed, as well as app drawer page.
+8/26/2022 Just Type... is here! See release notes for more information about how it works.
+Screenshots have been uploaded now to show the launcher. Multiple pages has been tough to figure
+out, but that is next on the to-do list.
+
+8/24/2022 My home button fix was not perfect. After testing on several different devices, sometimes
+it would launch Gallery app and have no way to go home on my Samsung test devices. LG devices were a
+mixed bag. Emulator worked just fine. This should be addressed. Some layout changes were also done
+so things are properly centered and aligned. Dock background has been changed, as well as app drawer
+page.
 
 8/23/2022 Fixed a weird bug where launching phone when Samsung Level app is installed will launch
 that instead of dialer. On press of home button now works to take user to home screen. Dock

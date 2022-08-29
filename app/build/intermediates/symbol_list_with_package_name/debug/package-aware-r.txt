@@ -2029,6 +2029,8 @@ id italic
 id item_touch_helper_previous_elevation
 id jtInput
 id jtText
+id jt_app_icon
+id jt_app_name
 id jumpToEnd
 id jumpToStart
 id justType

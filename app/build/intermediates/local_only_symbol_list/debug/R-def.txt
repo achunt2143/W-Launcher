@@ -52,6 +52,8 @@ id homeScreen
 id icon_drawer
 id jtInput
 id jtText
+id jt_app_icon
+id jt_app_name
 id justType
 id justtype_view
 id launcher

@@ -45,48 +45,47 @@
 27-->E:\Android\webOS\app\src\main\AndroidManifest.xml:23:9-38
 28        android:supportsRtl="true"
 28-->E:\Android\webOS\app\src\main\AndroidManifest.xml:18:9-35
-29        android:testOnly="true"
-30        android:theme="@style/Theme.WebOSLauncher" >
-30-->E:\Android\webOS\app\src\main\AndroidManifest.xml:19:9-51
-31        <activity
-31-->E:\Android\webOS\app\src\main\AndroidManifest.xml:25:9-35:20
-32            android:name="com.achunt.weboslauncher.MainActivity"
-32-->E:\Android\webOS\app\src\main\AndroidManifest.xml:26:13-41
-33            android:exported="true" >
-33-->E:\Android\webOS\app\src\main\AndroidManifest.xml:27:13-36
-34            <intent-filter>
-34-->E:\Android\webOS\app\src\main\AndroidManifest.xml:28:13-34:29
-35                <action android:name="android.intent.action.MAIN" />
-35-->E:\Android\webOS\app\src\main\AndroidManifest.xml:29:17-69
-35-->E:\Android\webOS\app\src\main\AndroidManifest.xml:29:25-66
-36
-37                <category android:name="android.intent.category.LAUNCHER" />
-37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:30:17-77
-37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:30:27-74
-38                <category android:name="android.intent.category.HOME" />
-38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:31:17-73
-38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:31:27-70
-39                <category android:name="android.intent.category.DEFAULT" />
-39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:32:17-76
-39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:32:27-73
-40                <category android:name="android.intent.category.MONKEY" />
-40-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:17-75
-40-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:27-72
-41            </intent-filter>
-42        </activity>
-43
-44        <uses-library
-44-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:25:9-27:40
-45            android:name="androidx.window.extensions"
-45-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:26:13-54
-46            android:required="false" />
-46-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:27:13-37
-47        <uses-library
-47-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:28:9-30:40
-48            android:name="androidx.window.sidecar"
-48-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:29:13-51
-49            android:required="false" />
-49-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:30:13-37
-50    </application>
-51
-52</manifest>
+29        android:theme="@style/Theme.WebOSLauncher" >
+29-->E:\Android\webOS\app\src\main\AndroidManifest.xml:19:9-51
+30        <activity
+30-->E:\Android\webOS\app\src\main\AndroidManifest.xml:25:9-35:20
+31            android:name="com.achunt.weboslauncher.MainActivity"
+31-->E:\Android\webOS\app\src\main\AndroidManifest.xml:26:13-41
+32            android:exported="true" >
+32-->E:\Android\webOS\app\src\main\AndroidManifest.xml:27:13-36
+33            <intent-filter>
+33-->E:\Android\webOS\app\src\main\AndroidManifest.xml:28:13-34:29
+34                <action android:name="android.intent.action.MAIN" />
+34-->E:\Android\webOS\app\src\main\AndroidManifest.xml:29:17-69
+34-->E:\Android\webOS\app\src\main\AndroidManifest.xml:29:25-66
+35
+36                <category android:name="android.intent.category.LAUNCHER" />
+36-->E:\Android\webOS\app\src\main\AndroidManifest.xml:30:17-77
+36-->E:\Android\webOS\app\src\main\AndroidManifest.xml:30:27-74
+37                <category android:name="android.intent.category.HOME" />
+37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:31:17-73
+37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:31:27-70
+38                <category android:name="android.intent.category.DEFAULT" />
+38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:32:17-76
+38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:32:27-73
+39                <category android:name="android.intent.category.MONKEY" />
+39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:17-75
+39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:27-72
+40            </intent-filter>
+41        </activity>
+42
+43        <uses-library
+43-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:25:9-27:40
+44            android:name="androidx.window.extensions"
+44-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:26:13-54
+45            android:required="false" />
+45-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:27:13-37
+46        <uses-library
+46-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:28:9-30:40
+47            android:name="androidx.window.sidecar"
+47-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:29:13-51
+48            android:required="false" />
+48-->[androidx.window:window:1.0.0] C:\Users\achun\.gradle\caches\transforms-3\44eb76c63a430958185cfd53aa9f79f1\transformed\window-1.0.0\AndroidManifest.xml:30:13-37
+49    </application>
+50
+51</manifest>

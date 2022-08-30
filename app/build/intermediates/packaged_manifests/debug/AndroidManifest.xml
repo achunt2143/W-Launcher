@@ -26,7 +26,6 @@
         android:screenOrientation="nosensor"
         android:stateNotNeeded="true"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.WebOSLauncher" >
         <activity
             android:name="com.achunt.weboslauncher.MainActivity"

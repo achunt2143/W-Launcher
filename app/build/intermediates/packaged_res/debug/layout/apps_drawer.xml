@@ -8,20 +8,19 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        app:tabTextColor="@color/white"
-        app:tabSelectedTextColor="@color/white">
+        android:layout_height="wrap_content"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/white">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
             android:background="@color/status"
+            app:tabGravity="fill"
             app:tabMode="scrollable"
-            app:tabTextColor="@color/white"
-            app:tabGravity="fill">
-        </com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/white"></com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -33,9 +32,9 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/apps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/apps"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph">
 
@@ -66,6 +65,6 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

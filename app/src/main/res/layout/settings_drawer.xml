@@ -53,7 +53,8 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:layoutDirection="locale"
-            android:lines="1"
+            android:lines="2"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="12sp" />
 

@@ -1792,6 +1792,7 @@ drawable material_ic_keyboard_arrow_previous_black_24dp
 drawable material_ic_keyboard_arrow_right_black_24dp
 drawable material_ic_menu_arrow_down_black_24dp
 drawable material_ic_menu_arrow_up_black_24dp
+drawable mobilenetwork
 drawable msg
 drawable mtrl_dialog_background
 drawable mtrl_dropdown_arrow
@@ -1804,6 +1805,8 @@ drawable mtrl_popupmenu_background
 drawable mtrl_popupmenu_background_dark
 drawable mtrl_tabs_default_indicator
 drawable navigation_empty_icon
+drawable network
+drawable nfc
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
@@ -1817,11 +1820,13 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable phone
+drawable privacy
 drawable quicklaunchbg
 drawable search
 drawable searchbglauncher
 drawable searchpill
 drawable searchpillnoicon
+drawable security
 drawable sound
 drawable test_custom_background
 drawable tooltip_frame_dark

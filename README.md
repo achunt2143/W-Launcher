@@ -4,11 +4,14 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 ## Screenshots
 <p>
   <img src="https://user-images.githubusercontent.com/43080643/186994007-cc42cc0d-2f58-47e2-b8a9-d81b24b3389b.png" width="135" title="home">
-  <img src="https://user-images.githubusercontent.com/43080643/186995106-39d45641-cff0-4ae2-99b9-29b508be92cf.png" width="135" alt="app drawer">
+  <img src="https://user-images.githubusercontent.com/43080643/187508433-09bd046a-03dd-409e-a4d8-a8e533cfcf78.png" width="135" alt="app drawer">
+  <img src="https://user-images.githubusercontent.com/43080643/187508481-f3a4e462-caf3-49a8-b206-75cf1fad68e4.png" width="135" alt="settings drawer">
   <img src="https://user-images.githubusercontent.com/43080643/186994031-20d0477c-ed0b-4675-9cc1-90621ce31818.png" width="135" alt="just type">
   <img src="https://user-images.githubusercontent.com/43080643/186994042-08eb5344-1d29-48a7-b707-025096266fe6.png" width="135" alt="just type call">
   <img src="https://user-images.githubusercontent.com/43080643/186994046-d0c228f9-ae6b-4776-a167-9b850693b92c.png" width="135" alt="just type search">
 </p>
+
+
 
 ## Known bugs
 * On some phones the shortcuts in the dock may not launch the intended application, specifically LG devices may launch Assistant Voice Search with phone and messaging
@@ -20,11 +23,14 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 * ~~Adding the Just Type... functionality~~ Just Type... has been implemented as of 8/26/2022
 * ~~App drawer separation of system and downloaded apps~~ Tab layout has been implemented as of
   8/29/2022
-* Settings in app drawer - Work in progress
+* ~~Settings in app drawer - Work in progress~~ Settings in app drawer as of 8/30/2022
 * Allow dock to be customizable
 * ~~Do better on the dock layout~~
 
 ## Commit History
+
+8/30/2022 Settings in app drawer are functional. Icons have webOS look but will launch the intended
+settings.
 
 8/29/2022 System and Downloaded apps are now separated. Due to how Android handles flags on apps, it
 is not perfect, but does a good job. Settings tab is there, and does pull some settings for launch,

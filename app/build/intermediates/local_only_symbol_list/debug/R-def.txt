@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+color abt
 color black
 color empty
 color purple_200
@@ -52,6 +53,8 @@ drawable sound
 drawable updates
 drawable vpn
 drawable wifi
+id about
+id about_text
 id action_appsDrawer_to_homeScreen
 id action_appsDrawer_to_homeScreen2
 id action_homeScreen_to_appsDrawer
@@ -61,10 +64,13 @@ id app_icon
 id appbar
 id apps
 id appsDrawer
+id bean
 id brs
 id cnt
 id container
 id dock
+id github_link
+id help
 id homeScreen
 id icon_drawer
 id jtInput
@@ -88,6 +94,7 @@ id webSearch
 id webText
 layout activity_main
 layout apps_drawer
+layout fragment_help_page
 layout homescreen
 layout item_row_list_view
 layout jt_item_row_layout
@@ -96,7 +103,10 @@ layout settings_drawer
 mipmap ic_launcher
 mipmap ic_launcher_round
 navigation nav_graph
+string about_text
 string app_name
+string github
+string hello_blank_fragment
 string tab_text_1
 string tab_text_2
 string title_activity_applaunch

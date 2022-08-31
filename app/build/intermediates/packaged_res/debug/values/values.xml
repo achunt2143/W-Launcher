@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="abt">#5b92b7</color>
     <color name="black">#FF000000</color>
     <color name="empty">#00000000</color>
     <color name="purple_200">#FFBB86FC</color>
@@ -14,7 +15,15 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <string name="about_text">This launcher is aimed to provide a replacement to the very intuitive launcher found on classic webOS devices and LuneOS, for Android. The styling is based after some of the best parts of webOS and LuneOS, notably the Just Type... feature and quick settings right in your app drawer. This launcher is a passion project that is meant to provide the ability to re-experience webOS now that it has had yet another nail in its coffin after the shutdown of 3G. The usefulness is basically gone from these really incredible devices. Now with Android having native gesture support that heavily emulates webOS, this launcher just adds to the experience we all have been missing.
+\n\n
+Assets have been gathered from:
+\n
+webOS OSE, licensed under Apache License 2.0\n
+webOS-Ports, licenced under the GNU GPL 3.0\n\nCheck out my github for project updates.\n</string>
     <string name="app_name">webOS Launcher</string>
+    <string name="github">https://github.com/achunt2143/webOS-Launcher</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_applaunch">ApplaunchActivity</string>

@@ -26,6 +26,7 @@
             android:id="@+id/app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_gravity="center"
             android:layout_marginTop="32dp"
             android:clickable="false"
             android:scaleType="fitCenter" />
@@ -45,8 +46,8 @@
             android:id="@+id/tv_app_name"
             android:layout_width="wrap_content"
             android:layout_height="128dp"
-            android:layout_gravity="center"
             android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="88dp"
             android:clickable="false"
             android:ellipsize="end"

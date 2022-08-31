@@ -25,38 +25,39 @@
                 android:id="@+id/justType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="64dp"
                 android:background="@android:color/transparent"
                 android:contextClickable="true"
                 android:cropToPadding="false"
                 android:scaleType="centerInside"
-                android:src="@drawable/searchpill"></ImageView>
+                android:src="@drawable/searchpill" />
 
             <EditText
                 android:id="@+id/jtInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/justType"
-                android:layout_marginLeft="64dp"
+                android:layout_alignStart="@+id/justType"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="78dp"
-                android:layout_marginRight="72dp"
                 android:background="@android:color/transparent"
                 android:focusedByDefault="true"
                 android:gravity="start"
                 android:hint="Just Type..."
+                android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="italic"></EditText>
+                android:textStyle="italic" />
 
             <ImageView
                 android:id="@+id/webSearch"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/justtype_view"
                 android:src="@drawable/searchpillnoicon">
 
@@ -68,14 +69,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/webSearch"
                 android:layout_alignStart="@id/webSearch"
-                android:layout_alignLeft="@id/webSearch"
                 android:layout_alignTop="@id/webSearch"
                 android:layout_alignEnd="@id/webSearch"
                 android:layout_alignBottom="@id/webSearch"
-                android:layout_marginLeft="64dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="64dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:text="Search the web"
                 android:textAlignment="viewStart"
@@ -87,7 +88,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="128dp"
-                android:background="@android:color/transparent">
+                android:animationCache="true"
+                android:background="@android:color/transparent"
+                android:overScrollMode="ifContentScrolls">
 
             </androidx.recyclerview.widget.RecyclerView>
 

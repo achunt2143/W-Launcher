@@ -15,15 +15,16 @@
             android:id="@+id/justType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="64dp"
             android:contextClickable="true"
             android:cropToPadding="false"
             android:scaleType="centerInside"
             android:src="@drawable/searchpill"
-            android:visibility="invisible"></ImageView>
+            android:visibility="invisible">
+
+        </ImageView>
 
         <TextView
             android:id="@+id/jtText"

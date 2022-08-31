@@ -103,7 +103,7 @@ public class HomeScreen extends Fragment {
         if (fragment != null) {
             fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));
-            requireActivity().getSupportFragmentManager()
+            this.requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
                     .setReorderingAllowed(true)
@@ -118,7 +118,7 @@ public class HomeScreen extends Fragment {
         if (fragment != null) {
             fragment.setEnterTransition(new android.transition.AutoTransition());
             fragment.setExitTransition(new android.transition.AutoTransition());
-            requireActivity().getSupportFragmentManager()
+            this.requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
                     .setReorderingAllowed(true)
@@ -127,4 +127,5 @@ public class HomeScreen extends Fragment {
         }
         return false;
     }
+
 }

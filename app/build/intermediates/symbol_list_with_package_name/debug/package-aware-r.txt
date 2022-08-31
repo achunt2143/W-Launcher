@@ -1041,6 +1041,7 @@ color abc_tint_edittext
 color abc_tint_seek_thumb
 color abc_tint_spinner
 color abc_tint_switch_track
+color abt
 color accent_material_dark
 color accent_material_light
 color androidx_core_ripple_material_light
@@ -1848,6 +1849,8 @@ id SHOW_PROGRESS
 id SYM
 id TOP_END
 id TOP_START
+id about
+id about_text
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -1927,6 +1930,7 @@ id autoCompleteToEnd
 id autoCompleteToStart
 id barrier
 id baseline
+id bean
 id beginOnFirstDraw
 id beginning
 id blocking
@@ -2019,6 +2023,7 @@ id forever
 id fragment_container_view_tag
 id ghost_view
 id ghost_view_holder
+id github_link
 id gone
 id graph
 id graph_wrap
@@ -2027,6 +2032,7 @@ id grouping
 id groups
 id guideline
 id header_title
+id help
 id hideable
 id home
 id homeAsUp
@@ -2385,6 +2391,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout fragment_help_page
 layout homescreen
 layout item_row_list_view
 layout jt_item_row_layout
@@ -2489,6 +2496,7 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string about_text
 string app_name
 string appbar_scrolling_view_behavior
 string bottom_sheet_behavior
@@ -2502,6 +2510,8 @@ string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string github
+string hello_blank_fragment
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string item_view_role_description

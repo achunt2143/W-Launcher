@@ -89,13 +89,12 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             textView = itemView.findViewById(R.id.tv_app_name);
             img = itemView.findViewById(R.id.app_icon);
 
-            /*new Thread(() -> */
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsList.get(pos).packageName.toString());
                 context.startActivity(launchIntent);
-            });/*).start();*/
+            });
         }
     }
 }

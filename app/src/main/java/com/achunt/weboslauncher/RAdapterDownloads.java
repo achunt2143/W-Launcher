@@ -47,8 +47,14 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
                     appsListD.add(app);
                 }
             }
+            for (int j = 0; j < RAdapterSystem.appsListS.size(); j++) {
+                for (int k = 0; k < appsListD.size(); k++) {
+                    if (appsListD.get(k).packageName.equals(RAdapterSystem.appsListS.get(j).packageName)) {
+                        appsListD.remove(k);
+                    }
+                }
+            }
             appsListD.sort(Comparator.comparing(o -> o.label.toString()));
-
         }).start();
     }
 
@@ -83,13 +89,12 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
             textView = itemView.findViewById(R.id.tv_app_name);
             img = itemView.findViewById(R.id.app_icon);
 
-            /*new Thread(() -> */
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsListD.get(pos).packageName.toString());
                 context.startActivity(launchIntent);
-            });/*).start();*/
+            });
         }
     }
 }

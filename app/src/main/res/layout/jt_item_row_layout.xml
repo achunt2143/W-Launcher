@@ -26,6 +26,7 @@
             android:id="@+id/jt_app_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_gravity="center"
             android:layout_marginTop="32dp"
             android:clickable="false"
             android:scaleType="fitCenter"
@@ -49,11 +50,13 @@
             android:layout_columnWeight="1"
             android:layout_gravity="center"
             android:layout_marginTop="88dp"
+            android:layout_marginStart="6dp"
             android:clickable="false"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:layoutDirection="locale"
             android:lines="1"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="12sp" />
 

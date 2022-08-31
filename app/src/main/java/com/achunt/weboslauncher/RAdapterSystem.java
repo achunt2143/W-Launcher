@@ -51,7 +51,6 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
                 }
             }
             appsListS.sort(Comparator.comparing(o -> o.label.toString()));
-
         }).start();
     }
 
@@ -86,13 +85,12 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
             textView = itemView.findViewById(R.id.tv_app_name);
             img = itemView.findViewById(R.id.app_icon);
 
-            /*new Thread(() -> */
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsListS.get(pos).packageName.toString());
                 context.startActivity(launchIntent);
-            });/*).start();*/
+            });
         }
     }
 }

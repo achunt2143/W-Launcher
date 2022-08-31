@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -202,6 +204,10 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
             WN_LABEL = app.label.toString();
             appsList.add(app);
         }
+        AppInfo appInfo = new AppInfo();
+        appInfo.label = "Help";
+        appInfo.packageName = "";
+        appsList.add(appInfo);
     }
 
     @Override
@@ -216,6 +222,8 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
             appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.bt);
         } else if (appLabel.contains(DAT_LABEL)) {
             appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.date);
+        } else if (appLabel.contains("Help")) {
+            appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.help);
         } else if (appLabel.contains(DISP_LABEL)) {
             appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.lock);
         } else if (appLabel.contains(ABT_LABEL)) {
@@ -238,6 +246,8 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
             appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.network);
         } else if (appLabel.contains(NFC_LABEL)) {
             appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.nfc);
+        } else if (appLabel.contains(MN_LABEL)) {
+            appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mobilenetwork);
         } else {
             appIcon = appsList.get(i).icon;
         }
@@ -271,37 +281,57 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
                 String label = appsList.get(pos).label.toString();
                 if (label.contentEquals(BT_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(DAT_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_DATE_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(ABT_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_DEVICE_INFO_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(DISP_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_DISPLAY_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(LOC_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(APPS_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(MN_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(NFC_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_NFC_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(PRV_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_PRIVACY_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(SEC_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(SND_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_SOUND_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(VPN_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_VPN_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(WIFI_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                    context.startActivity(launchIntent);
                 } else if (label.contentEquals(WN_LABEL)) {
                     launchIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                    context.startActivity(launchIntent);
+                } else if (label.contentEquals("Help")) {
+                    AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+                    Fragment myFragment = new HelpPage();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
                 } else {
                     launchIntent = new Intent(Settings.ACTION_SETTINGS);
+                    context.startActivity(launchIntent);
                 }
-                context.startActivity(launchIntent);
+                //context.startActivity(launchIntent);
             });
         }
     }
+
 }

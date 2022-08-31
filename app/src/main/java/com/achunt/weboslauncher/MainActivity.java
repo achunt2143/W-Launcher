@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
     }
 
-    private boolean loadFragment(Fragment fragment) {
+    public boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
             fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));

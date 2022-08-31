@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="status">#ff737373</color>
     <color name="empty">#00000000</color>
+    <color name="abt">#5b92b7</color>
 </resources>

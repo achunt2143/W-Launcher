@@ -24,10 +24,12 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 * ~~App drawer separation of system and downloaded apps~~ Tab layout has been implemented as of
   8/29/2022
 * ~~Settings in app drawer - Work in progress~~ Settings in app drawer as of 8/30/2022
-* Allow dock to be customizable
+* Allow dock to be customizable - likely not going to be possible for a long time
 * ~~Do better on the dock layout~~
 
 ## Commit History
+
+8/31/2022 Some layout changes have been made and there is an about/help page for launcher.
 
 8/30/2022 Settings in app drawer are functional. Icons have webOS look but will launch the intended
 settings.

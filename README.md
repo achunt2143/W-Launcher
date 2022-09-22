@@ -17,6 +17,7 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 * On some phones the shortcuts in the dock may not launch the intended application, specifically LG devices may launch Assistant Voice Search with phone and messaging
 * Status bar coloring is a little buggy
 * Contacts permission must be granted manually or launching Just Type... will crash launcher
+* When launching JustType you need to tap again on the search bar to bring up keyboard.
 
 ## Future Tasks
 

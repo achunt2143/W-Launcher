@@ -27,7 +27,7 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 
 ## Build Instructions
 
-All the necessary files should be in place for loading into Android Studio and clicking build. This project is built with Android Studio, so any other tools to build are not currently supported. Minimum API is Android 8 (SDK ver 26) with a target of Android 12 API 32.
+All the necessary files should be in place for loading into Android Studio and clicking build. This project is built with Android Studio, so any other tools to build are not currently supported. Minimum API is Android 8 (SDK ver 26) with a target of Android 12 API 32. Gradle is used for building.
 
 ## Commit History
 

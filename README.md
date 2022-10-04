@@ -15,8 +15,6 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 
 ## Known bugs
 * On some phones the shortcuts in the dock may not launch the intended application, specifically LG devices may launch Assistant Voice Search with phone and messaging
-* Status bar coloring is a little buggy
-* Contacts permission must be granted manually or launching Just Type... will crash launcher
 
 ## Future Tasks
 
@@ -28,6 +26,9 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 * ~~Do better on the dock layout~~
 
 ## Commit History
+
+10/4/2022 Fixed the issue with JT not launching keyboard on start. Also added a contacts permission
+request if it is not already granted. More updates to come!
 
 8/31/2022 Some layout changes have been made and there is an about/help page for launcher.
 

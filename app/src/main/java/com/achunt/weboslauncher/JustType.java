@@ -1,6 +1,7 @@
 package com.achunt.weboslauncher;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -58,7 +60,13 @@ public class JustType extends Fragment implements TextWatcher {
         layoutManager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
         jt = view.findViewById(R.id.jtInput);
-
+        jt.requestFocus();
+        jt.isFocusableInTouchMode();
+        jt.setFocusable(true);
+        if (jt.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(jt, InputMethodManager.SHOW_IMPLICIT);
+        }
 
         Window w = getActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.status));

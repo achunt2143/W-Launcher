@@ -43,7 +43,6 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="78dp"
                 android:background="@android:color/transparent"
-                android:focusedByDefault="true"
                 android:gravity="start"
                 android:hint="Just Type..."
                 android:scrollHorizontally="true"
@@ -51,6 +50,8 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="16sp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textStyle="italic" />
 
             <ImageView

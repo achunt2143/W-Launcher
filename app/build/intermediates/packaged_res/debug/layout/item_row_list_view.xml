@@ -10,8 +10,7 @@
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="128dp"
-        android:layout_marginLeft="25dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         android:clickable="false"
         android:orientation="vertical"
@@ -24,31 +23,20 @@
 
         <ImageView
             android:id="@+id/app_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center"
-            android:layout_marginTop="32dp"
+            android:layout_margin="16dp"
             android:clickable="false"
             android:scaleType="fitCenter" />
-    </GridLayout>
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="128dp"
-        android:layout_marginTop="16dp"
-        android:clickable="false"
-        android:orientation="vertical"
-        android:columnCount="4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/tv_app_name"
             android:layout_width="wrap_content"
-            android:layout_height="128dp"
+            android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="88dp"
             android:clickable="false"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"

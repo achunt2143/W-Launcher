@@ -1,21 +1,30 @@
 package com.achunt.weboslauncher;
 
+import android.appwidget.AppWidgetHost;
+import android.appwidget.AppWidgetHostView;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 
 public class HomeScreen extends Fragment {
@@ -25,11 +34,12 @@ public class HomeScreen extends Fragment {
     ImageView imageViewContacts;
     ImageView imageViewMessages;
     ImageView imageViewBrowser;
-    ImageView imageJustType;
     volatile static RecyclerView.Adapter adapter;
     volatile static RecyclerView.Adapter adapterSystem;
     volatile static RecyclerView.Adapter adapterDownloads;
     volatile static RecyclerView.Adapter adapterSettings;
+    static final int APPWIDGET_HOST_ID = 200906;
+
 
     public HomeScreen() {
     }
@@ -48,23 +58,20 @@ public class HomeScreen extends Fragment {
         adapterSystem = new RAdapterSystem(requireContext());
         adapterDownloads = new RAdapterDownloads(requireContext());
         adapterSettings = new RAdapterSettings(requireContext());
-        Window w = getActivity().getWindow();
-        w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.empty));
+        Window w = requireActivity().getWindow();
+        w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.empty));
 
-        imageJustType = view.findViewById(R.id.justType);
-        imageJustType.setOnClickListener(v -> {
-            view.findViewById(R.id.justType).setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.jtText).setVisibility(View.INVISIBLE);
-            loadFragmentJT(new JustType());
-        });
+        AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(view.getContext());
+        AppWidgetHost mAppWidgetHost = new AppWidgetHost(view.getContext(), APPWIDGET_HOST_ID);
+
+        try {
+            createWidget(view, "com.achunt.justtype", "com.achunt.justtype.JustTypeWidget", mAppWidgetHost, mAppWidgetManager);
+        } catch (Exception e) {
+            Log.d("JTError", e.toString());
+        }
 
         imageViewDrawer = view.findViewById(R.id.icon_drawer);
-        imageViewDrawer.setOnClickListener(v -> {
-
-            loadFragment(new AppsDrawer());
-            view.findViewById(R.id.justType).setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.jtText).setVisibility(View.INVISIBLE);
-        });
+        imageViewDrawer.setOnClickListener(v -> loadFragment(new AppsDrawer()));
 
         imageViewPhone = view.findViewById(R.id.phone);
         imageViewPhone.setOnClickListener(v -> {
@@ -94,8 +101,6 @@ public class HomeScreen extends Fragment {
             startActivity(browser);
         });
 
-        view.findViewById(R.id.justType).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.jtText).setVisibility(View.VISIBLE);
     }
 
     public boolean loadFragment(Fragment fragment) {
@@ -106,26 +111,59 @@ public class HomeScreen extends Fragment {
             this.requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
                     .commit();
             return true;
         }
         return false;
     }
 
-    public boolean loadFragmentJT(Fragment fragment) {
+    public boolean createWidget(View view, String packageName, String className, AppWidgetHost mAppWidgetHost, AppWidgetManager mAppWidgetManager) {
+        // Get the list of installed widgets
+        System.out.println("Create Widget function");
+        AppWidgetProviderInfo newAppWidgetProviderInfo = null;
+        List<AppWidgetProviderInfo> appWidgetInfos;
+        appWidgetInfos = mAppWidgetManager.getInstalledProviders();
+        boolean widgetIsFound = false;
+        for (int j = 0; j < appWidgetInfos.size(); j++) {
+            if (appWidgetInfos.get(j).provider.getPackageName().equals(packageName) && appWidgetInfos.get(j).provider.getClassName().equals(className)) {
+                System.out.println("Widget Looking If");
+                // Get the full info of the required widget
+                newAppWidgetProviderInfo = appWidgetInfos.get(j);
+                widgetIsFound = true;
+                break;
+            }
+        }
 
-        if (fragment != null) {
-            fragment.setEnterTransition(new android.transition.AutoTransition());
-            fragment.setExitTransition(new android.transition.AutoTransition());
-            this.requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .setReorderingAllowed(true)
-                    .commit();
+        if (!widgetIsFound) {
+            System.out.println("*******Widget Not Found*********");
+            return false;
+        } else {
+            // Create Widget
+            System.out.println("Create Widget");
+            int appWidgetId = mAppWidgetHost.allocateAppWidgetId();
+            AppWidgetHostView hostView = mAppWidgetHost.createView(view.getContext(), appWidgetId, newAppWidgetProviderInfo);
+            hostView.setAppWidget(appWidgetId, newAppWidgetProviderInfo);
+
+            // Add it to your layout
+            LinearLayout widgetLayout = view.findViewById(R.id.widgets);
+            widgetLayout.addView(hostView);
+
+            // And bind widget IDs to make them actually work
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                boolean allowed = mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, newAppWidgetProviderInfo.provider);
+
+                if (!allowed) {
+                    Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, newAppWidgetProviderInfo.provider);
+                    final int REQUEST_BIND_WIDGET = 200906;
+                    startActivityForResult(intent, REQUEST_BIND_WIDGET);
+                }
+            }
+
             return true;
         }
-        return false;
     }
 
 }

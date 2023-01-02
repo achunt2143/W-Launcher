@@ -3,25 +3,37 @@
     <color name="abt">#5b92b7</color>
     <color name="black">#FF000000</color>
     <color name="empty">#00000000</color>
+    <color name="first">#00aa55</color>
+    <color name="ic_launcher_background">#FFCB65</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
+    <color name="second">#5500aa</color>
     <color name="status">#ff737373</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="third">#aa5500</color>
     <color name="white">#FFFFFFFF</color>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="widget_margin">0dp</dimen>
     <string name="about_text">This launcher is aimed to provide a replacement to the very intuitive launcher found on classic webOS devices and LuneOS, for Android. The styling is based after some of the best parts of webOS and LuneOS, notably the Just Type... feature and quick settings right in your app drawer. This launcher is a passion project that is meant to provide the ability to re-experience webOS now that it has had yet another nail in its coffin after the shutdown of 3G. The usefulness is basically gone from these really incredible devices. Now with Android having native gesture support that heavily emulates webOS, this launcher just adds to the experience we all have been missing.
 \n\n
 Assets have been gathered from:
 \n
 webOS OSE, licensed under Apache License 2.0\n
 webOS-Ports, licenced under the GNU GPL 3.0\n\nCheck out my github for project updates.\n</string>
+    <string name="add_widget">Add widget</string>
     <string name="app_name">webOS Launcher</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="appwidget_text">EXAMPLE</string>
     <string name="github">https://github.com/achunt2143/webOS-Launcher</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_text_1">Tab 1</string>
@@ -60,9 +72,32 @@ webOS-Ports, licenced under the GNU GPL 3.0\n\nCheck out my github for project u
 
     </style>
     <style name="Theme.WebOSLauncher.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="Theme.WebOSLauncher.AppWidgetContainer" parent="Theme.WebOSLauncher.AppWidgetContainerParent">
+        
+        <item name="appWidgetPadding">16dp</item>
+    </style>
+    <style name="Theme.WebOSLauncher.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        
+        <item name="appWidgetRadius">16dp</item>
+        
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
     <style name="Theme.WebOSLauncher.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
     <style name="Theme.WebOSLauncher.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="Widget.WebOSLauncher.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+    <style name="Widget.WebOSLauncher.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+    <declare-styleable name="AppWidgetAttrs">
+        <attr format="dimension" name="appWidgetPadding"/>
+        <attr format="dimension" name="appWidgetInnerRadius"/>
+        <attr format="dimension" name="appWidgetRadius"/>
+    </declare-styleable>
 </resources>

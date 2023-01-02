@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,11 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
             PackageManager pm = c.getPackageManager();
             appsList = new ArrayList<>();
             SettingsFinder(pm);
-            appsList.sort(Comparator.comparing(o -> o.label.toString()));
+            try {
+                appsList.sort(Comparator.comparing(o -> o.label.toString()));
+            } catch (Exception e) {
+                Log.d("Error", String.valueOf(e));
+            }
         }).start();
     }
 

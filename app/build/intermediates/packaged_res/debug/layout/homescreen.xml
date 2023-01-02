@@ -7,42 +7,12 @@
     app:defaultNavHost="true"
     app:navGraph="@navigation/nav_graph">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/justType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="64dp"
-            android:contextClickable="true"
-            android:cropToPadding="false"
-            android:scaleType="centerInside"
-            android:src="@drawable/searchpill"
-            android:visibility="invisible">
-
-        </ImageView>
-
-        <TextView
-            android:id="@+id/jtText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/justType"
-            android:layout_marginLeft="64dp"
-            android:layout_marginTop="78dp"
-            android:gravity="center"
-            android:text="Just Type..."
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="italic"
-            android:visibility="invisible">
-
-        </TextView>
-
-    </RelativeLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:id="@+id/widgets"
+    app:layout_constraintTop_toTopOf="parent"
+    android:orientation="vertical" />
 
     <GridLayout
         android:id="@+id/dock"

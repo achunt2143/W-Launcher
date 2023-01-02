@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        loadFragment(new HomeScreen());
+        super.onBackPressed();
     }
 
     @Override
@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        Intent restart = getPackageManager().getLaunchIntentForPackage("com.achunt.weboslauncher");
-        startActivity(restart);
     }
 
     @Override

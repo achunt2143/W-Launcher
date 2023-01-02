@@ -10,4 +10,11 @@
     <color name="status">#ff737373</color>
     <color name="empty">#00000000</color>
     <color name="abt">#5b92b7</color>
+    <color name="first">#00aa55</color>
+    <color name="second">#5500aa</color>
+    <color name="third">#aa5500</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 </resources>

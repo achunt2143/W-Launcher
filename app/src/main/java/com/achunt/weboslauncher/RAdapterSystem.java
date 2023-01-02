@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,11 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
                     appsListS.add(app);
                 }
             }
-            appsListS.sort(Comparator.comparing(o -> o.label.toString()));
+            try {
+                appsListS.sort(Comparator.comparing(o -> o.label.toString()));
+            } catch (Exception e) {
+                Log.d("Error", String.valueOf(e));
+            }
         }).start();
     }
 
@@ -75,7 +80,7 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
         return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         volatile public TextView textView;
         volatile public ImageView img;

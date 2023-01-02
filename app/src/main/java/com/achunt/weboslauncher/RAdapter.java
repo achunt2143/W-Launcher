@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,11 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
                 app.icon = ri.activityInfo.loadIcon(pm);
                 appsList.add(app);
             }
-
-            appsList.sort(Comparator.comparing(o -> o.label.toString()));
+            try {
+                appsList.sort(Comparator.comparing(o -> o.label.toString()));
+            } catch (Exception e) {
+                Log.d("Error", String.valueOf(e));
+            }
             int j = 0;
 
             while (j < appsList.size()) {
@@ -56,6 +60,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
                 j++;
             }
         }).start();
+
     }
 
     @Override
@@ -79,7 +84,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         volatile public TextView textView;
         volatile public ImageView img;

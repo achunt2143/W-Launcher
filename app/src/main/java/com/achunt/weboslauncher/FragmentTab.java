@@ -18,11 +18,12 @@ public class FragmentTab extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.apps_drawer, container, false);
-        super.onViewCreated(view, savedInstanceState);
+
         recyclerView = view.findViewById(R.id.appDrawer);
         layoutManager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(HomeScreen.adapterSystem);
+        super.onViewCreated(view, savedInstanceState);
         return view;
     }
 }

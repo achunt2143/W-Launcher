@@ -64,8 +64,8 @@ public class AppsDrawer extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Window w = getActivity().getWindow();
-        w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.status));
+        Window w = requireActivity().getWindow();
+        w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.status));
     }
 
     @Override
@@ -108,6 +108,7 @@ class PagerAdapter extends FragmentStatePagerAdapter {
         return tabTitles[position];
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         switch (position) {

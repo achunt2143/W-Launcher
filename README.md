@@ -1,5 +1,5 @@
 # W Launcher
-This is an attemp to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. Just Type... will allow you to search installed apps, search on Maps, YouTube, send texts, start phone calls, and search the web. The apps drawer lists apps in alphabetical order.
+This is an attemp to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order.
 
 ## Screenshots
 <p>

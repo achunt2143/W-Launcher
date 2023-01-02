@@ -27,9 +27,17 @@ This is an attemp to create a launcher based on webOS. The shortcuts will launch
 
 ## Build Instructions
 
-All the necessary files should be in place for loading into Android Studio and clicking build. This project is built with Android Studio, so any other tools to build are not currently supported. Minimum API is Android 8 (SDK ver 26) with a target of Android 12 API 32. Gradle is used for building.
+All the necessary files should be in place for loading into Android Studio and clicking build. 
+This project is built with Android Studio, so any other tools to build are not currently supported. 
+Minimum API is Android 8 (SDK ver 26) with a target of Android 12 API 32. Gradle is used for building.
 
 ## Commit History
+
+1/2/2023 Happy New Year everyone! After working on this project some, I have decided that there will 
+be a change in the structure of this work. I will be splitting off Just Type development from the 
+launcher to make development easier and more focused. Lots of good changes are on the way! The launcher 
+will be more simplified, and Just Type will be getting lots more features. Link to the Just Type page
+will be posted once I create the repo.
 
 10/4/2022 Fixed the issue with JT not launching keyboard on start. Also added a contacts permission
 request if it is not already granted. More updates to come!

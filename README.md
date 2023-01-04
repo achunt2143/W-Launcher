@@ -3,12 +3,9 @@ This is an attemp to create a launcher inspired by webOS. The shortcuts will lau
 
 ## Screenshots
 <p>
-  <img src="https://user-images.githubusercontent.com/43080643/186994007-cc42cc0d-2f58-47e2-b8a9-d81b24b3389b.png" width="135" title="home">
-  <img src="https://user-images.githubusercontent.com/43080643/187508433-09bd046a-03dd-409e-a4d8-a8e533cfcf78.png" width="135" alt="app drawer">
-  <img src="https://user-images.githubusercontent.com/43080643/187508481-f3a4e462-caf3-49a8-b206-75cf1fad68e4.png" width="135" alt="settings drawer">
-  <img src="https://user-images.githubusercontent.com/43080643/186994031-20d0477c-ed0b-4675-9cc1-90621ce31818.png" width="135" alt="just type">
-  <img src="https://user-images.githubusercontent.com/43080643/186994042-08eb5344-1d29-48a7-b707-025096266fe6.png" width="135" alt="just type call">
-  <img src="https://user-images.githubusercontent.com/43080643/186994046-d0c228f9-ae6b-4776-a167-9b850693b92c.png" width="135" alt="just type search">
+  <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_home.png" width="135" title="home">
+  <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_appdrawer.png" width="135" alt="app drawer">
+  <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_settings.png" width="135" alt="settings drawer">
 </p>
 
 

@@ -47,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:linksClickable="true"
+        android:minHeight="48dp"
         android:text="@string/github"
         android:textAlignment="center"
         android:textIsSelectable="true"

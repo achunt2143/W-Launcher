@@ -31,7 +31,7 @@ Assets have been gathered from:
 webOS OSE, licensed under Apache License 2.0\n
 webOS-Ports, licenced under the GNU GPL 3.0\n\nCheck out my github for project updates.\n</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_name">webOS Launcher</string>
+    <string name="app_name">W Launcher</string>
     <string name="app_widget_description">This is an app widget description</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="github">https://github.com/achunt2143/webOS-Launcher</string>

@@ -120,14 +120,12 @@ public class HomeScreen extends Fragment {
 
     public boolean createWidget(View view, String packageName, String className, AppWidgetHost mAppWidgetHost, AppWidgetManager mAppWidgetManager) {
         // Get the list of installed widgets
-        System.out.println("Create Widget function");
         AppWidgetProviderInfo newAppWidgetProviderInfo = null;
         List<AppWidgetProviderInfo> appWidgetInfos;
         appWidgetInfos = mAppWidgetManager.getInstalledProviders();
         boolean widgetIsFound = false;
         for (int j = 0; j < appWidgetInfos.size(); j++) {
             if (appWidgetInfos.get(j).provider.getPackageName().equals(packageName) && appWidgetInfos.get(j).provider.getClassName().equals(className)) {
-                System.out.println("Widget Looking If");
                 // Get the full info of the required widget
                 newAppWidgetProviderInfo = appWidgetInfos.get(j);
                 widgetIsFound = true;
@@ -136,11 +134,9 @@ public class HomeScreen extends Fragment {
         }
 
         if (!widgetIsFound) {
-            System.out.println("*******Widget Not Found*********");
             return false;
         } else {
             // Create Widget
-            System.out.println("Create Widget");
             int appWidgetId = mAppWidgetHost.allocateAppWidgetId();
             AppWidgetHostView hostView = mAppWidgetHost.createView(view.getContext(), appWidgetId, newAppWidgetProviderInfo);
             hostView.setAppWidget(appWidgetId, newAppWidgetProviderInfo);

@@ -21,8 +21,7 @@
             android:background="@color/status"
             app:tabGravity="start"
             app:tabMode="scrollable"
-            app:tabTextColor="@color/white">
-        </com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/white"></com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

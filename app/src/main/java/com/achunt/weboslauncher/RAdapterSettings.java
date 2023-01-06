@@ -6,7 +6,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.provider.Settings;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -329,12 +331,13 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
                 } else if (label.contentEquals("Help")) {
                     AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
                     Fragment myFragment = new HelpPage();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
+                    myFragment.setExitTransition(new Slide(Gravity.TOP));
+                    myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
                 } else {
                     launchIntent = new Intent(Settings.ACTION_SETTINGS);
                     context.startActivity(launchIntent);
                 }
-                //context.startActivity(launchIntent);
             });
         }
     }

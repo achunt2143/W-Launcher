@@ -1,5 +1,8 @@
 package com.achunt.weboslauncher;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +69,17 @@ public class AppsDrawer extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Window w = requireActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.status));
+        Context context = getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        Boolean soundOn = sharedPref.getBoolean("sound", true);
+        if (soundOn) {
+            MediaPlayer mp = MediaPlayer.create(view.getContext(), R.raw.opendrawer);
+            mp.setOnCompletionListener(mp1 -> {
+                mp1.reset();
+                mp1.release();
+            });
+            mp.start();
+        }
     }
 
     @Override

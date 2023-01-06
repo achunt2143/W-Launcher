@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        loadFragment(new HomeScreen());
     }
 
     @Override

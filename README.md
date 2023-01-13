@@ -11,7 +11,7 @@ This is an attemp to create a launcher inspired by webOS. The shortcuts will lau
 
 
 ## Known bugs
-* On some phones the shortcuts in the dock may not launch the intended application, specifically LG devices may launch Assistant Voice Search with phone and messaging
+* Pressing back on home screen opens recent apps. We will call this one a feature.
 
 ## Future Tasks
 
@@ -19,9 +19,9 @@ This is an attemp to create a launcher inspired by webOS. The shortcuts will lau
 * ~~App drawer separation of system and downloaded apps~~ Tab layout has been implemented as of
   8/29/2022
 * ~~Settings in app drawer - Work in progress~~ Settings in app drawer as of 8/30/2022
-* Allow dock to be customizable - likely not going to be possible for a long time
+* Allow dock to be customizable - ~~likely not going to be possible for a long time~~ In progress
 * ~~Do better on the dock layout~~
-* Separate Just Type... feature
+* ~~Separate Just Type... feature~~
 
 ## Build Instructions
 

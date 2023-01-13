@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-36:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-41:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\083bd3f816816850587c63c88084f85c\\transformed\\material-1.4.0\\res\\values-h320dp-port-v13\\values-h320dp-port-v13.xml",
+                    "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\b26501d9553d08a11b3cfe721422cf55\\transformed\\material-1.7.0\\res\\values-h320dp-port-v13\\values-h320dp-port-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

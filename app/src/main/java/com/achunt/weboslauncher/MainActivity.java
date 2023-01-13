@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        loadFragment(new HomeScreen());
+        //loadFragment(new HomeScreen());
+        //getFragmentManager().popBackStack();
     }
 
     @Override
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //getFragmentManager().popBackStack();
+
     }
 
     @Override
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //getFragmentManager().popBackStack();
     }
 
     @Override

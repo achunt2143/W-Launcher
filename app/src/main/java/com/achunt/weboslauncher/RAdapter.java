@@ -28,38 +28,40 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
     public RAdapter(Context c) {
 
-        new Thread(() -> {
+
             PackageManager pm = c.getPackageManager();
             appsList = new ArrayList<>();
             Intent i = new Intent(Intent.ACTION_MAIN, null);
-            i.addCategory(Intent.CATEGORY_LAUNCHER);
-            List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
 
-            for (ResolveInfo ri : allApps) {
-                AppInfo app = new AppInfo();
-                app.label = ri.loadLabel(pm);
-                app.packageName = ri.activityInfo.packageName;
-                app.icon = ri.activityInfo.loadIcon(pm);
-                appsList.add(app);
-            }
-            try {
-                appsList.sort(Comparator.comparing(o -> o.label.toString()));
-            } catch (Exception e) {
-                Log.d("Error", String.valueOf(e));
-            }
-            int j = 0;
+        for (ResolveInfo ri : allApps) {
+            AppInfo app = new AppInfo();
+            app.label = ri.loadLabel(pm);
+            app.packageName = ri.activityInfo.packageName;
+            app.icon = ri.activityInfo.loadIcon(pm);
+            appsList.add(app);
+        }
+        try {
+            appsList.sort(Comparator.comparing(o -> o.label.toString()));
+        } catch (Exception e) {
+            Log.d("Error", String.valueOf(e));
+        }
+        //int j = 0;
 
-            while (j < appsList.size()) {
-                if (appsList.get(j).packageName.toString().contains("dialer")) {
-                    phone = j;
-                } else if (appsList.get(j).packageName.toString().contains("contacts")) {
-                    contacts = j;
-                } else if (appsList.get(j).packageName.toString().contains("messag")) {
-                    messages = j;
-                }
-                j++;
+        for (int j = 0; j < appsList.size(); j++) {
+            if (appsList.get(j).packageName.toString().matches("^com.*.android.*.dialer$")) {
+                phone = j;
             }
-        }).start();
+            if (appsList.get(j).packageName.toString().matches("^com.*.android.*.contacts$")) {
+                contacts = j;
+            }
+            if (appsList.get(j).packageName.toString().matches("^com.*.android.*.messaging$")) {
+                messages = j;
+            }
+
+        }
+
 
     }
 
@@ -99,6 +101,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsList.get(pos).packageName.toString());
                 context.startActivity(launchIntent);
+
             });
         }
     }

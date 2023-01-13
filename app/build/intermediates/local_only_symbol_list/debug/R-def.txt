@@ -93,8 +93,6 @@ id chip_modern
 id cnt
 id container
 id dock
-id emptyBottom
-id emptyTop
 id github
 id help
 id homeScreen

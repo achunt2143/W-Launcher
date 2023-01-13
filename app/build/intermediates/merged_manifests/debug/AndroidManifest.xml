@@ -17,6 +17,7 @@
         android:clearTaskOnLaunch="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:debuggable="true"
+        android:excludeFromRecents="true"
         android:extractNativeLibs="false"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -29,14 +30,13 @@
         android:theme="@style/Theme.WebOSLauncher" >
         <activity
             android:name="com.achunt.weboslauncher.MainActivity"
-            android:exported="true" >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.MONKEY" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 

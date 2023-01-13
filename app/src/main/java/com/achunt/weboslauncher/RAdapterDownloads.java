@@ -26,18 +26,18 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
 
     public RAdapterDownloads(Context c) {
 
-        new Thread(() -> {
-            PackageManager pm = c.getPackageManager();
-            appsListD = new ArrayList<>();
-            Intent i = new Intent(Intent.ACTION_MAIN, null);
-            i.addCategory(Intent.CATEGORY_LAUNCHER);
-            List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
 
-            for (ResolveInfo ri : allApps) {
-                ApplicationInfo ai = null;
-                try {
-                    ai = pm.getApplicationInfo(ri.activityInfo.packageName, 0);
-                } catch (PackageManager.NameNotFoundException e) {
+        PackageManager pm = c.getPackageManager();
+        appsListD = new ArrayList<>();
+        Intent i = new Intent(Intent.ACTION_MAIN, null);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+
+        for (ResolveInfo ri : allApps) {
+            ApplicationInfo ai = null;
+            try {
+                ai = pm.getApplicationInfo(ri.activityInfo.packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
                 AppInfo app = new AppInfo();
@@ -60,7 +60,7 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
             } catch (Exception e) {
                 Log.d("Error", String.valueOf(e));
             }
-        }).start();
+
     }
 
     @Override

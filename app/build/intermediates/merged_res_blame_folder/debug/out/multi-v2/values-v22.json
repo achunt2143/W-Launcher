@@ -1,19 +1,11 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-36:/values-v22/values-v22.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-41:/values-v22/values-v22.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\5dde970b1729ca206195f6b1dfead0f7\\transformed\\appcompat-1.3.0\\res\\values-v22\\values-v22.xml",
+                    "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\5d666d306352f7fdca8df50525096bc2\\transformed\\appcompat-1.5.1\\res\\values-v22\\values-v22.xml",
                     "from": {
-                        "startLines": "2,3,4,9",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,130,217,553",
-                        "endLines": "2,3,8,13",
-                        "endColumns": "74,86,12,12",
-                        "endOffsets": "125,212,548,896"
-                    },
-                    "to": {
                         "startLines": "2,3,4,9",
                         "startColumns": "4,4,4,4",
                         "startOffsets": "55,130,217,487",

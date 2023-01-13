@@ -23,13 +23,10 @@ import java.util.List;
 public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHolder> {
 
     volatile public static List<AppInfo> appsListS;
-    public static int phone = 0;
-    public static int contacts = 0;
-    public static int messages = 0;
 
     public RAdapterSystem(Context c) {
 
-        new Thread(() -> {
+
             PackageManager pm = c.getPackageManager();
             appsListS = new ArrayList<>();
             Intent i = new Intent(Intent.ACTION_MAIN, null);
@@ -47,6 +44,7 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
                 app.label = ri.loadLabel(pm);
                 app.packageName = ri.activityInfo.packageName;
                 app.icon = ri.activityInfo.loadIcon(pm);
+                assert ai != null;
                 if (ai.sourceDir.startsWith("/system") || (ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0 || (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                     appsListS.add(app);
                 }
@@ -56,7 +54,7 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
             } catch (Exception e) {
                 Log.d("Error", String.valueOf(e));
             }
-        }).start();
+
     }
 
     @Override

@@ -18,7 +18,7 @@
 12-->E:\Android\webOS\app\src\main\AndroidManifest.xml:10:9-57
 13
 14    <application
-14-->E:\Android\webOS\app\src\main\AndroidManifest.xml:13:5-41:19
+14-->E:\Android\webOS\app\src\main\AndroidManifest.xml:13:5-40:19
 15        android:allowBackup="true"
 15-->E:\Android\webOS\app\src\main\AndroidManifest.xml:14:9-35
 16        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -28,49 +28,48 @@
 18        android:dataExtractionRules="@xml/data_extraction_rules"
 18-->E:\Android\webOS\app\src\main\AndroidManifest.xml:16:9-65
 19        android:debuggable="true"
-20        android:extractNativeLibs="false"
-21        android:fullBackupContent="@xml/backup_rules"
-21-->E:\Android\webOS\app\src\main\AndroidManifest.xml:17:9-54
-22        android:icon="@mipmap/ic_launcher"
-22-->E:\Android\webOS\app\src\main\AndroidManifest.xml:18:9-43
-23        android:label="@string/app_name"
-23-->E:\Android\webOS\app\src\main\AndroidManifest.xml:19:9-41
-24        android:launchMode="singleTask"
-24-->E:\Android\webOS\app\src\main\AndroidManifest.xml:20:9-40
-25        android:roundIcon="@mipmap/ic_launcher_round"
-25-->E:\Android\webOS\app\src\main\AndroidManifest.xml:21:9-54
-26        android:screenOrientation="nosensor"
-26-->E:\Android\webOS\app\src\main\AndroidManifest.xml:22:9-45
-27        android:stateNotNeeded="true"
-27-->E:\Android\webOS\app\src\main\AndroidManifest.xml:23:9-38
-28        android:supportsRtl="true"
-28-->E:\Android\webOS\app\src\main\AndroidManifest.xml:24:9-35
-29        android:theme="@style/Theme.WebOSLauncher" >
-29-->E:\Android\webOS\app\src\main\AndroidManifest.xml:25:9-51
-30        <activity
-30-->E:\Android\webOS\app\src\main\AndroidManifest.xml:29:9-40:20
-31            android:name="com.achunt.weboslauncher.MainActivity"
-31-->E:\Android\webOS\app\src\main\AndroidManifest.xml:30:13-41
-32            android:exported="true" >
-32-->E:\Android\webOS\app\src\main\AndroidManifest.xml:31:13-36
-33            <intent-filter>
-33-->E:\Android\webOS\app\src\main\AndroidManifest.xml:32:13-39:29
-34                <action android:name="android.intent.action.MAIN" />
-34-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:17-69
-34-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:25-66
-35
-36                <category android:name="android.intent.category.LAUNCHER" />
-36-->E:\Android\webOS\app\src\main\AndroidManifest.xml:35:17-77
-36-->E:\Android\webOS\app\src\main\AndroidManifest.xml:35:27-74
+20        android:excludeFromRecents="true"
+20-->E:\Android\webOS\app\src\main\AndroidManifest.xml:25:9-42
+21        android:extractNativeLibs="false"
+22        android:fullBackupContent="@xml/backup_rules"
+22-->E:\Android\webOS\app\src\main\AndroidManifest.xml:17:9-54
+23        android:icon="@mipmap/ic_launcher"
+23-->E:\Android\webOS\app\src\main\AndroidManifest.xml:18:9-43
+24        android:label="@string/app_name"
+24-->E:\Android\webOS\app\src\main\AndroidManifest.xml:19:9-41
+25        android:launchMode="singleTask"
+25-->E:\Android\webOS\app\src\main\AndroidManifest.xml:20:9-40
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->E:\Android\webOS\app\src\main\AndroidManifest.xml:21:9-54
+27        android:screenOrientation="nosensor"
+27-->E:\Android\webOS\app\src\main\AndroidManifest.xml:22:9-45
+28        android:stateNotNeeded="true"
+28-->E:\Android\webOS\app\src\main\AndroidManifest.xml:23:9-38
+29        android:supportsRtl="true"
+29-->E:\Android\webOS\app\src\main\AndroidManifest.xml:24:9-35
+30        android:theme="@style/Theme.WebOSLauncher" >
+30-->E:\Android\webOS\app\src\main\AndroidManifest.xml:26:9-51
+31        <activity
+31-->E:\Android\webOS\app\src\main\AndroidManifest.xml:30:9-39:20
+32            android:name="com.achunt.weboslauncher.MainActivity"
+32-->E:\Android\webOS\app\src\main\AndroidManifest.xml:31:13-41
+33            android:exported="false" >
+33-->E:\Android\webOS\app\src\main\AndroidManifest.xml:32:13-37
+34            <intent-filter>
+34-->E:\Android\webOS\app\src\main\AndroidManifest.xml:33:13-38:29
+35                <action android:name="android.intent.action.MAIN" />
+35-->E:\Android\webOS\app\src\main\AndroidManifest.xml:34:17-69
+35-->E:\Android\webOS\app\src\main\AndroidManifest.xml:34:25-66
+36
 37                <category android:name="android.intent.category.HOME" />
-37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:36:17-73
-37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:36:27-70
+37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:35:17-73
+37-->E:\Android\webOS\app\src\main\AndroidManifest.xml:35:27-70
 38                <category android:name="android.intent.category.DEFAULT" />
-38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:37:17-76
-38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:37:27-73
-39                <category android:name="android.intent.category.MONKEY" />
-39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:38:17-75
-39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:38:27-72
+38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:36:17-76
+38-->E:\Android\webOS\app\src\main\AndroidManifest.xml:36:27-73
+39                <category android:name="android.intent.category.LAUNCHER" />
+39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:37:17-77
+39-->E:\Android\webOS\app\src\main\AndroidManifest.xml:37:27-74
 40            </intent-filter>
 41        </activity>
 42

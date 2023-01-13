@@ -2835,8 +2835,6 @@ id easeOut
 id edit_query
 id elastic
 id embed
-id emptyBottom
-id emptyTop
 id end
 id endToStart
 id enterAlways

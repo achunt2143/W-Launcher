@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.util.Log;
@@ -146,20 +145,19 @@ public class HomeScreen extends Fragment {
             widgetLayout.addView(hostView);
 
             // And bind widget IDs to make them actually work
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                boolean allowed = mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, newAppWidgetProviderInfo.provider);
+            boolean allowed = mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, newAppWidgetProviderInfo.provider);
 
-                if (!allowed) {
-                    Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
-                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, newAppWidgetProviderInfo.provider);
-                    final int REQUEST_BIND_WIDGET = 200906;
-                    startActivityForResult(intent, REQUEST_BIND_WIDGET);
-                }
+            if (!allowed) {
+                Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, newAppWidgetProviderInfo.provider);
+                final int REQUEST_BIND_WIDGET = 200906;
+                startActivityForResult(intent, REQUEST_BIND_WIDGET);
             }
 
             return true;
         }
     }
+
 
 }

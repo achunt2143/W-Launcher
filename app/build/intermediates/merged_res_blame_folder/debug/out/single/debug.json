@@ -256,10 +256,6 @@
         "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-main-45:\\drawable-v24\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.achunt.weboslauncher.app-merged_res-43:/layout_fragment_settings_page.xml.flat",
-        "source": "com.achunt.weboslauncher.app-main-45:/layout/fragment_settings_page.xml"
-    },
-    {
         "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-43:\\mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-debug-44:\\mipmap-xxhdpi\\ic_launcher.png"
     },
@@ -290,6 +286,10 @@
     {
         "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-43:\\mipmap-xxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-debug-44:\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "com.achunt.weboslauncher.app-merged_res-43:/layout_homescreen.xml.flat",
+        "source": "com.achunt.weboslauncher.app-main-45:/layout/homescreen.xml"
     },
     {
         "merged": "C:\\Users\\achun\\.gradle\\daemon\\7.3.3\\com.achunt.weboslauncher.app-merged_res-43:\\drawable_lock.png.flat",

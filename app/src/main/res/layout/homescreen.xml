@@ -7,38 +7,18 @@
     app:defaultNavHost="true"
     app:navGraph="@navigation/nav_graph">
 
-    <LinearLayout
-        android:id="@+id/emptyTop"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/widgets"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/widgets"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/emptyBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emptyTop"
-        app:layout_constraintVertical_weight="1"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/emptyBottom"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/dock"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widgets"
-        app:layout_constraintVertical_weight="4"></LinearLayout>
+    </LinearLayout>
+
 
     <GridLayout
         android:id="@+id/dock"

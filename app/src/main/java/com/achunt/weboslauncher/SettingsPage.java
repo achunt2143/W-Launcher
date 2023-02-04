@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -46,12 +47,15 @@ public class SettingsPage extends Fragment {
         SwitchMaterial sound = view.findViewById(R.id.soundSwitch);
         sound.setChecked(sharedPref.getBoolean("sound", true));
         ChipGroup theme = view.findViewById(R.id.chip_group);
-        theme.check(sharedPref.getInt("theme", 1));
+        theme.check(sharedPref.getInt("themeChip", 1));
         Button okay = view.findViewById(R.id.setOkay);
+
         okay.setOnClickListener(v -> {
+            Chip chip = view.findViewById(theme.getCheckedChipId());
             edit.putBoolean("sound", sound.isChecked());
-            edit.putInt("theme", theme.getCheckedChipId());
-            edit.apply();
+            edit.putInt("themeChip", theme.getCheckedChipId());
+            edit.putString("themeName", (String) chip.getText());
+            edit.commit();
             Fragment myFragment = new HomeScreen();
             myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();

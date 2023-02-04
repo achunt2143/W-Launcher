@@ -47,7 +47,6 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         } catch (Exception e) {
             Log.d("Error", String.valueOf(e));
         }
-        //int j = 0;
 
         for (int j = 0; j < appsList.size(); j++) {
             if (appsList.get(j).packageName.toString().matches("^com.*.android.*.dialer$")) {

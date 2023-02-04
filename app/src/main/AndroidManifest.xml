@@ -12,24 +12,25 @@
 
     <application
         android:allowBackup="true"
-        android:clearTaskOnLaunch="false"
+
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:launchMode="singleTask"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:screenOrientation="nosensor"
-        android:stateNotNeeded="true"
         android:supportsRtl="true"
-        android:excludeFromRecents="true"
         android:theme="@style/Theme.WebOSLauncher"
         tools:targetApi="31">
 
 
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="user"
+            android:stateNotNeeded="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

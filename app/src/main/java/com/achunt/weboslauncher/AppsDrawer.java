@@ -100,13 +100,15 @@ public class AppsDrawer extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        getFragmentManager().popBackStack();
+        //getFragmentManager().popBackStack();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
+
+
 }
 
 class PagerAdapter extends FragmentStatePagerAdapter {

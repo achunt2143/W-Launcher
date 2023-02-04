@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment)
+                    .add(R.id.container, fragment, "home")
                     .setReorderingAllowed(true)
+                    .addToBackStack("main")
                     .commit();
             return true;
         }
@@ -56,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //loadFragment(new HomeScreen());
-        //getFragmentManager().popBackStack();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            super.onBackPressed();
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override

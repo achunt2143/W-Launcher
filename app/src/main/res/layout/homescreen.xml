@@ -44,7 +44,6 @@
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/phone"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -92,7 +91,6 @@
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/brs"
             tools:ignore="MissingConstraints" />
 
         <ImageView

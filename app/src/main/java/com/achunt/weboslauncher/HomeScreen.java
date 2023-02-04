@@ -6,6 +6,10 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.util.Log;
@@ -38,6 +42,7 @@ public class HomeScreen extends Fragment {
     volatile static RecyclerView.Adapter adapterDownloads;
     volatile static RecyclerView.Adapter adapterSettings;
     static final int APPWIDGET_HOST_ID = 200906;
+    SharedPreferences sharedPrefH;
 
 
     public HomeScreen() {
@@ -59,6 +64,8 @@ public class HomeScreen extends Fragment {
         adapterSettings = new RAdapterSettings(requireContext());
         Window w = requireActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.empty));
+        sharedPrefH = getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String theme = sharedPrefH.getString("themeName", "Classic");
 
         AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(view.getContext());
         AppWidgetHost mAppWidgetHost = new AppWidgetHost(view.getContext(), APPWIDGET_HOST_ID);
@@ -70,30 +77,43 @@ public class HomeScreen extends Fragment {
         }
 
         imageViewDrawer = view.findViewById(R.id.icon_drawer);
-        imageViewDrawer.setOnClickListener(v -> loadFragment(new AppsDrawer()));
-
         imageViewPhone = view.findViewById(R.id.phone);
+        imageViewContacts = view.findViewById(R.id.cnt);
+        imageViewMessages = view.findViewById(R.id.msg);
+        imageViewBrowser = view.findViewById(R.id.brs);
+        System.out.println("Theme is " + theme);
+
+        if (theme.equals("Classic")) { //classic
+            imageViewPhone.setImageResource(R.drawable.phone);
+            imageViewContacts.setImageResource(R.drawable.cnt);
+            imageViewMessages.setImageResource(R.drawable.msg);
+            imageViewBrowser.setImageResource(R.drawable.brs);
+        } else if (theme.equals("Mochi")) { //mochi
+        } else if (theme.equals("Modern")) { //modern
+        } else if (theme.equals("System")) { //system
+            Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+            ResolveInfo resolveInfo = view.getContext().getPackageManager().resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            imageViewPhone.setImageDrawable(RAdapter.appsList.get(RAdapter.phone).icon);
+            imageViewContacts.setImageDrawable(RAdapter.appsList.get(RAdapter.contacts).icon);
+            imageViewMessages.setImageDrawable(RAdapter.appsList.get(RAdapter.messages).icon);
+            imageViewBrowser.setImageDrawable(resolveInfo.activityInfo.applicationInfo.loadIcon(getContext().getPackageManager()));
+        }
+        imageViewDrawer.setOnClickListener(v -> loadFragment(new AppsDrawer()));
         imageViewPhone.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.phone).packageName.toString());
             context.startActivity(launchIntent);
         });
-
-        imageViewContacts = view.findViewById(R.id.cnt);
         imageViewContacts.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.contacts).packageName.toString());
             context.startActivity(launchIntent);
         });
-
-        imageViewMessages = view.findViewById(R.id.msg);
         imageViewMessages.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.messages).packageName.toString());
             context.startActivity(launchIntent);
         });
-
-        imageViewBrowser = view.findViewById(R.id.brs);
         imageViewBrowser.setOnClickListener(v -> {
             Intent browser = new Intent(Intent.ACTION_MAIN);
             browser.addCategory(Intent.CATEGORY_APP_BROWSER);
@@ -109,8 +129,9 @@ public class HomeScreen extends Fragment {
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));
             this.requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+                    .add(R.id.container, fragment, "apps")
+                    .addToBackStack("home")
+                    .setReorderingAllowed(true)
                     .commit();
             return true;
         }
@@ -158,6 +179,5 @@ public class HomeScreen extends Fragment {
             return true;
         }
     }
-
 
 }

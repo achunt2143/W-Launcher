@@ -11,7 +11,7 @@ This is an attemp to create a launcher inspired by webOS. The shortcuts will lau
 
 
 ## Known bugs
-* Pressing back on home screen opens recent apps. We will call this one a feature.
+* ~~Pressing back on home screen opens recent apps. We will call this one a feature.~~ This should be fixed.
 
 ## Future Tasks
 

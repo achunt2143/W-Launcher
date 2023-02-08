@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -37,6 +38,7 @@ public class HomeScreen extends Fragment {
     ImageView imageViewContacts;
     ImageView imageViewMessages;
     ImageView imageViewBrowser;
+    GridLayout gridDock;
     volatile static RecyclerView.Adapter adapter;
     volatile static RecyclerView.Adapter adapterSystem;
     volatile static RecyclerView.Adapter adapterDownloads;
@@ -81,22 +83,36 @@ public class HomeScreen extends Fragment {
         imageViewContacts = view.findViewById(R.id.cnt);
         imageViewMessages = view.findViewById(R.id.msg);
         imageViewBrowser = view.findViewById(R.id.brs);
-        System.out.println("Theme is " + theme);
+        gridDock = view.findViewById(R.id.dock);
 
-        if (theme.equals("Classic")) { //classic
-            imageViewPhone.setImageResource(R.drawable.phone);
-            imageViewContacts.setImageResource(R.drawable.cnt);
-            imageViewMessages.setImageResource(R.drawable.msg);
-            imageViewBrowser.setImageResource(R.drawable.brs);
-        } else if (theme.equals("Mochi")) { //mochi
-        } else if (theme.equals("Modern")) { //modern
-        } else if (theme.equals("System")) { //system
-            Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
-            ResolveInfo resolveInfo = view.getContext().getPackageManager().resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
-            imageViewPhone.setImageDrawable(RAdapter.appsList.get(RAdapter.phone).icon);
-            imageViewContacts.setImageDrawable(RAdapter.appsList.get(RAdapter.contacts).icon);
-            imageViewMessages.setImageDrawable(RAdapter.appsList.get(RAdapter.messages).icon);
-            imageViewBrowser.setImageDrawable(resolveInfo.activityInfo.applicationInfo.loadIcon(getContext().getPackageManager()));
+        switch (theme) {
+            case "Classic":  //classic
+                imageViewPhone.setImageResource(R.drawable.phone);
+                imageViewContacts.setImageResource(R.drawable.cnt);
+                imageViewMessages.setImageResource(R.drawable.msg);
+                imageViewBrowser.setImageResource(R.drawable.brs);
+                break;
+            case "Mochi":  //mochi
+                imageViewPhone.setImageResource(R.drawable.mochiphone);
+                imageViewContacts.setImageResource(R.drawable.mochicontacts);
+                imageViewMessages.setImageResource(R.drawable.mochimessages);
+                imageViewBrowser.setImageResource(R.drawable.mochibrowser);
+                gridDock.setBackground(getContext().getDrawable(R.color.mochilight));
+                break;
+            case "Modern":  //modern
+                imageViewPhone.setImageResource(R.drawable.modernphone);
+                imageViewContacts.setImageResource(R.drawable.moderncontact);
+                imageViewMessages.setImageResource(R.drawable.modernmessages);
+                imageViewBrowser.setImageResource(R.drawable.modernbrowser);
+                break;
+            case "System":  //system
+                Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+                ResolveInfo resolveInfo = view.getContext().getPackageManager().resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                imageViewPhone.setImageDrawable(RAdapter.appsList.get(RAdapter.phone).icon);
+                imageViewContacts.setImageDrawable(RAdapter.appsList.get(RAdapter.contacts).icon);
+                imageViewMessages.setImageDrawable(RAdapter.appsList.get(RAdapter.messages).icon);
+                imageViewBrowser.setImageDrawable(resolveInfo.activityInfo.applicationInfo.loadIcon(getContext().getPackageManager()));
+                break;
         }
         imageViewDrawer.setOnClickListener(v -> loadFragment(new AppsDrawer()));
         imageViewPhone.setOnClickListener(v -> {

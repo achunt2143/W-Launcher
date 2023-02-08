@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-41:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-42:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\b26501d9553d08a11b3cfe721422cf55\\transformed\\material-1.7.0\\res\\values-night-v8\\values-night-v8.xml",

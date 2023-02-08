@@ -2,6 +2,7 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -75,6 +76,20 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         textView.setText(appLabel);
         ImageView imageView = viewHolder.img;
         imageView.setImageDrawable(appIcon);
+        SharedPreferences sharedPref = viewHolder.itemView.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String theme = sharedPref.getString("themeName", "Classic");
+        switch (theme) {
+            case "Classic":  //classic
+            case "Modern":  //modern
+                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochilight));
+                break;
+            case "Mochi":  //mochi
+                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochigrey));
+                break;
+            case "System":  //system
+                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.white));
+                break;
+        }
     }
 
     @NonNull

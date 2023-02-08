@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-41:/values-v23/values-v23.xml",
+            "outputFile": "com.achunt.weboslauncher.app-mergeDebugResources-42:/values-v23/values-v23.xml",
             "map": [
                 {
                     "source": "C:\\Users\\achun\\.gradle\\caches\\transforms-3\\d4c9e45086bb311ab5f003976f396c14\\transformed\\cardview-1.0.0\\res\\values-v23\\values-v23.xml",

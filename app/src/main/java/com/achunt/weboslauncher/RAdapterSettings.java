@@ -271,14 +271,86 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
                 imageView.setImageDrawable(appIcon);
                 break;
             }
-            case "Mochi": { //will be mochi
-                appIcon = appsList.get(i).icon;
+            case "Mochi": { //mochi theme
+                try {
+                    if (appLabel.contains(BT_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochibluetooth);
+                    } else if (appLabel.contains(DAT_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochicalendar);
+                    } else if (appLabel.contains("Help")) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochiinfo);
+                    } else if (appLabel.contains(DISP_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochidisplay);
+                    } else if (appLabel.contains(ABT_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochiinfo);
+                    } else if (appLabel.contains(LOC_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochilocation);
+                    } else if (appLabel.contains(SND_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochisound);
+                    } else if (appLabel.contains(VPN_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochilock);
+                    } else if (appLabel.contains(WIFI_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochiwifi);
+                    } else if (appLabel.contains(APPS_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochiapps);
+                    } else if (appLabel.contains(SEC_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochilockscreen);
+                    } else if (appLabel.contains(PRV_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochisecurity);
+                    } else if (appLabel.contains(WN_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochiwifiside);
+                    } else if (appLabel.contains(NFC_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochinfc);
+                    } else if (appLabel.contains(MN_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochimobilenetwork);
+                    } else {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.mochisettings);
+                    }
+                } catch (Exception e) {
+                    appIcon = appsList.get(i).icon;
+                }
                 ImageView imageView = viewHolder.img;
                 imageView.setImageDrawable(appIcon);
                 break;
             }
-            case "Modern": { //will be modern
-                appIcon = appsList.get(i).icon;
+            case "Modern": { //modern theme
+                try {
+                    if (appLabel.contains(BT_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernbluetooth);
+                    } else if (appLabel.contains(DAT_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.moderndatetime);
+                    } else if (appLabel.contains("Help")) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernhelp);
+                    } else if (appLabel.contains(DISP_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.moderndisplay);
+                    } else if (appLabel.contains(ABT_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.moderninfo);
+                    } else if (appLabel.contains(LOC_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernlocation);
+                    } else if (appLabel.contains(SND_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernsound);
+                    } else if (appLabel.contains(VPN_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernvpn);
+                    } else if (appLabel.contains(WIFI_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernwifi);
+                    } else if (appLabel.contains(APPS_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernapps);
+                    } else if (appLabel.contains(SEC_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernsecurity);
+                    } else if (appLabel.contains(PRV_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernsecurity);
+                    } else if (appLabel.contains(WN_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernnetwork);
+                    } else if (appLabel.contains(NFC_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernnfc);
+                    } else if (appLabel.contains(MN_LABEL)) {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernmobilenetwork);
+                    } else {
+                        appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.modernsetting);
+                    }
+                } catch (Exception e) {
+                    appIcon = appsList.get(i).icon;
+                }
                 ImageView imageView = viewHolder.img;
                 imageView.setImageDrawable(appIcon);
                 break;
@@ -298,6 +370,18 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
         }
         TextView textView = viewHolder.textView;
         textView.setText(appLabel);
+        switch (theme) {
+            case "Classic":  //classic
+            case "Modern":  //modern
+                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochilight));
+                break;
+            case "Mochi":  //mochi
+                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochigrey));
+                break;
+            case "System":  //system
+                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.white));
+                break;
+        }
     }
 
     @NonNull

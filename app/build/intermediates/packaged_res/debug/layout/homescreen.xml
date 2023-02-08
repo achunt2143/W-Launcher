@@ -39,7 +39,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:layout_toStartOf="@id/cnt"
             android:adjustViewBounds="true"
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
@@ -54,12 +53,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:layout_toStartOf="@id/msg"
             android:adjustViewBounds="true"
             android:background="@drawable/dockshadow"
-            android:cropToPadding="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/cnt"
+            android:cropToPadding="true"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -70,12 +67,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:layout_toStartOf="@id/brs"
             android:adjustViewBounds="true"
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/msg"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -86,7 +81,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:layout_toStartOf="@id/icon_drawer"
             android:adjustViewBounds="true"
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
@@ -98,7 +92,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
-            android:layout_alignParentEnd="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"

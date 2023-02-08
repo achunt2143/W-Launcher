@@ -76,6 +76,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         textView.setText(appLabel);
         ImageView imageView = viewHolder.img;
         imageView.setImageDrawable(appIcon);
+
     }
 
     @NonNull

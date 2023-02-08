@@ -11,6 +11,7 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,6 +27,7 @@ public class AppsDrawer extends Fragment {
     volatile TabLayout tabLayout;
     volatile View view;
     volatile LinearLayoutManager mLayoutManager;
+    CoordinatorLayout appsBG;
 
     public AppsDrawer() {
     }
@@ -70,7 +72,10 @@ public class AppsDrawer extends Fragment {
         Window w = requireActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.status));
         Context context = getActivity();
+        appsBG = view.findViewById(R.id.appsBG);
+
         SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String theme = sharedPref.getString("themeName", "Classic");
         Boolean soundOn = sharedPref.getBoolean("sound", true);
         if (soundOn) {
             MediaPlayer mp = MediaPlayer.create(view.getContext(), R.raw.opendrawer);
@@ -79,6 +84,20 @@ public class AppsDrawer extends Fragment {
                 mp1.release();
             });
             mp.start();
+        }
+        switch (theme) {
+            case "Classic":  //classic
+                appsBG.setBackground(context.getDrawable(R.drawable.bg));
+                break;
+            case "Mochi":  //mochi
+                appsBG.setBackground(context.getDrawable(R.color.mochilight));
+                break;
+            case "Modern":  //modern
+                appsBG.setBackground(context.getDrawable(R.color.mochigrey));
+                break;
+            case "System":  //system
+                appsBG.setBackground(context.getDrawable(R.color.abt));
+                break;
         }
     }
 

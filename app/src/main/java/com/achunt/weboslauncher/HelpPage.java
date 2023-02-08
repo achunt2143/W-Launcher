@@ -10,11 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -42,12 +42,23 @@ public class HelpPage extends Fragment {
         w.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.abt));
         ImageView github = view.findViewById(R.id.github);
         github.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.github.com/achunt2143/W-Launcher/"))));
-        ImageView bird = view.findViewById(R.id.bean);
-        bird.setOnClickListener(v -> {
-            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+        Button credits = view.findViewById(R.id.infoCredits);
+        ImageView settings = view.findViewById(R.id.settingsIcon);
+        Button close = view.findViewById(R.id.infoClose);
+        settings.setOnClickListener(v -> {
             Fragment myFragment = new SettingsPage();
             myFragment.setExitTransition(new Slide(Gravity.TOP));
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+        });
+        credits.setOnClickListener(v -> {
+            Fragment myFragment = new CreditsPage();
+            myFragment.setExitTransition(new Slide(Gravity.TOP));
+            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+        });
+        close.setOnClickListener(v -> {
+            Fragment myFragment = new HomeScreen();
+            myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
         });
     }
 }

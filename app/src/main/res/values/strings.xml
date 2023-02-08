@@ -7,14 +7,36 @@
     <string name="title_activity_applaunch">ApplaunchActivity</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="about_text">This launcher is aimed to provide a replacement to the very intuitive launcher found on classic webOS devices and LuneOS, for Android. The styling is based after some of the best parts of webOS and LuneOS, notably the Just Type... feature and quick settings right in your app drawer. This launcher is a passion project that is meant to provide the ability to re-experience webOS now that it has had yet another nail in its coffin after the shutdown of 3G. The usefulness is basically gone from these really incredible devices. Now with Android having native gesture support that heavily emulates webOS, this launcher just adds to the experience we all have been missing.
+    <string name="about_text">This launcher is aimed to provide a replacement to the very intuitive launcher found on classic webOS devices and LuneOS, for Android. The styling is based after some of the best parts of webOS and LuneOS, notably the Just Type… feature and quick settings right in your app drawer. This launcher is a passion project that is meant to provide the ability to re-experience webOS now that it has had yet another nail in its coffin after the shutdown of 3G. The usefulness is basically gone from these really incredible devices. Now with Android having native gesture support that heavily emulates webOS, this launcher just adds to the experience we all have been missing.
 \n\n
-Assets have been gathered from:
-\n
-webOS OSE, licensed under Apache License 2.0\n
-webOS-Ports, licenced under the GNU GPL 3.0\n\nCheck out my github for project updates.\n</string>
+Check out my github for project updates.\n</string>
     <string name="github">https://github.com/achunt2143/webOS-Launcher</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+    <string name="credits">Assets have been gathered from:
+\n
+webOS OSE, licensed under Apache License 2.0\n
+webOS-Ports, licenced under the GNU GPL 3.0\n
+Icons by <a href="https://freeicons.io/profile/714">Raj Dev</a> on <a href="https://freeicons.io">freeicons.io</a>\n
+Icons by <a href="https://freeicons.io/profile/3">icon king1</a> on <a href="https://freeicons.io">freeicons.io</a>\n
+Icons by <a href="https://freeicons.io/profile/5790">ColourCreatype</a> on <a href="https://freeicons.io">freeicons.io</a>\n
+Icons by <a href="https://freeicons.io/profile/6156">Reda</a> on <a href="https://freeicons.io">freeicons.io</a>\n
+Icons by <a href="https://freeicons.io/profile/75801">Hilmy Abiyyu Asad</a> on <a href="https://freeicons.io">freeicons.io</a>\n
+Icons by <a href="https://freeicons.io/profile/726">Free Preloaders</a> on <a href="https://freeicons.io">freeicons.io</a>\n
+Icons by <a href="https://freeicons.io/profile/722">Fasil</a> on <a href="https://freeicons.io">freeicons.io</a>\n</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

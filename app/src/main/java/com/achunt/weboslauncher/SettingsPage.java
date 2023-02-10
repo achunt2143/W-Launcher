@@ -3,6 +3,7 @@ package com.achunt.weboslauncher;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
@@ -56,6 +57,15 @@ public class SettingsPage extends Fragment {
             edit.putInt("themeChip", theme.getCheckedChipId());
             edit.putString("themeName", (String) chip.getText());
             edit.commit();
+            Boolean soundOn = sharedPref.getBoolean("sound", true);
+            if (soundOn) {
+                MediaPlayer mp = MediaPlayer.create(view.getContext(), R.raw.tap_to_share);
+                mp.setOnCompletionListener(mp1 -> {
+                    mp1.reset();
+                    mp1.release();
+                });
+                mp.start();
+            }
             Fragment myFragment = new HomeScreen();
             myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();

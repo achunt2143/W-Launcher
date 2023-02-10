@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             super.onBackPressed();
             getFragmentManager().popBackStack();
+            Window w = getWindow();
+            w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
+            LinearLayout widgets = findViewById(R.id.widgets);
+            widgets.animate().alpha(1).setDuration(1000).start();
         }
     }
 
@@ -76,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //getFragmentManager().popBackStack();
-
     }
 
     @Override
@@ -93,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //getFragmentManager().popBackStack();
     }
 
     @Override

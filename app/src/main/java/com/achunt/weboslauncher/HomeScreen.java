@@ -39,6 +39,7 @@ public class HomeScreen extends Fragment {
     ImageView imageViewMessages;
     ImageView imageViewBrowser;
     GridLayout gridDock;
+    LinearLayout widgets;
     volatile static RecyclerView.Adapter adapter;
     volatile static RecyclerView.Adapter adapterSystem;
     volatile static RecyclerView.Adapter adapterDownloads;
@@ -58,6 +59,13 @@ public class HomeScreen extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        imageViewDrawer = view.findViewById(R.id.icon_drawer);
+        imageViewPhone = view.findViewById(R.id.phone);
+        imageViewContacts = view.findViewById(R.id.cnt);
+        imageViewMessages = view.findViewById(R.id.msg);
+        imageViewBrowser = view.findViewById(R.id.brs);
+        gridDock = view.findViewById(R.id.dock);
+        widgets = view.findViewById(R.id.widgets);
 
         super.onViewCreated(view, savedInstanceState);
         adapter = new RAdapter(requireContext());
@@ -68,6 +76,7 @@ public class HomeScreen extends Fragment {
         w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.empty));
         sharedPrefH = getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String theme = sharedPrefH.getString("themeName", "Classic");
+        widgets.animate().alpha(1).setDuration(1000).start();
 
         AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(view.getContext());
         AppWidgetHost mAppWidgetHost = new AppWidgetHost(view.getContext(), APPWIDGET_HOST_ID);
@@ -77,13 +86,6 @@ public class HomeScreen extends Fragment {
         } catch (Exception e) {
             Log.d("JTError", e.toString());
         }
-
-        imageViewDrawer = view.findViewById(R.id.icon_drawer);
-        imageViewPhone = view.findViewById(R.id.phone);
-        imageViewContacts = view.findViewById(R.id.cnt);
-        imageViewMessages = view.findViewById(R.id.msg);
-        imageViewBrowser = view.findViewById(R.id.brs);
-        gridDock = view.findViewById(R.id.dock);
 
         switch (theme) {
             case "Classic":  //classic
@@ -104,6 +106,7 @@ public class HomeScreen extends Fragment {
                 imageViewContacts.setImageResource(R.drawable.moderncontact);
                 imageViewMessages.setImageResource(R.drawable.modernmessages);
                 imageViewBrowser.setImageResource(R.drawable.modernbrowser);
+                gridDock.setBackground(getContext().getDrawable(R.color.mochigrey));
                 break;
             case "System":  //system
                 Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
@@ -112,9 +115,14 @@ public class HomeScreen extends Fragment {
                 imageViewContacts.setImageDrawable(RAdapter.appsList.get(RAdapter.contacts).icon);
                 imageViewMessages.setImageDrawable(RAdapter.appsList.get(RAdapter.messages).icon);
                 imageViewBrowser.setImageDrawable(resolveInfo.activityInfo.applicationInfo.loadIcon(getContext().getPackageManager()));
+                gridDock.setBackground(getContext().getDrawable(R.color.abt));
                 break;
         }
-        imageViewDrawer.setOnClickListener(v -> loadFragment(new AppsDrawer()));
+        imageViewDrawer.setOnClickListener(v -> {
+            widgets.animate().alpha(0).setDuration(1000).start();
+            loadFragment(new AppsDrawer());
+
+        });
         imageViewPhone.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(RAdapter.appsList.get(RAdapter.phone).packageName.toString());

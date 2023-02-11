@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        System.out.println("****back entries " + getSupportFragmentManager().getBackStackEntryCount());
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             super.onBackPressed();
             getFragmentManager().popBackStack();
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        LinearLayout widgets = findViewById(R.id.widgets);
+        widgets.animate().alpha(1).setDuration(1000).start();
         super.onResume();
     }
 

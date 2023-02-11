@@ -121,7 +121,6 @@ public class HomeScreen extends Fragment {
         imageViewDrawer.setOnClickListener(v -> {
             widgets.animate().alpha(0).setDuration(1000).start();
             loadFragment(new AppsDrawer());
-
         });
         imageViewPhone.setOnClickListener(v -> {
             Context context = v.getContext();
@@ -203,5 +202,6 @@ public class HomeScreen extends Fragment {
             return true;
         }
     }
+
 
 }

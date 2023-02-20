@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        System.out.println("****back entries " + getSupportFragmentManager().getBackStackEntryCount());
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             super.onBackPressed();
             getFragmentManager().popBackStack();

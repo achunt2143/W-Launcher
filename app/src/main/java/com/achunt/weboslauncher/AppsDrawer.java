@@ -119,8 +119,6 @@ public class AppsDrawer extends Fragment {
 
     @Override
     public void onPause() {
-        System.out.println("**********" + getParentFragmentManager().getBackStackEntryCount());
-
         if (getParentFragmentManager().getBackStackEntryCount() > 1) {
             getParentFragmentManager().popBackStack();
         }

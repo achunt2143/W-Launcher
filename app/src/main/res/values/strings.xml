@@ -5,7 +5,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_appsdrawer">AppsdrawerActivity</string>
     <string name="title_activity_applaunch">ApplaunchActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about_text">This launcher is aimed to provide a replacement to the very intuitive launcher found on classic webOS devices and LuneOS, for Android. The styling is based after some of the best parts of webOS and LuneOS, notably the Just Type… feature and quick settings right in your app drawer. This launcher is a passion project that is meant to provide the ability to re-experience webOS now that it has had yet another nail in its coffin after the shutdown of 3G. The usefulness is basically gone from these really incredible devices. Now with Android having native gesture support that heavily emulates webOS, this launcher just adds to the experience we all have been missing.
 \n\n
@@ -14,10 +13,24 @@ Check out my github for project updates.\n</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
-    <string name="credits">Assets have been gathered from:
+    <string name="credits">
+    Copyright © 2022,2023  Andrew Hunt ahunt4847@gmail.com\n\n
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.\n\n
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.\n\n
+
+    You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <a href="https://www.gnu.org/licenses/">the license here.</a>\n\nAssets have been gathered from:
 \n
-webOS OSE, licensed under Apache License 2.0\n
-webOS-Ports, licenced under the GNU GPL 3.0\n
+webOS OSE, licensed under Apache License 2.0 Copyright © 2013-2018 LG Electronics, Inc.\nYou may obtain a copy of the License <a href="http://www.apache.org/licenses/LICENSE-2.0">here.</a>\n
+webOS-Ports, licenced under the GNU GPL 3.0 Copyright © 2012-2023\n\n
 Icons by <a href="https://freeicons.io/profile/714">Raj Dev</a> on <a href="https://freeicons.io">freeicons.io</a>\n
 Icons by <a href="https://freeicons.io/profile/3">icon king1</a> on <a href="https://freeicons.io">freeicons.io</a>\n
 Icons by <a href="https://freeicons.io/profile/5790">ColourCreatype</a> on <a href="https://freeicons.io">freeicons.io</a>\n

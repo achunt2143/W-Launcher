@@ -24,19 +24,26 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:text="Credits"
         android:textAlignment="center"
+        android:textColor="@color/mochilight"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/beanCredits"
         app:layout_constraintTop_toTopOf="@id/beanCredits" />
 
     <TextView
+        android:id="@+id/cText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:linksClickable="true"
+        android:scrollbars="vertical"
         android:text="@string/credits"
         android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/credClose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/beanCredits" />

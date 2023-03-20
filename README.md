@@ -1,9 +1,13 @@
 # W Launcher
-This is an attemp to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order.
+This is an attemp to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order. Recent apps will be displayed on home screen.
+
+##Play Store Link
+<a href="https://play.google.com/store/apps/details?id=com.achunt.weboslauncher">W Launcher on Play Store</a>
 
 ## Screenshots
 <p>
   <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_home.png" width="135" title="home">
+  <img src="https://github.com/achunt2143/W-Launcher/blob/main/screenshots/Screenshot_20230320_164111.png" width="135" alt="settings drawer">
   <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_appdrawer.png" width="135" alt="app drawer">
   <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_settings.png" width="135" alt="settings drawer">
 </p>

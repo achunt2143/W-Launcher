@@ -19,4 +19,5 @@
     <color name="light_blue_900">#FF01579B</color>
     <color name="mochigrey">#696969</color>
     <color name="mochilight">#e3e3e3</color>
+    <color name="card_color">#FFC6D6C3</color>
 </resources>

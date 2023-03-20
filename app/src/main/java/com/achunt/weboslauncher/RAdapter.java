@@ -29,9 +29,9 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
     public RAdapter(Context c) {
 
 
-            PackageManager pm = c.getPackageManager();
-            appsList = new ArrayList<>();
-            Intent i = new Intent(Intent.ACTION_MAIN, null);
+        PackageManager pm = c.getPackageManager();
+        appsList = new ArrayList<>();
+        Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
 
@@ -67,6 +67,10 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return appsList.size();
+    }
+
+    public List<AppInfo> getAppsList() {
+        return appsList;
     }
 
     public void onBindViewHolder(RAdapter.ViewHolder viewHolder, int i) {

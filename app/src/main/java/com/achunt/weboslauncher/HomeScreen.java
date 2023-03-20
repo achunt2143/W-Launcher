@@ -1,5 +1,6 @@
 package com.achunt.weboslauncher;
 
+
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
@@ -40,6 +41,7 @@ public class HomeScreen extends Fragment {
     ImageView imageViewBrowser;
     GridLayout gridDock;
     LinearLayout widgets;
+    LinearLayout recents;
     volatile static RecyclerView.Adapter adapter;
     volatile static RecyclerView.Adapter adapterSystem;
     volatile static RecyclerView.Adapter adapterDownloads;
@@ -66,6 +68,7 @@ public class HomeScreen extends Fragment {
         imageViewBrowser = view.findViewById(R.id.brs);
         gridDock = view.findViewById(R.id.dock);
         widgets = view.findViewById(R.id.widgets);
+        recents = view.findViewById(R.id.recents);
 
         super.onViewCreated(view, savedInstanceState);
         adapter = new RAdapter(requireContext());
@@ -86,6 +89,7 @@ public class HomeScreen extends Fragment {
         } catch (Exception e) {
             Log.d("JTError", e.toString());
         }
+
 
         switch (theme) {
             case "Classic":  //classic

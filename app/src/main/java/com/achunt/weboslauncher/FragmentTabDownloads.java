@@ -22,7 +22,7 @@ public class FragmentTabDownloads extends Fragment {
         recyclerView = view.findViewById(R.id.appDrawer);
         layoutManager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(HomeScreen.adapterDownloads);
+        recyclerView.setAdapter(HomeScreenK.Companion.getAdapterDownloads());
         return view;
     }
 }

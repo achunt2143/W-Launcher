@@ -46,7 +46,9 @@ public class SettingsPage extends Fragment {
         SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPref.edit();
         SwitchMaterial sound = view.findViewById(R.id.soundSwitch);
+        SwitchMaterial recents = view.findViewById(R.id.recentsSwitch);
         sound.setChecked(sharedPref.getBoolean("sound", true));
+        recents.setChecked(sharedPref.getBoolean("recents", false));
         ChipGroup theme = view.findViewById(R.id.chip_group);
         theme.check(sharedPref.getInt("themeChip", 1));
         Button okay = view.findViewById(R.id.setOkay);
@@ -54,6 +56,7 @@ public class SettingsPage extends Fragment {
         okay.setOnClickListener(v -> {
             Chip chip = view.findViewById(theme.getCheckedChipId());
             edit.putBoolean("sound", sound.isChecked());
+            edit.putBoolean("recents", recents.isChecked());
             edit.putInt("themeChip", theme.getCheckedChipId());
             edit.putString("themeName", (String) chip.getText());
             edit.commit();
@@ -66,7 +69,7 @@ public class SettingsPage extends Fragment {
                 });
                 mp.start();
             }
-            Fragment myFragment = new HomeScreen();
+            Fragment myFragment = new HomeScreenK();
             myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
         });

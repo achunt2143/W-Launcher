@@ -22,7 +22,7 @@ public class FragmentTabSettings extends Fragment {
         recyclerView = view.findViewById(R.id.appDrawer);
         layoutManager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(HomeScreen.adapterSettings);
+        recyclerView.setAdapter(HomeScreenK.Companion.getAdapterSettings());
         return view;
     }
 }

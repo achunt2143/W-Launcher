@@ -20,6 +20,18 @@
     </LinearLayout>
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recents"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/dock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/widgets">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
     <GridLayout
         android:id="@+id/dock"
         android:layout_width="match_parent"
@@ -106,5 +118,6 @@
 
 
     </GridLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

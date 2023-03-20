@@ -56,7 +56,7 @@ public class HelpPage extends Fragment {
             getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
         });
         close.setOnClickListener(v -> {
-            Fragment myFragment = new HomeScreen();
+            Fragment myFragment = new HomeScreenK();
             myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
         });

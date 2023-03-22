@@ -15,6 +15,7 @@ This is an attemp to create a launcher inspired by webOS. The shortcuts will lau
 
 ## Known bugs
 * ~~Pressing back on home screen opens recent apps. We will call this one a feature.~~ This should be fixed.
+* ~~LG phones launch wrong application when launching phone or messages from dock.~~ Fixed 3/22/2023
 
 ## Future Tasks
 
@@ -34,6 +35,9 @@ Minimum API is Android 8 (SDK ver 26) with a target of Android 12 API 32. Gradle
 building.
 
 ## Commit History
+
+3/22/2023 Version 2.0 is out! This brings some small stability enhancements and a big new feature!
+Recent apps are now displayed on the home screen as cards! Check out the release notes for more info!
 
 2/10/2023 We are here! Pretty much everything I wanted to implement for a full on release has been
 done. We have our first release, version 0.9.5! 0.9.5.1 will be a version with debug enabled just in

@@ -21,25 +21,25 @@ import java.util.List;
 
 public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
-    volatile public static List<AppInfo> appsList;
+    public static List<AppInfo> appsList;
+    public static List<ResolveInfo> allApps;
     public static int phone = 0;
     public static int contacts = 0;
     public static int messages = 0;
 
     public RAdapter(Context c) {
-
-
         PackageManager pm = c.getPackageManager();
         appsList = new ArrayList<>();
         Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        allApps = pm.queryIntentActivities(i, 0);
 
         for (ResolveInfo ri : allApps) {
             AppInfo app = new AppInfo();
             app.label = ri.loadLabel(pm);
             app.packageName = ri.activityInfo.packageName;
             app.icon = ri.activityInfo.loadIcon(pm);
+            System.out.println("*******app " + app.packageName);
             appsList.add(app);
         }
         try {
@@ -57,11 +57,10 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             }
             if (appsList.get(j).packageName.toString().matches("^com.*.android.*.messaging$")) {
                 messages = j;
+            } else if (appsList.get(j).packageName.toString().matches("^com.*.android.*.mms$")) {
+                messages = j;
             }
-
         }
-
-
     }
 
     @Override
@@ -73,6 +72,10 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         return appsList;
     }
 
+    public List<ResolveInfo> getResolveList() {
+        return allApps;
+    }
+
     public void onBindViewHolder(RAdapter.ViewHolder viewHolder, int i) {
         String appLabel = appsList.get(i).label.toString();
         Drawable appIcon = appsList.get(i).icon;
@@ -80,7 +83,6 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         textView.setText(appLabel);
         ImageView imageView = viewHolder.img;
         imageView.setImageDrawable(appIcon);
-
     }
 
     @NonNull

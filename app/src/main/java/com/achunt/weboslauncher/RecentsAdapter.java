@@ -23,6 +23,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
+        //updateData(dataSet);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recents_cards, parent, false);
 
@@ -44,6 +45,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.MyViewHo
         imageView.setImageDrawable(dataSet.get(listPosition).icon);
     }
 
+
     @Override
     public int getItemCount() {
         return dataSet.size();
@@ -57,9 +59,9 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.MyViewHo
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.textViewName = (TextView) itemView.findViewById(R.id.recentName);
+            this.textViewName = itemView.findViewById(R.id.recentName);
             //this.textViewVersion = (TextView) itemView.findViewById(R.id.textViewVersion);
-            this.imageViewIcon = (ImageView) itemView.findViewById(R.id.recentIcon);
+            this.imageViewIcon = itemView.findViewById(R.id.recentIcon);
         }
     }
 

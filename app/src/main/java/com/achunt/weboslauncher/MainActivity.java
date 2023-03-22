@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.PACKAGE_USAGE_STATS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (getUsageStatsList(this).isEmpty()) {
-
+                Toast.makeText(this, "Please allow Usage Access", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 startActivity(intent);
             }
@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
         widgets.animate().alpha(1).setDuration(1000).start();
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
-        //new HomeScreenK().recentsList(getApplicationContext());
+
+
     }
 
     @Override

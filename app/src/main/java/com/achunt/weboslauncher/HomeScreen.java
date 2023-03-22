@@ -72,8 +72,8 @@ public class HomeScreen extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
         adapter = new RAdapter(requireContext());
-        adapterSystem = new RAdapterSystem(requireContext());
-        adapterDownloads = new RAdapterDownloads(requireContext());
+        //adapterSystem = new RAdapterSystem(requireContext());
+        //adapterDownloads = new RAdapterDownloads(requireContext());
         adapterSettings = new RAdapterSettings(requireContext());
         Window w = requireActivity().getWindow();
         w.setStatusBarColor(ContextCompat.getColor(requireActivity(), R.color.empty));

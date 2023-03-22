@@ -74,7 +74,6 @@ public class AppsDrawer extends Fragment {
         Context context = getActivity();
         appsBG = view.findViewById(R.id.appsBG);
 
-
         SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String theme = sharedPref.getString("themeName", "Classic");
         Boolean soundOn = sharedPref.getBoolean("sound", true);
@@ -123,13 +122,10 @@ public class AppsDrawer extends Fragment {
             getParentFragmentManager().popBackStack();
         }
         super.onPause();
-
     }
 
     @Override
     public void onDestroy() {
-
-
         super.onDestroy();
     }
 

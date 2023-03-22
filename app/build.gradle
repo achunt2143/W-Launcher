@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.achunt.weboslauncher"
         minSdk 26
-        targetSdk 32
-        versionCode 23
-        versionName "1.5"
+        targetSdk 33
+        versionCode 24
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

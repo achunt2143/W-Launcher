@@ -64,7 +64,6 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
 
     public void SettingsFinder(PackageManager pm) {
         i = new Intent(Settings.ACTION_SETTINGS);
-        //allApps = pm.queryIntentActivities(i, 0);
         allApps = pm.queryIntentActivities(i, 0);
         for (ResolveInfo ri : allApps) {
             AppInfo app = new AppInfo();

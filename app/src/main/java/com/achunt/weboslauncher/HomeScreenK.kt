@@ -10,8 +10,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.transition.Slide
 import android.util.Log
 import android.view.Gravity
@@ -39,6 +41,7 @@ class HomeScreenK : Fragment() {
     lateinit var recents: RecyclerView
     lateinit var sharedPrefH: SharedPreferences
     lateinit var apps: List<AppInfo>
+    lateinit var appsToPass: List<ResolveInfo>
 
 
     override fun onCreateView(
@@ -60,8 +63,9 @@ class HomeScreenK : Fragment() {
         recents = view.findViewById(R.id.recents)
         super.onViewCreated(view, savedInstanceState)
         adapter = RAdapter(requireContext())
-        adapterSystem = RAdapterSystem(requireContext())
-        adapterDownloads = RAdapterDownloads(requireContext())
+        appsToPass = RAdapter(requireContext()).resolveList
+        adapterSystem = RAdapterSystem(requireContext(), appsToPass)
+        adapterDownloads = RAdapterDownloads(requireContext(), appsToPass)
         adapterSettings = RAdapterSettings(requireContext())
         apps = RAdapter(requireContext()).appsList
 
@@ -133,9 +137,14 @@ class HomeScreenK : Fragment() {
         }
         imageViewPhone.setOnClickListener { v: View ->
             val context = v.context
-            val launchIntent = context.packageManager
-                .getLaunchIntentForPackage(RAdapter.appsList[RAdapter.phone].packageName.toString())
-            context.startActivity(launchIntent)
+            if (RAdapter.phone > 0) {
+                val launchIntent = context.packageManager
+                    .getLaunchIntentForPackage(RAdapter.appsList[RAdapter.phone].packageName.toString())
+                context.startActivity(launchIntent)
+            } else {
+                val intent = Intent(Intent.ACTION_DIAL)
+                context.startActivity(intent)
+            }
         }
         imageViewContacts.setOnClickListener { v: View ->
             val context = v.context
@@ -227,6 +236,9 @@ class HomeScreenK : Fragment() {
         val sharedPrefH1 = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
         if (sharedPrefH1.getBoolean("recents", false)) {
             try {
+                if (!recentsList.isEmpty()) {
+                    recentsList = mutableListOf()
+                }
                 val layoutManager = LinearLayoutManager(context)
                 recents.layoutManager = layoutManager
                 recents.itemAnimator = DefaultItemAnimator()
@@ -245,7 +257,7 @@ class HomeScreenK : Fragment() {
                 }.reversed() as MutableList<UsageStats>
 
                 appStatsList.forEach { asl ->
-                    if (asl.lastTimeUsed > 1) {
+                    if (asl.lastTimeUsed > time - 600000) {
                         apps.forEach { app ->
                             if (app.packageName.equals(asl.packageName)) {
                                 if (!usm.isAppInactive(asl.packageName)) {
@@ -260,7 +272,17 @@ class HomeScreenK : Fragment() {
                     }
                 }
 
-
+                val bye = mutableListOf<Int>()
+                for (i in recentsList) {
+                    for (j in goodbyeList) {
+                        if (i.packageName.equals(j.packageName)) {
+                            bye.add(recentsList.indexOf(i))
+                        }
+                    }
+                }
+                for (i in bye) {
+                    recentsList.removeAt(i)
+                }
                 val horizontalLayout = LinearLayoutManager(
                     requireContext(),
                     LinearLayoutManager.HORIZONTAL,
@@ -280,7 +302,6 @@ class HomeScreenK : Fragment() {
         override fun onClick(v: View) {
             launchItem(v)
         }
-
         private fun launchItem(v: View) {
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
             val selectedItemPosition = recyclerView.getChildPosition(v)
@@ -300,18 +321,18 @@ class HomeScreenK : Fragment() {
 
         private fun removeItem(v: View) {
             v.animate()
-                .translationY(-1000f)
+                .translationY(-2000f)
                 .setDuration(500)
                 .start()
-
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
             val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
             val manager =
                 v.rootView.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             manager.killBackgroundProcesses(recentsList[selectedItemPosition].packageName as String?)
-
-            recentsList.removeAt(selectedItemPosition)
-            recentsAdapter.notifyItemRemoved(selectedItemPosition)
+            Handler().postDelayed({
+                recentsList.removeAt(selectedItemPosition)
+                recentsAdapter.notifyItemRemoved(selectedItemPosition)
+            }, 500)
         }
     }
 
@@ -331,6 +352,6 @@ class HomeScreenK : Fragment() {
         lateinit var appStatsList: MutableList<UsageStats>
         lateinit var recentsAdapter: RecentsAdapter
         var recentsList = mutableListOf<AppInfo>()
-        var rList = mutableSetOf<String>()
+        var goodbyeList = mutableListOf<AppInfo>()
     }
 }

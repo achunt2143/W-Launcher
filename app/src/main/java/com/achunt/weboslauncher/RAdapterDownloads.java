@@ -25,14 +25,14 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
 
     volatile public static List<AppInfo> appsListD;
 
-    public RAdapterDownloads(Context c) {
+    public RAdapterDownloads(Context c, List<ResolveInfo> allApps) {
 
 
         PackageManager pm = c.getPackageManager();
         appsListD = new ArrayList<>();
         Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        //List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
 
         for (ResolveInfo ri : allApps) {
             ApplicationInfo ai = null;

@@ -25,17 +25,17 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
 
     volatile public static List<AppInfo> appsListS;
 
-    public RAdapterSystem(Context c) {
+    public RAdapterSystem(Context c, List<ResolveInfo> allApps) {
 
 
-            PackageManager pm = c.getPackageManager();
-            appsListS = new ArrayList<>();
-            Intent i = new Intent(Intent.ACTION_MAIN, null);
-            i.addCategory(Intent.CATEGORY_LAUNCHER);
-            List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        PackageManager pm = c.getPackageManager();
+        appsListS = new ArrayList<>();
+        Intent i = new Intent(Intent.ACTION_MAIN, null);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        //List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
 
-            for (ResolveInfo ri : allApps) {
-                ApplicationInfo ai = null;
+        for (ResolveInfo ri : allApps) {
+            ApplicationInfo ai = null;
                 try {
                     ai = pm.getApplicationInfo(ri.activityInfo.packageName, 0);
                 } catch (PackageManager.NameNotFoundException e) {

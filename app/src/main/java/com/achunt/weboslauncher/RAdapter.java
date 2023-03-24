@@ -39,7 +39,6 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             app.label = ri.loadLabel(pm);
             app.packageName = ri.activityInfo.packageName;
             app.icon = ri.activityInfo.loadIcon(pm);
-            System.out.println("*******app " + app.packageName);
             appsList.add(app);
         }
         try {

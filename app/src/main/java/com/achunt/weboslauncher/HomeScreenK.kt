@@ -249,7 +249,7 @@ class HomeScreenK : Fragment() {
                 val time = System.currentTimeMillis()
                 val aslist = usm.queryUsageStats(
                     UsageStatsManager.INTERVAL_DAILY,
-                    time - 1000, time
+                    time - 10000, time
                 ).toMutableList()
 
                 appStatsList = aslist.sortedBy {

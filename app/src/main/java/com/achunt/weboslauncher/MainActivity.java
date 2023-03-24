@@ -113,8 +113,12 @@ public class MainActivity extends AppCompatActivity {
         widgets.animate().alpha(1).setDuration(1000).start();
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
-
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new HomeScreenK(), "home")
+                .setReorderingAllowed(true)
+                .addToBackStack("main")
+                .commit();
     }
 
     @Override

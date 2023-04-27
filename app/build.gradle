@@ -10,8 +10,8 @@ android {
         applicationId "com.achunt.weboslauncher"
         minSdk 26
         targetSdk 33
-        versionCode 25
-        versionName "2.1"
+        versionCode 26
+        versionName "2.2a"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

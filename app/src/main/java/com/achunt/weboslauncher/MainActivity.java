@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadFragment(new HomeScreenK());
+        //loadFragment(new HomeScreenK());
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, fragment, "home")
+                    .replace(R.id.container, fragment, "home")
                     .setReorderingAllowed(true)
                     .addToBackStack("main")
                     .commit();
@@ -109,16 +109,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LinearLayout widgets = findViewById(R.id.widgets);
-        widgets.animate().alpha(1).setDuration(1000).start();
+        try {
+            LinearLayout widgets = findViewById(R.id.widgets);
+            widgets.animate().alpha(1).setDuration(1000).start();
+        } catch (Exception ignored) {
+
+        }
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
-        getSupportFragmentManager()
+        /*getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, new HomeScreenK(), "home")
                 .setReorderingAllowed(true)
                 .addToBackStack("main")
-                .commit();
+                .commit();*/
+        loadFragment(new HomeScreenK());
     }
 
     @Override

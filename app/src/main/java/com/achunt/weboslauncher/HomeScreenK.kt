@@ -43,6 +43,16 @@ class HomeScreenK : Fragment() {
     lateinit var apps: List<AppInfo>
     lateinit var appsToPass: List<ResolveInfo>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = RAdapter(requireContext())
+        apps = adapter.appsList
+        appsToPass = adapter.resolveList
+        adapterSystem = RAdapterSystem(requireContext(), appsToPass)
+        adapterDownloads = RAdapterDownloads(requireContext(), appsToPass)
+        adapterSettings = RAdapterSettings(requireContext())
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,12 +72,6 @@ class HomeScreenK : Fragment() {
         widgets = view.findViewById(R.id.widgets)
         recents = view.findViewById(R.id.recents)
         super.onViewCreated(view, savedInstanceState)
-        adapter = RAdapter(requireContext())
-        appsToPass = RAdapter(requireContext()).resolveList
-        adapterSystem = RAdapterSystem(requireContext(), appsToPass)
-        adapterDownloads = RAdapterDownloads(requireContext(), appsToPass)
-        adapterSettings = RAdapterSettings(requireContext())
-        apps = RAdapter(requireContext()).appsList
 
         val w = requireActivity().window
         w.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.empty)
@@ -338,7 +342,7 @@ class HomeScreenK : Fragment() {
 
     companion object {
         @Volatile
-        lateinit var adapter: RecyclerView.Adapter<*>
+        lateinit var adapter: RAdapter
 
         @Volatile
         lateinit var adapterSystem: RecyclerView.Adapter<*>

@@ -25,9 +25,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 
 
 class HomeScreenK : Fragment() {
@@ -40,19 +42,26 @@ class HomeScreenK : Fragment() {
     lateinit var widgets: LinearLayout
     lateinit var recents: RecyclerView
     lateinit var sharedPrefH: SharedPreferences
-    lateinit var apps: List<AppInfo>
-    lateinit var appsToPass: List<ResolveInfo>
+    var apps: List<AppInfo>? = null
+    var appsToPass: List<ResolveInfo>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = RAdapter(requireContext())
-        apps = adapter.appsList
-        appsToPass = adapter.resolveList
-        adapterSystem = RAdapterSystem(requireContext(), appsToPass)
-        adapterDownloads = RAdapterDownloads(requireContext(), appsToPass)
-        adapterSettings = RAdapterSettings(requireContext())
+        val start = System.currentTimeMillis()
+        GlobalScope.launch(Dispatchers.IO) {
+            val adapter = RAdapter(requireContext())
+            launch(Dispatchers.Main) {
+                apps = adapter.appsList
+                appsToPass = adapter.resolveList
+                adapterSystem = RAdapterSystem(requireContext(), appsToPass)
+                adapterDownloads = RAdapterDownloads(requireContext(), appsToPass)
+                adapterSettings = RAdapterSettings(requireContext())
+                adapterWork = RAdapterWork(requireContext())
+                val endFind = System.currentTimeMillis()
+                Log.d("App Finder", "Time to call RAdapter: " + (endFind - start))
+            }
+        }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +72,7 @@ class HomeScreenK : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         imageViewDrawer = view.findViewById(R.id.icon_drawer)
         imageViewPhone = view.findViewById(R.id.phone)
         imageViewContacts = view.findViewById(R.id.cnt)
@@ -71,31 +81,27 @@ class HomeScreenK : Fragment() {
         gridDock = view.findViewById(R.id.dock)
         widgets = view.findViewById(R.id.widgets)
         recents = view.findViewById(R.id.recents)
-        super.onViewCreated(view, savedInstanceState)
-
-        val w = requireActivity().window
-        w.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.empty)
         sharedPrefH = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val theme = sharedPrefH.getString("themeName", "Classic")
-        val recents = sharedPrefH.getBoolean("recents", false)
-        widgets.animate().alpha(1f).setDuration(1000).start()
-        val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
-        val mAppWidgetHost = AppWidgetHost(view.context, APPWIDGET_HOST_ID)
-        try {
-            createWidget(
-                view,
-                "com.achunt.justtype",
-                "com.achunt.justtype.JustTypeWidget",
-                mAppWidgetHost,
-                mAppWidgetManager
-            )
-        } catch (e: Exception) {
-            Log.d("JTError", e.toString())
-        }
+        val recentsT = sharedPrefH.getBoolean("recents", false)
 
-        if (recents) {
-            recentsList(requireContext())
+        view.post {
+            val animationDuration = 500L
+            animateImageViewTranslation(imageViewDrawer, animationDuration)
+            animateImageViewTranslation(imageViewPhone, animationDuration)
+            animateImageViewTranslation(imageViewContacts, animationDuration)
+            animateImageViewTranslation(imageViewMessages, animationDuration)
+            animateImageViewTranslation(imageViewBrowser, animationDuration)
+            if (recentsT) {
+                launchWithDelay(500) {
+                    recentsList(requireContext())
+                }
+            }
         }
+        val w = requireActivity().window
+        w.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.empty)
+        widgets.animate().alpha(1f).setDuration(1000).start()
+
 
         when (theme) {
             "Classic" -> {
@@ -124,9 +130,9 @@ class HomeScreenK : Fragment() {
                     browserIntent,
                     PackageManager.MATCH_DEFAULT_ONLY
                 )
-                imageViewPhone.setImageDrawable(RAdapter.appsList[RAdapter.phone].icon)
-                imageViewContacts.setImageDrawable(RAdapter.appsList[RAdapter.contacts].icon)
-                imageViewMessages.setImageDrawable(RAdapter.appsList[RAdapter.messages].icon)
+                imageViewPhone.setImageDrawable(adapter.appsList[adapter.phone].icon)
+                imageViewContacts.setImageDrawable(adapter.appsList[adapter.contacts].icon)
+                imageViewMessages.setImageDrawable(adapter.appsList[adapter.messages].icon)
                 imageViewBrowser.setImageDrawable(
                     resolveInfo!!.activityInfo.applicationInfo.loadIcon(
                         requireContext().packageManager
@@ -135,15 +141,19 @@ class HomeScreenK : Fragment() {
                 gridDock.background = requireContext().getDrawable(R.color.abt)
             }
         }
+
+        val sharedPrefs: SharedPreferences =
+            view.context.getSharedPreferences("SpecialApps", Context.MODE_PRIVATE)
         imageViewDrawer.setOnClickListener {
             widgets.animate().alpha(0f).setDuration(1000).start()
             loadFragment(AppsDrawer())
         }
         imageViewPhone.setOnClickListener { v: View ->
             val context = v.context
-            if (RAdapter.phone > 0) {
-                val launchIntent = context.packageManager
-                    .getLaunchIntentForPackage(RAdapter.appsList[RAdapter.phone].packageName.toString())
+            val phonePackageName = sharedPrefs.getString("PhonePackageName", null)
+            if (phonePackageName != null) {
+                val launchIntent =
+                    context.packageManager.getLaunchIntentForPackage(phonePackageName)
                 context.startActivity(launchIntent)
             } else {
                 val intent = Intent(Intent.ACTION_DIAL)
@@ -152,25 +162,57 @@ class HomeScreenK : Fragment() {
         }
         imageViewContacts.setOnClickListener { v: View ->
             val context = v.context
-            val launchIntent = context.packageManager
-                .getLaunchIntentForPackage(RAdapter.appsList[RAdapter.contacts].packageName.toString())
-            context.startActivity(launchIntent)
+            val contactsPackageName = sharedPrefs.getString("ContactsPackageName", null)
+            if (contactsPackageName != null) {
+                val launchIntent =
+                    context.packageManager.getLaunchIntentForPackage(contactsPackageName)
+                context.startActivity(launchIntent)
+            }
         }
         imageViewMessages.setOnClickListener { v: View ->
             val context = v.context
-            val launchIntent = context.packageManager
-                .getLaunchIntentForPackage(RAdapter.appsList[RAdapter.messages].packageName.toString())
-            context.startActivity(launchIntent)
+            val messagesPackageName = sharedPrefs.getString("MessagesPackageName", null)
+            if (messagesPackageName != null) {
+                val launchIntent =
+                    context.packageManager.getLaunchIntentForPackage(messagesPackageName)
+                context.startActivity(launchIntent)
+            }
         }
         imageViewBrowser.setOnClickListener {
             val browser = Intent(Intent.ACTION_MAIN)
             browser.addCategory(Intent.CATEGORY_APP_BROWSER)
             startActivity(browser)
         }
+
+        lifecycleScope.launch(Dispatchers.Default) {
+            val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
+            val mAppWidgetHost = AppWidgetHost(view.context, APPWIDGET_HOST_ID)
+            try {
+                createWidget(
+                    view,
+                    "com.achunt.justtype",
+                    "com.achunt.justtype.JustTypeWidget",
+                    mAppWidgetHost,
+                    mAppWidgetManager
+                )
+            } catch (e: Exception) {
+                Log.d("JTError", e.toString())
+            }
+
+        }
+
+    }
+
+    fun launchWithDelay(delayMillis: Long, action: () -> Unit) {
+        lifecycleScope.launch {
+            delay(delayMillis)
+            action.invoke()
+        }
     }
 
     fun loadFragment(fragment: Fragment?): Boolean {
         if (fragment != null) {
+            fragment.retainInstance = true
             fragment.enterTransition = Slide(Gravity.BOTTOM)
             fragment.exitTransition = Slide(Gravity.BOTTOM)
             requireActivity().supportFragmentManager
@@ -184,13 +226,13 @@ class HomeScreenK : Fragment() {
         return false
     }
 
-    fun createWidget(
+    suspend fun createWidget(
         view: View,
         packageName: String,
         className: String,
         mAppWidgetHost: AppWidgetHost,
         mAppWidgetManager: AppWidgetManager
-    ): Boolean {
+    ): Boolean = withContext(Dispatchers.IO) {
         // Get the list of installed widgets
         var newAppWidgetProviderInfo: AppWidgetProviderInfo? = null
         val appWidgetInfos: List<AppWidgetProviderInfo>
@@ -204,7 +246,7 @@ class HomeScreenK : Fragment() {
                 break
             }
         }
-        return if (!widgetIsFound) {
+        return@withContext if (!widgetIsFound) {
             false
         } else {
             // Create Widget
@@ -232,11 +274,12 @@ class HomeScreenK : Fragment() {
                 val REQUEST_BIND_WIDGET = 200906
                 startActivityForResult(intent, REQUEST_BIND_WIDGET)
             }
-            true
+            return@withContext true
         }
     }
 
     fun recentsList(context: Context) {
+        val start = System.currentTimeMillis()
         val sharedPrefH1 = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
         if (sharedPrefH1.getBoolean("recents", false)) {
             try {
@@ -249,7 +292,6 @@ class HomeScreenK : Fragment() {
                 val usm = requireContext().getSystemService(
                     Context.USAGE_STATS_SERVICE
                 ) as UsageStatsManager
-
                 val time = System.currentTimeMillis()
                 val aslist = usm.queryUsageStats(
                     UsageStatsManager.INTERVAL_DAILY,
@@ -259,10 +301,9 @@ class HomeScreenK : Fragment() {
                 appStatsList = aslist.sortedBy {
                     it.lastTimeUsed
                 }.reversed() as MutableList<UsageStats>
-
                 appStatsList.forEach { asl ->
                     if (asl.lastTimeUsed > time - 600000) {
-                        apps.forEach { app ->
+                        apps?.forEach { app ->
                             if (app.packageName.equals(asl.packageName)) {
                                 if (!usm.isAppInactive(asl.packageName)) {
                                     if (!asl.packageName.equals("com.achunt.weboslauncher")) {
@@ -276,7 +317,7 @@ class HomeScreenK : Fragment() {
                     }
                 }
 
-                val bye = mutableListOf<Int>()
+                /*val bye = mutableListOf<Int>()
                 for (i in recentsList) {
                     for (j in goodbyeList) {
                         if (i.packageName.equals(j.packageName)) {
@@ -286,7 +327,7 @@ class HomeScreenK : Fragment() {
                 }
                 for (i in bye) {
                     recentsList.removeAt(i)
-                }
+                }*/
                 val horizontalLayout = LinearLayoutManager(
                     requireContext(),
                     LinearLayoutManager.HORIZONTAL,
@@ -295,17 +336,35 @@ class HomeScreenK : Fragment() {
                 recents.layoutManager = horizontalLayout
                 recentsAdapter = RecentsAdapter(recentsList)
                 recents.adapter = recentsAdapter
-
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
         }
+        val endFind = System.currentTimeMillis()
+        Log.d(
+            "Recents Finder",
+            "to call Recents " + (endFind - start)
+        )
+    }
+
+    private fun animateImageViewTranslation(
+        imageView: ImageView,
+        animationDuration: Long
+    ) {
+        val screenHeight = resources.displayMetrics.heightPixels.toFloat()
+        imageView.visibility = View.VISIBLE
+        imageView.translationY = screenHeight
+        imageView.animate()
+            .translationY(0f)
+            .setDuration(animationDuration)
+            .start()
     }
 
     class RecentsClickListener : View.OnClickListener {
         override fun onClick(v: View) {
             launchItem(v)
         }
+
         private fun launchItem(v: View) {
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
             val selectedItemPosition = recyclerView.getChildPosition(v)
@@ -340,6 +399,7 @@ class HomeScreenK : Fragment() {
         }
     }
 
+
     companion object {
         @Volatile
         lateinit var adapter: RAdapter
@@ -352,10 +412,14 @@ class HomeScreenK : Fragment() {
 
         @Volatile
         lateinit var adapterSettings: RecyclerView.Adapter<*>
+
+        @Volatile
+        lateinit var adapterWork: RecyclerView.Adapter<*>
         const val APPWIDGET_HOST_ID = 200906
         lateinit var appStatsList: MutableList<UsageStats>
         lateinit var recentsAdapter: RecentsAdapter
         var recentsList = mutableListOf<AppInfo>()
         var goodbyeList = mutableListOf<AppInfo>()
+        var isHasWorkApps = false
     }
 }

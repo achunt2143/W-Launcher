@@ -24,6 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private HomeScreenK homeScreenFragment;
 
     public static List<UsageStats> getUsageStatsList(Context context) {
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -41,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //loadFragment(new HomeScreenK());
+        loadFragment(new HomeScreenK());
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
             checkPermission(Manifest.permission.READ_CONTACTS, 1);
-        }
+        }*/
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.PACKAGE_USAGE_STATS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (getUsageStatsList(this).isEmpty()) {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
+            fragment.setRetainInstance(true);
             fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
             fragment.setExitTransition(new Slide(Gravity.BOTTOM));
             getSupportFragmentManager()
@@ -70,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("main")
                     .commit();
+            if (fragment instanceof HomeScreenK) {
+                homeScreenFragment = (HomeScreenK) fragment;
+            } else {
+                homeScreenFragment = null;
+            }
             return true;
         }
         return false;
@@ -113,18 +120,15 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout widgets = findViewById(R.id.widgets);
             widgets.animate().alpha(1).setDuration(1000).start();
         } catch (Exception ignored) {
-
         }
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
-        /*getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, new HomeScreenK(), "home")
-                .setReorderingAllowed(true)
-                .addToBackStack("main")
-                .commit();*/
-        loadFragment(new HomeScreenK());
+
+        if (homeScreenFragment != null) {
+            homeScreenFragment.recentsList(getApplicationContext());
+        }
     }
+
 
     @Override
     protected void onUserLeaveHint() {

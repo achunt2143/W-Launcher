@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -23,39 +22,78 @@ import java.util.List;
 
 public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHolder> {
 
-    volatile public static List<AppInfo> appsListS;
+    public static List<AppInfo> appsListS;
 
-    public RAdapterSystem(Context c, List<ResolveInfo> allApps) {
-
-
-        PackageManager pm = c.getPackageManager();
+    public RAdapterSystem(Context context, List<ResolveInfo> allApps) {
         appsListS = new ArrayList<>();
-        Intent i = new Intent(Intent.ACTION_MAIN, null);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
-        //List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        PackageManager packageManager = context.getPackageManager();
 
-        for (ResolveInfo ri : allApps) {
-            ApplicationInfo ai = null;
-                try {
-                    ai = pm.getApplicationInfo(ri.activityInfo.packageName, 0);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                AppInfo app = new AppInfo();
-                app.label = ri.loadLabel(pm);
-                app.packageName = ri.activityInfo.packageName;
-                app.icon = ri.activityInfo.loadIcon(pm);
-                assert ai != null;
-                if (ai.sourceDir.startsWith("/system") || (ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0 || (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                    appsListS.add(app);
-                }
-            }
+        for (ResolveInfo resolveInfo : allApps) {
+            ApplicationInfo applicationInfo;
             try {
-                appsListS.sort(Comparator.comparing(o -> o.label.toString()));
-            } catch (Exception e) {
-                Log.d("Error", String.valueOf(e));
+                applicationInfo = packageManager.getApplicationInfo(resolveInfo.activityInfo.packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+                continue;
             }
 
+            if (applicationInfo.sourceDir.startsWith("/system") ||
+                    (applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0 ||
+                    (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                appsListS.add(createAppInfo(packageManager, resolveInfo));
+            }
+        }
+
+        appsListS.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
+    }
+
+    private AppInfo createAppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
+        AppInfo appInfo = new AppInfo();
+        appInfo.label = resolveInfo.loadLabel(packageManager);
+        appInfo.packageName = resolveInfo.activityInfo.packageName;
+        appInfo.icon = resolveInfo.activityInfo.loadIcon(packageManager);
+        return appInfo;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.item_row_list_view, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        AppInfo appInfo = appsListS.get(position);
+
+        TextView textView = viewHolder.textView;
+        ImageView imageView = viewHolder.img;
+
+        textView.setText(appInfo.label);
+        imageView.setImageDrawable(appInfo.icon);
+
+        SharedPreferences sharedPref = viewHolder.itemView.getContext()
+                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String theme = sharedPref.getString("themeName", "Classic");
+
+        int textColor;
+        switch (theme) {
+            case "Classic":
+            case "Modern":
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
+                break;
+            case "Mochi":
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
+                break;
+            case "System":
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
+                break;
+            default:
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
+                break;
+        }
+        textView.setTextColor(textColor);
     }
 
     @Override
@@ -63,40 +101,9 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
         return appsListS.size();
     }
 
-    public void onBindViewHolder(RAdapterSystem.ViewHolder viewHolder, int i) {
-        String appLabel = appsListS.get(i).label.toString();
-        Drawable appIcon = appsListS.get(i).icon;
-        TextView textView = viewHolder.textView;
-        textView.setText(appLabel);
-        ImageView imageView = viewHolder.img;
-        imageView.setImageDrawable(appIcon);
-        SharedPreferences sharedPref = viewHolder.itemView.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String theme = sharedPref.getString("themeName", "Classic");
-        switch (theme) {
-            case "Classic":  //classic
-            case "Modern":  //modern
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochilight));
-                break;
-            case "Mochi":  //mochi
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochigrey));
-                break;
-            case "System":  //system
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.white));
-                break;
-        }
-    }
-
-    @NonNull
-    public RAdapterSystem.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_row_list_view, parent, false);
-        return new ViewHolder(view);
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        volatile public TextView textView;
-        volatile public ImageView img;
+        TextView textView;
+        ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -104,10 +111,15 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsListS.get(pos).packageName.toString());
-                context.startActivity(launchIntent);
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Context context = v.getContext();
+                    String packageName = (String) appsListS.get(position).packageName;
+                    Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                    if (launchIntent != null) {
+                        context.startActivity(launchIntent);
+                    }
+                }
             });
         }
     }

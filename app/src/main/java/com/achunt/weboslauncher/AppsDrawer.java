@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -35,19 +33,18 @@ public class AppsDrawer extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.apps_drawer, container, false);
+        view = inflater.inflate(R.layout.apps_drawer, null);
         tabLayout = view.findViewById(R.id.tabs);
         final ViewPager viewPager = view.findViewById(R.id.viewpager);
+        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        tabLayout.newTab().setText("System");
-        tabLayout.newTab().setText("Download");
-        viewPager.setAdapter(new PagerAdapter(getFragmentManager(), tabLayout.getTabCount()));
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addTab(tabLayout.newTab().setText("System"));
+        tabLayout.addTab(tabLayout.newTab().setText("Downloads"));
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -55,14 +52,13 @@ public class AppsDrawer extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         return view;
     }
 
@@ -132,39 +128,5 @@ public class AppsDrawer extends Fragment {
 
 }
 
-class PagerAdapter extends FragmentStatePagerAdapter {
-    String[] tabTitles = new String[]{"System", "Downloads", "Settings"};
-    int mNumOfTabs;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
-        super(fm);
-        this.mNumOfTabs = NumOfTabs;
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return tabTitles[position];
-    }
-
-    @NonNull
-    @Override
-    public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return new FragmentTab();
-            case 1:
-                return new FragmentTabDownloads();
-            case 2:
-                return new FragmentTabSettings();
-
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public int getCount() {
-        return tabTitles.length;
-    }
-}
 

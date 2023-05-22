@@ -55,6 +55,7 @@
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
             android:scaleType="centerInside"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -67,8 +68,9 @@
             android:layout_marginRight="2dp"
             android:adjustViewBounds="true"
             android:background="@drawable/dockshadow"
-            android:scaleType="centerInside"
             android:cropToPadding="true"
+            android:scaleType="centerInside"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -83,6 +85,7 @@
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
             android:scaleType="centerInside"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -97,6 +100,7 @@
             android:background="@drawable/dockshadow"
             android:cropToPadding="true"
             android:scaleType="centerInside"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
 
         <ImageView
@@ -112,6 +116,7 @@
             android:cropToPadding="true"
             android:scaleType="centerInside"
             android:src="@drawable/applauncher"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
         <!--android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"-->

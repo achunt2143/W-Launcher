@@ -20,10 +20,11 @@ public class FragmentTab extends Fragment {
         View view = inflater.inflate(R.layout.apps_drawer, container, false);
 
         recyclerView = view.findViewById(R.id.appDrawer);
-        layoutManager = new GridLayoutManager(getContext(), 4);
+        layoutManager = new GridLayoutManager(getContext(), 4, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(HomeScreenK.Companion.getAdapterSystem());
-        super.onViewCreated(view, savedInstanceState);
+
         return view;
     }
 }
+

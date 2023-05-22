@@ -1,10 +1,12 @@
 package com.achunt.weboslauncher;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,46 +23,63 @@ import java.util.List;
 
 public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
-    public static List<AppInfo> appsList;
-    public static List<ResolveInfo> allApps;
-    public static int phone = 0;
-    public static int contacts = 0;
-    public static int messages = 0;
+    private final int PERSONAL_WORK_PROFILE_USER_ID = 999;
+    List<AppInfo> appsList;
+    List<ResolveInfo> allApps;
+    int phone = 0;
+    int contacts = 0;
+    int messages = 0;
 
     public RAdapter(Context c) {
-        PackageManager pm = c.getPackageManager();
         appsList = new ArrayList<>();
+
+        PackageManager pm = c.getPackageManager();
         Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
         allApps = pm.queryIntentActivities(i, 0);
-
-        for (ResolveInfo ri : allApps) {
-            AppInfo app = new AppInfo();
-            app.label = ri.loadLabel(pm);
-            app.packageName = ri.activityInfo.packageName;
-            app.icon = ri.activityInfo.loadIcon(pm);
-            appsList.add(app);
-        }
         try {
-            appsList.sort(Comparator.comparing(o -> o.label.toString()));
+            for (ResolveInfo ri : allApps) {
+                AppInfo app = new AppInfo();
+                app.label = ri.loadLabel(pm);
+                app.packageName = ri.activityInfo.packageName;
+                app.icon = ri.activityInfo.loadIcon(pm);
+                appsList.add(app);
+            }
+            sortAppsList();
+            findSpecialApps(c);
         } catch (Exception e) {
             Log.d("Error", String.valueOf(e));
         }
+    }
 
-        for (int j = 0; j < appsList.size(); j++) {
-            if (appsList.get(j).packageName.toString().matches("^com.*.android.*.dialer$")) {
-                phone = j;
-            }
-            if (appsList.get(j).packageName.toString().matches("^com.*.android.*.contacts$")) {
-                contacts = j;
-            }
-            if (appsList.get(j).packageName.toString().matches("^com.*.android.*.messaging$")) {
-                messages = j;
-            } else if (appsList.get(j).packageName.toString().matches("^com.*.android.*.mms$")) {
-                messages = j;
-            }
+    public void sortAppsList() {
+        try {
+            appsList.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
+        } catch (Exception e) {
+            Log.e("Error", "Sorting error: " + e.getMessage());
         }
     }
+
+    private void findSpecialApps(Context c) {
+        SharedPreferences sharedPrefs = c.getSharedPreferences("SpecialApps", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        for (int j = 0; j < appsList.size(); j++) {
+            String packageName = appsList.get(j).packageName.toString();
+            if (packageName.matches("^com.*.android.*.dialer$")) {
+                phone = j;
+                editor.putString("PhonePackageName", packageName);
+            } else if (packageName.matches("^com.*.android.*.contacts$")) {
+                contacts = j;
+                editor.putString("ContactsPackageName", packageName);
+            } else if (packageName.matches("^com.*.android.*.messaging$") || packageName.matches("^com.*.android.*.mms$")) {
+                messages = j;
+                editor.putString("MessagesPackageName", packageName);
+            }
+        }
+        editor.apply();
+    }
+
 
     @Override
     public int getItemCount() {
@@ -76,12 +95,9 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
     }
 
     public void onBindViewHolder(RAdapter.ViewHolder viewHolder, int i) {
-        String appLabel = appsList.get(i).label.toString();
-        Drawable appIcon = appsList.get(i).icon;
-        TextView textView = viewHolder.textView;
-        textView.setText(appLabel);
-        ImageView imageView = viewHolder.img;
-        imageView.setImageDrawable(appIcon);
+        AppInfo appInfo = appsList.get(i);
+        viewHolder.textView.setText(appInfo.label.toString());
+        viewHolder.img.setImageDrawable(appInfo.icon);
     }
 
     @NonNull
@@ -91,7 +107,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         volatile public TextView textView;
         volatile public ImageView img;
@@ -103,11 +119,17 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsList.get(pos).packageName.toString());
-                context.startActivity(launchIntent);
-
+                if (pos != RecyclerView.NO_POSITION) {
+                    Context context = v.getContext();
+                    String packageName = appsList.get(pos).packageName.toString();
+                    Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                    if (launchIntent != null) {
+                        context.startActivity(launchIntent);
+                    }
+                }
             });
         }
     }
+
+
 }

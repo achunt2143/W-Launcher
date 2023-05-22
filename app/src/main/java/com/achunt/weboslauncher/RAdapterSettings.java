@@ -49,16 +49,19 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
     SharedPreferences sharedPrefS;
 
     public RAdapterSettings(Context c) {
-
         sharedPrefS = c.getSharedPreferences("Settings", Context.MODE_PRIVATE);
-            PackageManager pm = c.getPackageManager();
-            appsList = new ArrayList<>();
-            SettingsFinder(pm);
-            try {
-                appsList.sort(Comparator.comparing(o -> o.label.toString()));
-            } catch (Exception e) {
-                Log.d("Error", String.valueOf(e));
-            }
+        PackageManager pm = c.getPackageManager();
+        appsList = new ArrayList<>();
+        long start = System.currentTimeMillis();
+        SettingsFinder(pm);
+        long endFind = System.currentTimeMillis();
+        try {
+            appsList.sort(Comparator.comparing(o -> o.label.toString()));
+        } catch (Exception e) {
+            Log.d("Error", String.valueOf(e));
+        }
+        long endSort = System.currentTimeMillis();
+        Log.d("Settings Finder", "to call SettingsFinder " + (endFind - start) + " and then to sort " + (endSort - endFind) + " with total time being " + (endSort - start));
 
     }
 

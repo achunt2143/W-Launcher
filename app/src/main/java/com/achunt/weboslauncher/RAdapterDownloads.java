@@ -7,7 +7,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,53 +14,56 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.ViewHolder> {
 
-    volatile public static List<AppInfo> appsListD;
+    private static final HashSet<String> systemAppPackageNames = new HashSet<>();
 
-    public RAdapterDownloads(Context c, List<ResolveInfo> allApps) {
+    private final List<AppInfo> appsListD;
 
-
-        PackageManager pm = c.getPackageManager();
+    public RAdapterDownloads(Context context, List<ResolveInfo> allApps) {
         appsListD = new ArrayList<>();
-        Intent i = new Intent(Intent.ACTION_MAIN, null);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
-        //List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+        PackageManager packageManager = context.getPackageManager();
 
-        for (ResolveInfo ri : allApps) {
-            ApplicationInfo ai = null;
+        // Populate the systemAppPackageNames set
+        for (AppInfo appInfo : RAdapterSystem.appsListS) {
+            systemAppPackageNames.add(appInfo.packageName.toString());
+        }
+
+        // Populate the appsListD with non-system apps
+        for (ResolveInfo resolveInfo : allApps) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            ApplicationInfo applicationInfo;
             try {
-                ai = pm.getApplicationInfo(ri.activityInfo.packageName, 0);
+                applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                AppInfo app = new AppInfo();
-                app.label = ri.loadLabel(pm);
-                app.packageName = ri.activityInfo.packageName;
-                app.icon = ri.activityInfo.loadIcon(pm);
-                if ((ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0 || (ai.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                    appsListD.add(app);
-                }
-            }
-            for (int j = 0; j < RAdapterSystem.appsListS.size(); j++) {
-                for (int k = 0; k < appsListD.size(); k++) {
-                    if (appsListD.get(k).packageName.equals(RAdapterSystem.appsListS.get(j).packageName)) {
-                        appsListD.remove(k);
-                    }
-                }
-            }
-            try {
-                appsListD.sort(Comparator.comparing(o -> o.label.toString()));
-            } catch (Exception e) {
-                Log.d("Error", String.valueOf(e));
+                e.printStackTrace();
+                continue;
             }
 
+            if ((applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0 &&
+                    (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                appsListD.add(createAppInfo(packageManager, resolveInfo));
+            }
+        }
+
+        // Sort the appsListD
+        appsListD.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
+    }
+
+    private AppInfo createAppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
+        AppInfo appInfo = new AppInfo();
+        appInfo.label = resolveInfo.loadLabel(packageManager);
+        appInfo.packageName = resolveInfo.activityInfo.packageName;
+        appInfo.icon = resolveInfo.activityInfo.loadIcon(packageManager);
+        return appInfo;
     }
 
     @Override
@@ -78,18 +80,23 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         imageView.setImageDrawable(appIcon);
         SharedPreferences sharedPref = viewHolder.itemView.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String theme = sharedPref.getString("themeName", "Classic");
+        int textColor;
         switch (theme) {
-            case "Classic":  //classic
-            case "Modern":  //modern
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochilight));
+            case "Classic":
+            case "Modern":
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
                 break;
-            case "Mochi":  //mochi
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochigrey));
+            case "Mochi":
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
                 break;
-            case "System":  //system
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.white));
+            case "System":
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
+                break;
+            default:
+                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
                 break;
         }
+        textView.setTextColor(textColor);
     }
 
     @NonNull
@@ -99,7 +106,7 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         return new ViewHolder(view);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         volatile public TextView textView;
         volatile public ImageView img;

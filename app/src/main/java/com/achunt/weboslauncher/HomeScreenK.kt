@@ -14,6 +14,7 @@ import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.ContactsContract
 import android.transition.Slide
 import android.util.Log
 import android.view.Gravity
@@ -126,18 +127,70 @@ class HomeScreenK : Fragment() {
             }
             "System" -> {
                 val browserIntent = Intent("android.intent.action.VIEW", Uri.parse("http://"))
-                val resolveInfo = view.context.packageManager.resolveActivity(
+                val resolveBrowserInfo = view.context.packageManager.resolveActivity(
                     browserIntent,
                     PackageManager.MATCH_DEFAULT_ONLY
                 )
-                imageViewPhone.setImageDrawable(adapter.appsList[adapter.phone].icon)
-                imageViewContacts.setImageDrawable(adapter.appsList[adapter.contacts].icon)
-                imageViewMessages.setImageDrawable(adapter.appsList[adapter.messages].icon)
-                imageViewBrowser.setImageDrawable(
-                    resolveInfo!!.activityInfo.applicationInfo.loadIcon(
-                        requireContext().packageManager
-                    )
+                val phoneNumber = "1234567890" // Replace with the desired phone number
+                val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$phoneNumber")
+                }
+                val resolvePhoneInfo = view.context.packageManager.resolveActivity(
+                    dialIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
                 )
+                val contactsIntent = Intent(Intent.ACTION_VIEW)
+                contactsIntent.data = ContactsContract.Contacts.CONTENT_URI
+                val resolveContactsInfo = view.context.packageManager.resolveActivity(
+                    contactsIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+                val smsUri = Uri.parse("smsto:$phoneNumber")
+                val smsIntent = Intent(Intent.ACTION_SENDTO, smsUri)
+                val resolveSmsInfo = view.context.packageManager.resolveActivity(
+                    smsIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+                if (resolvePhoneInfo != null) {
+                    imageViewPhone.setImageDrawable(
+                        resolvePhoneInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    // Phone app not found
+                    imageViewPhone.setImageResource(R.drawable.phone)
+                }
+                if (resolveContactsInfo != null) {
+                    imageViewContacts.setImageDrawable(
+                        resolveContactsInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    // Contacts app not found
+                    imageViewContacts.setImageResource(R.drawable.cnt)
+                }
+                if (resolveSmsInfo != null) {
+                    imageViewMessages.setImageDrawable(
+                        resolveSmsInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    // Messaging app not found
+                    imageViewMessages.setImageResource(R.drawable.msg)
+                }
+                if (resolveBrowserInfo != null) {
+                    imageViewBrowser.setImageDrawable(
+                        resolveBrowserInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    // Browser app not found
+                    imageViewBrowser.setImageResource(R.drawable.brs)
+                }
                 gridDock.background = requireContext().getDrawable(R.color.abt)
             }
         }

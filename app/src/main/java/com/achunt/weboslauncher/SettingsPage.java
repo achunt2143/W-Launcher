@@ -2,11 +2,10 @@ package com.achunt.weboslauncher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +58,8 @@ public class SettingsPage extends Fragment {
             edit.putBoolean("recents", recents.isChecked());
             edit.putInt("themeChip", theme.getCheckedChipId());
             edit.putString("themeName", (String) chip.getText());
-            edit.commit();
-            Boolean soundOn = sharedPref.getBoolean("sound", true);
+            edit.apply();
+            boolean soundOn = sharedPref.getBoolean("sound", true);
             if (soundOn) {
                 MediaPlayer mp = MediaPlayer.create(view.getContext(), R.raw.tap_to_share);
                 mp.setOnCompletionListener(mp1 -> {
@@ -69,9 +68,11 @@ public class SettingsPage extends Fragment {
                 });
                 mp.start();
             }
-            Fragment myFragment = new HomeScreenK();
-            myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            getActivity().finish();
+            Intent intent = view.getContext().getPackageManager().getLaunchIntentForPackage(view.getContext().getPackageName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            view.getContext().startActivity(intent);
         });
 
     }

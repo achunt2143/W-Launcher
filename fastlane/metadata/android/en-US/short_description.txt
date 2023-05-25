@@ -1,1 +1,1 @@
-a launcher based on webOS
+a launcher inspired by webOS

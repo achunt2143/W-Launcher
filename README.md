@@ -1,6 +1,6 @@
 # W Launcher
 Fast and lightweight launcher for Android.
-This is an attemp to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order. Recent apps will be displayed on home screen.
+This is an attempt to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order. Recent apps will be displayed on home screen.
 
 <a href="https://play.google.com/store/apps/details?id=com.achunt.weboslauncher">W Launcher on Play Store</a>
 
@@ -88,6 +88,6 @@ appropriately. Some testing may need to be done on this still. Dock background m
 changed. App launcher will probably need to be its own activity moving forward to do some of the set
 goals. App drawer is now the only issue.
 
-8/13/2022 Added animations, fixed some formating issues with icons, sorting apps alphabetically
+8/13/2022 Added animations, fixed some formatting issues with icons, sorting apps alphabetically
 
-8/12/2022 Project pushed to Github and all functions work
+8/12/2022 Project pushed to GitHub and all functions work

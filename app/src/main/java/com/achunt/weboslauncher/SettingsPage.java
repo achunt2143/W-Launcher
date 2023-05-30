@@ -2,7 +2,6 @@ package com.achunt.weboslauncher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -69,10 +68,6 @@ public class SettingsPage extends Fragment {
                 mp.start();
             }
             getActivity().finish();
-            Intent intent = view.getContext().getPackageManager().getLaunchIntentForPackage(view.getContext().getPackageName());
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            view.getContext().startActivity(intent);
         });
 
     }

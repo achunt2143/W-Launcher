@@ -30,7 +30,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HomeScreenK : Fragment() {
@@ -205,6 +209,7 @@ class HomeScreenK : Fragment() {
             val context = v.context
             val phonePackageName = sharedPrefs.getString("PhonePackageName", null)
             if (phonePackageName != null) {
+                goodbyeList.remove(phonePackageName) // Remove the package name from the goodbyeList
                 val launchIntent =
                     context.packageManager.getLaunchIntentForPackage(phonePackageName)
                 context.startActivity(launchIntent)
@@ -213,29 +218,39 @@ class HomeScreenK : Fragment() {
                 context.startActivity(intent)
             }
         }
+
         imageViewContacts.setOnClickListener { v: View ->
             val context = v.context
             val contactsPackageName = sharedPrefs.getString("ContactsPackageName", null)
             if (contactsPackageName != null) {
+                goodbyeList.remove(contactsPackageName) // Remove the package name from the goodbyeList
                 val launchIntent =
                     context.packageManager.getLaunchIntentForPackage(contactsPackageName)
                 context.startActivity(launchIntent)
             }
         }
+
         imageViewMessages.setOnClickListener { v: View ->
             val context = v.context
             val messagesPackageName = sharedPrefs.getString("MessagesPackageName", null)
             if (messagesPackageName != null) {
+                goodbyeList.remove(messagesPackageName) // Remove the package name from the goodbyeList
                 val launchIntent =
                     context.packageManager.getLaunchIntentForPackage(messagesPackageName)
                 context.startActivity(launchIntent)
             }
         }
+
         imageViewBrowser.setOnClickListener {
             val browser = Intent(Intent.ACTION_MAIN)
             browser.addCategory(Intent.CATEGORY_APP_BROWSER)
+            val mainLauncherList = context?.packageManager?.queryIntentActivities(browser, 0)
+            if (mainLauncherList != null) {
+                goodbyeList.remove(mainLauncherList.first().activityInfo.packageName)
+            }
             startActivity(browser)
         }
+
 
         lifecycleScope.launch(Dispatchers.Default) {
             val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
@@ -361,7 +376,10 @@ class HomeScreenK : Fragment() {
                                 if (!usm.isAppInactive(asl.packageName)) {
                                     if (!asl.packageName.equals("com.achunt.weboslauncher")) {
                                         if (!asl.packageName.equals("com.achunt.justtype")) {
-                                            recentsList.add(app)
+                                            if (!goodbyeList.contains(asl.packageName)) { // Check if the app is not in the closedAppSet
+                                                recentsList.add(app)
+                                                println(app.packageName)
+                                            }
                                         }
                                     }
                                 }
@@ -370,17 +388,6 @@ class HomeScreenK : Fragment() {
                     }
                 }
 
-                /*val bye = mutableListOf<Int>()
-                for (i in recentsList) {
-                    for (j in goodbyeList) {
-                        if (i.packageName.equals(j.packageName)) {
-                            bye.add(recentsList.indexOf(i))
-                        }
-                    }
-                }
-                for (i in bye) {
-                    recentsList.removeAt(i)
-                }*/
                 val horizontalLayout = LinearLayoutManager(
                     requireContext(),
                     LinearLayoutManager.HORIZONTAL,
@@ -399,6 +406,7 @@ class HomeScreenK : Fragment() {
             "to call Recents " + (endFind - start)
         )
     }
+
 
     private fun animateImageViewTranslation(
         imageView: ImageView,
@@ -442,14 +450,17 @@ class HomeScreenK : Fragment() {
                 .start()
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
             val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
+            val packageName = recentsList[selectedItemPosition].packageName
             val manager =
                 v.rootView.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            manager.killBackgroundProcesses(recentsList[selectedItemPosition].packageName as String?)
+            manager.killBackgroundProcesses(packageName as String?)
+            goodbyeList.add(packageName as String) // Add the closed app's package name to the set
             Handler().postDelayed({
                 recentsList.removeAt(selectedItemPosition)
                 recentsAdapter.notifyItemRemoved(selectedItemPosition)
             }, 500)
         }
+
     }
 
 
@@ -472,7 +483,7 @@ class HomeScreenK : Fragment() {
         lateinit var appStatsList: MutableList<UsageStats>
         lateinit var recentsAdapter: RecentsAdapter
         var recentsList = mutableListOf<AppInfo>()
-        var goodbyeList = mutableListOf<AppInfo>()
+        var goodbyeList = mutableSetOf<String>()
         var isHasWorkApps = false
     }
 }

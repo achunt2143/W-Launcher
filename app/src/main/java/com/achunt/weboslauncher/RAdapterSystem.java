@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHolder> {
 
@@ -116,6 +117,9 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
                     Context context = v.getContext();
                     String packageName = (String) appsListS.get(position).packageName;
                     Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                    Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                    gbl.remove(packageName);
+                    HomeScreenK.Companion.setGoodbyeList(gbl);
                     if (launchIntent != null) {
                         context.startActivity(launchIntent);
                     }

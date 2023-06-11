@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Set;
 
 public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> {
 
@@ -105,6 +106,9 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(workProfileApps.get(pos).packageName);
+                Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                gbl.remove(workProfileApps.get(pos).packageName);
+                HomeScreenK.Companion.setGoodbyeList(gbl);
                 context.startActivity(launchIntent);
             });
         }

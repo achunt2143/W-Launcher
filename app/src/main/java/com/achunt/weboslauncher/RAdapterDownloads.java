@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.ViewHolder> {
 
@@ -120,6 +121,9 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
                 int pos = getAdapterPosition();
                 Context context = v.getContext();
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsListD.get(pos).packageName.toString());
+                Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                gbl.remove(appsListD.get(pos).packageName);
+                HomeScreenK.Companion.setGoodbyeList(gbl);
                 context.startActivity(launchIntent);
             });
         }

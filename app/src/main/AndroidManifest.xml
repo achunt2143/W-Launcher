@@ -13,7 +13,9 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
-    <uses-permission android:name="android.permission.QUERY_USERS" />
+    <uses-permission
+        android:name="android.permission.QUERY_USERS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -38,8 +40,8 @@
             android:stateNotNeeded="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!-- Remove the next line to remove from launchers
-                <category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- Remove the next line to remove from launchers-->
+                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

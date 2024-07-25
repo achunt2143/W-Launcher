@@ -24,8 +24,10 @@ import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +39,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class HomeScreenK : Fragment() {
+class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
     lateinit var imageViewDrawer: ImageView
     lateinit var imageViewPhone: ImageView
     lateinit var imageViewContacts: ImageView
@@ -89,14 +91,15 @@ class HomeScreenK : Fragment() {
         sharedPrefH = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val theme = sharedPrefH.getString("themeName", "Classic")
         val recentsT = sharedPrefH.getBoolean("recents", false)
+        parentFragmentManager.addOnBackStackChangedListener(this)
 
         view.post {
             val animationDuration = 500L
-            animateImageViewTranslation(imageViewDrawer, animationDuration)
-            animateImageViewTranslation(imageViewPhone, animationDuration)
-            animateImageViewTranslation(imageViewContacts, animationDuration)
-            animateImageViewTranslation(imageViewMessages, animationDuration)
-            animateImageViewTranslation(imageViewBrowser, animationDuration)
+            animateImageViewTranslation(imageViewDrawer, animationDuration, false)
+            animateImageViewTranslation(imageViewPhone, animationDuration, false)
+            animateImageViewTranslation(imageViewContacts, animationDuration, false)
+            animateImageViewTranslation(imageViewMessages, animationDuration, false)
+            animateImageViewTranslation(imageViewBrowser, animationDuration, false)
             if (recentsT) {
                 launchWithDelay(500) {
                     recentsList(requireContext())
@@ -115,19 +118,28 @@ class HomeScreenK : Fragment() {
                 imageViewMessages.setImageResource(R.drawable.msg)
                 imageViewBrowser.setImageResource(R.drawable.brs)
             }
+
+            "Classic3" -> {
+                imageViewPhone.setImageResource(R.drawable.phone)
+                imageViewContacts.setImageResource(R.drawable.cnt)
+                imageViewMessages.setImageResource(R.drawable.msg)
+                imageViewBrowser.setImageResource(R.drawable.brs)
+            }
             "Mochi" -> {
                 imageViewPhone.setImageResource(R.drawable.mochiphone)
                 imageViewContacts.setImageResource(R.drawable.mochicontacts)
                 imageViewMessages.setImageResource(R.drawable.mochimessages)
                 imageViewBrowser.setImageResource(R.drawable.mochibrowser)
-                gridDock.background = requireContext().getDrawable(R.color.mochilight)
+                gridDock.background =
+                    context?.let { AppCompatResources.getDrawable(it, R.color.mochilight) }
             }
             "Modern" -> {
                 imageViewPhone.setImageResource(R.drawable.modernphone)
                 imageViewContacts.setImageResource(R.drawable.moderncontact)
                 imageViewMessages.setImageResource(R.drawable.modernmessages)
                 imageViewBrowser.setImageResource(R.drawable.modernbrowser)
-                gridDock.background = requireContext().getDrawable(R.color.mochigrey)
+                gridDock.background =
+                    context?.let { AppCompatResources.getDrawable(it, R.drawable.modern_dock) }
             }
             "System" -> {
                 val browserIntent = Intent("android.intent.action.VIEW", Uri.parse("http://"))
@@ -195,7 +207,8 @@ class HomeScreenK : Fragment() {
                     // Browser app not found
                     imageViewBrowser.setImageResource(R.drawable.brs)
                 }
-                gridDock.background = requireContext().getDrawable(R.color.abt)
+                gridDock.background =
+                    context?.let { AppCompatResources.getDrawable(it, R.color.abt) }
             }
         }
 
@@ -203,6 +216,14 @@ class HomeScreenK : Fragment() {
             view.context.getSharedPreferences("SpecialApps", Context.MODE_PRIVATE)
         imageViewDrawer.setOnClickListener {
             widgets.animate().alpha(0f).setDuration(1000).start()
+            view.post {
+                val animationDuration = 500L
+                animateImageViewTranslation(imageViewDrawer, animationDuration, true)
+                animateImageViewTranslation(imageViewPhone, animationDuration, true)
+                animateImageViewTranslation(imageViewContacts, animationDuration, true)
+                animateImageViewTranslation(imageViewMessages, animationDuration, true)
+                animateImageViewTranslation(imageViewBrowser, animationDuration, true)
+            }
             loadFragment(AppsDrawer())
         }
         imageViewPhone.setOnClickListener { v: View ->
@@ -271,6 +292,39 @@ class HomeScreenK : Fragment() {
 
     }
 
+    override fun onBackStackChanged() {
+        // Get the current fragment from the back stack
+        val currentFragment = parentFragmentManager.findFragmentById(R.id.container)
+
+        // Check if the AppsDrawer fragment is on the top of the stack
+        val isAppsDrawerFragmentVisible = currentFragment is AppsDrawer
+
+        // Show or hide the dock images based on the current fragment visibility
+        val animationDuration = 500L
+        animateImageViewTranslation(imageViewDrawer, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewPhone, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(
+            imageViewContacts,
+            animationDuration,
+            isAppsDrawerFragmentVisible
+        )
+        animateImageViewTranslation(
+            imageViewMessages,
+            animationDuration,
+            isAppsDrawerFragmentVisible
+        )
+        animateImageViewTranslation(
+            imageViewBrowser,
+            animationDuration,
+            isAppsDrawerFragmentVisible
+        )
+        if (isAppsDrawerFragmentVisible) {
+            gridDock.animate().alpha(0f).setDuration(500L).start()
+        } else {
+            gridDock.animate().alpha(1.0f).setDuration(500L).start()
+        }
+    }
+
     fun launchWithDelay(delayMillis: Long, action: () -> Unit) {
         lifecycleScope.launch {
             delay(delayMillis)
@@ -287,7 +341,7 @@ class HomeScreenK : Fragment() {
                 .beginTransaction()
                 .add(R.id.container, fragment, "apps")
                 .addToBackStack("home")
-                .setReorderingAllowed(true)
+                //.setReorderingAllowed(true)
                 .commit()
             return true
         }
@@ -410,15 +464,24 @@ class HomeScreenK : Fragment() {
 
     private fun animateImageViewTranslation(
         imageView: ImageView,
-        animationDuration: Long
+        animationDuration: Long,
+        down: Boolean
     ) {
         val screenHeight = resources.displayMetrics.heightPixels.toFloat()
         imageView.visibility = View.VISIBLE
-        imageView.translationY = screenHeight
-        imageView.animate()
-            .translationY(0f)
-            .setDuration(animationDuration)
-            .start()
+        if (down) {
+            imageView.translationY = 0F
+            imageView.animate()
+                .translationY(screenHeight) // Set the final translation to the screenHeight (at the bottom)
+                .setDuration(animationDuration)
+                .start()
+        } else {
+            imageView.translationY = screenHeight
+            imageView.animate()
+                .translationY(0f)
+                .setDuration(animationDuration)
+                .start()
+        }
     }
 
     class RecentsClickListener : View.OnClickListener {

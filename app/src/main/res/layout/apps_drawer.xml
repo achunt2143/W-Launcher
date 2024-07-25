@@ -21,14 +21,15 @@
             android:background="@color/status"
             app:tabGravity="start"
             app:tabMode="scrollable"
-            app:tabTextColor="@color/white"></com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/white">
+
+        </com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
 
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
@@ -43,8 +44,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabs"
                 android:background="@null"
+                app:layout_constraintTop_toBottomOf="@+id/tabs"
                 tools:ignore="NotSibling">
 
                 <androidx.recyclerview.widget.RecyclerView

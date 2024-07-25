@@ -2,6 +2,7 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -70,9 +73,10 @@ public class AppsDrawer extends Fragment {
         Context context = getActivity();
         appsBG = view.findViewById(R.id.appsBG);
 
+        assert context != null;
         SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String theme = sharedPref.getString("themeName", "Classic");
-        Boolean soundOn = sharedPref.getBoolean("sound", true);
+        boolean soundOn = sharedPref.getBoolean("sound", true);
         if (soundOn) {
             MediaPlayer mp = MediaPlayer.create(view.getContext(), R.raw.opendrawer);
             mp.setOnCompletionListener(mp1 -> {
@@ -82,18 +86,24 @@ public class AppsDrawer extends Fragment {
             mp.start();
         }
         switch (theme) {
-            case "Classic":  //classic
-                appsBG.setBackground(context.getDrawable(R.drawable.bg));
-                break;
-            case "Mochi":  //mochi
-                appsBG.setBackground(context.getDrawable(R.color.mochilight));
-                break;
-            case "Modern":  //modern
-                appsBG.setBackground(context.getDrawable(R.color.mochigrey));
-                break;
-            case "System":  //system
-                appsBG.setBackground(context.getDrawable(R.color.abt));
-                break;
+            case "Classic" -> { //classic
+                Drawable bg = AppCompatResources.getDrawable(context, R.drawable.classic_bg);
+                assert bg != null;
+                bg.setAlpha(220);
+                appsBG.setBackground(bg);
+                //appsBG.setAlpha(0.5F);
+            }
+            case "Classic3" ->  //classic3
+                    appsBG.setBackground(AppCompatResources.getDrawable(context, R.drawable.classic3_bg));
+            case "Mochi" ->  //mochi
+                    appsBG.setBackground(AppCompatResources.getDrawable(context, R.color.mochiBG));
+            case "Modern" ->  //modern
+                    appsBG.setBackground(AppCompatResources.getDrawable(context, R.color.modernBG));
+            case "System" -> { //system
+                appsBG.setBackground(AppCompatResources.getDrawable(context, R.color.systemBG));
+            }
+
+
         }
     }
 
@@ -115,9 +125,12 @@ public class AppsDrawer extends Fragment {
     @Override
     public void onPause() {
         if (getParentFragmentManager().getBackStackEntryCount() > 1) {
-            getParentFragmentManager().popBackStack();
+            if (getParentFragmentManager().findFragmentByTag("apps") != null) {
+                getParentFragmentManager().popBackStack("apps", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+            super.onPause();
         }
-        super.onPause();
+
     }
 
     @Override

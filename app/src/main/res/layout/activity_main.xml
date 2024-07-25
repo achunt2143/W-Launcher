@@ -17,7 +17,30 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:id="@+id/container"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/notificationContainer"
+        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/notificationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/notification_height_collapsed"
+        android:background="@color/card_color"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/container">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/notificationContainerClickArea"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/notification_height_collapsed"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent">
+
     </FrameLayout>
 
 

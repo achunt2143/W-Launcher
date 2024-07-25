@@ -231,7 +231,8 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
         Drawable appIcon;
         String theme = sharedPrefS.getString("themeName", "Classic");
         switch (theme) {
-            case "Classic": { //classic theme
+            case "Classic":
+            case "Classic3": { //classic theme
                 try {
                     if (appLabel.contains(BT_LABEL)) {
                         appIcon = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.bt);
@@ -372,17 +373,13 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
         }
         TextView textView = viewHolder.textView;
         textView.setText(appLabel);
-        switch (theme) {
-            case "Classic":  //classic
-            case "Modern":  //modern
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochilight));
-                break;
-            case "Mochi":  //mochi
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochigrey));
-                break;
-            case "System":  //system
-                textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.white));
-                break;
+        switch (theme) {  //classic
+            case "Classic", "Classic3", "Modern" ->  //modern
+                    textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochilight));
+            case "Mochi" ->  //mochi
+                    textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.mochigrey));
+            case "System" ->  //system
+                    textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.white));
         }
     }
 

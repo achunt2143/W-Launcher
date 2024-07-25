@@ -4,4 +4,6 @@
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
+    <dimen name="notification_height_collapsed">32dp</dimen>
+    <dimen name="notification_height_expanded">0dp</dimen>
 </resources>

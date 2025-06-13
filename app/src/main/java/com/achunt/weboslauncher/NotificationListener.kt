@@ -2,103 +2,76 @@ package com.achunt.weboslauncher
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.app.Notification
+import android.graphics.drawable.Icon
+import android.util.Log
 
 class NotificationListener : NotificationListenerService() {
 
-    override fun onNotificationPosted(sbn: StatusBarNotification) {
-        // Handle the posted notification
-        val notificationId = sbn.id
-        val packageName = sbn.notification.extras.getCharSequence("android.title")?.toString() ?: ""
-        val notificationText =
-            sbn.notification.extras.getCharSequence("android.text")?.toString() ?: ""
-        val date = sbn.notification.`when`
-        val icon = sbn.notification.smallIcon ?: sbn.notification.getLargeIcon()
-        println("icon $icon")
+    companion object {
+        private const val TAG = "NotificationListener"
+    }
 
-        if (packageName.endsWith("new messages")) {
-            // Ignore these notifications
-            return
-        }
-        if (packageName.contentEquals("Missed calls")) {
+    override fun onNotificationPosted(sbn: StatusBarNotification?) {
+        if (sbn == null) {
+            Log.w(TAG, "Null notification received. Skipping.")
             return
         }
 
-        // Check if a notification with the same ID already exists
-        val existingNotification = NotificationRepository.getNotificationById(notificationId)
-        if (existingNotification != null) {
-            // Notification with the same ID exists
-            if (isSimilarNotification(existingNotification, packageName, notificationText)) {
-                // Update the date of the existing notification
-                existingNotification.date = date.toString()
-                NotificationRepository.notifyItemChanged(existingNotification)
+        val id = sbn.id
+        val extras = sbn.notification.extras
+        val title = extras.getString(Notification.EXTRA_TITLE)?.trim() ?: ""
+        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString()?.trim() ?: ""
+        val postTime = if (sbn.notification.`when` > 0L) sbn.notification.`when` else System.currentTimeMillis()
+        val icon: Icon? = sbn.notification.getLargeIcon() ?: sbn.notification.smallIcon
+
+        if (icon == null || title.isEmpty() || text.isEmpty()) {
+            Log.d(TAG, "Notification missing essential data. Skipping. [id=$id, title=$title]")
+            return
+        }
+
+        // Optional: Filter unwanted messages
+        if (title.equals("Missed calls", true) || title.endsWith("new messages", true) || text.equals("Missed call", true)) {
+            Log.d(TAG, "Filtered out system notification: $title / $text")
+            return
+        }
+
+        val existing = NotificationRepository.getNotificationById(id)
+
+        if (existing != null) {
+            if (existing.title == title && existing.body == text) {
+                existing.date = postTime.toString()
+                NotificationRepository.notifyItemChanged(existing)
+                Log.d(TAG, "Updated timestamp of existing notification: $title")
             } else {
-                val sameNotificationTB = NotificationRepository.findNotificationByTitleAndBody(
-                    packageName,
-                    notificationText
-                )
-                val sameNotificationT = NotificationRepository.findNotificationByTitle(packageName)
-                if (sameNotificationTB != null) {
-                    // Update the date of the existing notification with the same title and body
-                    sameNotificationTB.date = date.toString()
-                    NotificationRepository.notifyItemChanged(sameNotificationTB)
-                }
-                if (sameNotificationT != null && date.toString() != "0" && notificationText != "Missed call") {
-                    sameNotificationT.body = notificationText
-                    sameNotificationT.date = date.toString()
-                    NotificationRepository.notifyItemChanged(sameNotificationT)
-                }
-                if (sameNotificationT == null && sameNotificationTB == null) {
-                    // If the new notification is not similar to any existing one, add it as a new notification
-                    val notification = Notification(
-                        icon,
-                        packageName,
-                        notificationText,
-                        date.toString(),
-                        notificationId
-                    )
-                    NotificationRepository.addNotification(notification)
-                }
-                if (!isSimilarNotification(existingNotification, packageName, notificationText)) {
-                    val notification = Notification(
-                        icon,
-                        packageName,
-                        notificationText,
-                        date.toString(),
-                        notificationId
-                    )
-                    NotificationRepository.addNotification(notification)
-                }
+                existing.title = title
+                existing.body = text
+                existing.date = postTime.toString()
+                existing.appIcon = icon
+                NotificationRepository.notifyItemChanged(existing)
+                Log.d(TAG, "Updated content of existing notification: $title")
             }
         } else {
-            // Notification with this ID doesn't exist, add it to the list
-            val notification =
-                Notification(icon, packageName, notificationText, date.toString(), notificationId)
-            NotificationRepository.addNotification(notification)
+            val newNotification = com.achunt.weboslauncher.Notification(
+                id = id,
+                title = title,
+                body = text,
+                appIcon = icon,
+                date = postTime.toString()
+            )
+            NotificationRepository.addNotification(newNotification)
+            Log.d(TAG, "Added new notification: $title")
         }
     }
 
-    private fun isSimilarNotification(
-        existingNotification: Notification,
-        newTitle: String,
-        newText: String
-    ): Boolean {
-        // Compare the title and text of the new notification with the existing one
-        // You can define your own logic here to determine similarity
-        // For example, you can check if the titles are equal and ignore numbers in the title
-        // or check if the texts are similar based on some criteria
-        return existingNotification.title == newTitle && existingNotification.body == newText
-    }
+    override fun onNotificationRemoved(sbn: StatusBarNotification?) {
+        if (sbn == null) return
 
-    private fun isSimilarNotification(
-        existingNotification: Notification,
-        newTitle: String,
-        newID: Int
-    ): Boolean {
-        // Compare the title and text of the new notification with the existing one
-        // You can define your own logic here to determine similarity
-        // For example, you can check if the titles are equal and ignore numbers in the title
-        // or check if the texts are similar based on some criteria
-        return existingNotification.title == newTitle && existingNotification.id == newID
+        val id = sbn.id
+        val notification = NotificationRepository.getNotificationById(id)
+        if (notification != null) {
+            NotificationRepository.removeNotification(notification)
+            Log.d(TAG, "Notification removed: ${notification.title}")
+        }
     }
 }
-

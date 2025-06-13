@@ -45,8 +45,10 @@ public class SettingsPage extends Fragment {
         SharedPreferences.Editor edit = sharedPref.edit();
         SwitchMaterial sound = view.findViewById(R.id.soundSwitch);
         SwitchMaterial recents = view.findViewById(R.id.recentsSwitch);
+        SwitchMaterial notifications = view.findViewById(R.id.notificationSwitch);
         sound.setChecked(sharedPref.getBoolean("sound", true));
         recents.setChecked(sharedPref.getBoolean("recents", false));
+        notifications.setChecked(sharedPref.getBoolean("notifications", false));
         ChipGroup theme = view.findViewById(R.id.chip_group);
         theme.check(sharedPref.getInt("themeChip", 1));
         Button okay = view.findViewById(R.id.setOkay);
@@ -55,6 +57,7 @@ public class SettingsPage extends Fragment {
             Chip chip = view.findViewById(theme.getCheckedChipId());
             edit.putBoolean("sound", sound.isChecked());
             edit.putBoolean("recents", recents.isChecked());
+            edit.putBoolean("notifications", notifications.isChecked());
             edit.putInt("themeChip", theme.getCheckedChipId());
             edit.putString("themeName", (String) chip.getText());
             edit.apply();

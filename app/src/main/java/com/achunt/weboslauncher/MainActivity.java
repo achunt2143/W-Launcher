@@ -8,12 +8,14 @@ import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout notificationContainerFrameClickArea = null;
     private boolean isExpanded = false;
 
+
     public static List<UsageStats> getUsageStatsList(Context context) {
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
 
-
         if (!isUsageAccessGranted()) {
             // Usage access permission not granted, launch settings intent
             Toast.makeText(this, "Please allow Usage Access", Toast.LENGTH_LONG).show();
@@ -66,38 +68,48 @@ public class MainActivity extends AppCompatActivity {
         }
         System.out.println("******* loading fragments");
         loadFragment(new HomeScreenK());
-        loadNotificationFragment(new NotificationFragment());
-        notificationContainerFrame = findViewById(R.id.notificationContainer);
-        notificationContainerFrameClickArea = findViewById(R.id.notificationContainerClickArea);
-        notificationContainerFrame.setOnClickListener(view -> {
-            toggleNotification();
-            System.out.println("gdfjshgkjfdhgklj,fdnv");
-        });
-        notificationContainerFrameClickArea.setOnClickListener(view -> {
-            toggleNotification();
-        });
-        System.out.println(findViewById(R.id.notificationContainer).getId());
+        if(checkNotificationEnabled()){
+            checkNotificationListenerPermission();
+            loadNotificationFragment(new NotificationFragment());
+            notificationContainerFrame = findViewById(R.id.notificationContainer);
+            notificationContainerFrameClickArea = findViewById(R.id.notificationContainerClickArea);
+            notificationContainerFrame.setOnClickListener(view -> {
+                toggleNotification();
+                System.out.println("gdfjshgkjfdhgklj,fdnv");
+            });
+            notificationContainerFrameClickArea.setOnClickListener(view -> {
+                toggleNotification();
+            });
+            System.out.println(findViewById(R.id.notificationContainer).getId());
+        }
     }
 
     private void toggleNotification() {
-        int targetHeight = isExpanded ? getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed)
-                : getResources().getDimensionPixelSize(R.dimen.notification_height_expanded);
+        if(checkNotificationEnabled()) {
+            int targetHeight = isExpanded ? getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed)
+                    : getResources().getDimensionPixelSize(R.dimen.notification_height_expanded);
 
-        ValueAnimator animation = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), targetHeight);
-        animation.addUpdateListener(valueAnimator -> {
-            int value = (int) valueAnimator.getAnimatedValue();
-            ViewGroup.LayoutParams layoutParams = notificationContainerFrame.getLayoutParams();
-            layoutParams.height = value;
-            notificationContainerFrame.setLayoutParams(layoutParams);
-            ViewGroup.LayoutParams layoutParamsHelper = notificationContainerFrameClickArea.getLayoutParams();
-            layoutParamsHelper.height = targetHeight;
-            notificationContainerFrameClickArea.setLayoutParams(layoutParamsHelper);
-            System.out.println("helper height " + targetHeight);
-        });
-        animation.setDuration(400); // Adjust duration as needed
-        animation.start();
+            ValueAnimator animation = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), targetHeight);
+            animation.addUpdateListener(valueAnimator -> {
+                int value = (int) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = notificationContainerFrame.getLayoutParams();
+                layoutParams.height = value;
+                notificationContainerFrame.setLayoutParams(layoutParams);
+                ViewGroup.LayoutParams layoutParamsHelper = notificationContainerFrameClickArea.getLayoutParams();
+                layoutParamsHelper.height = targetHeight;
+                notificationContainerFrameClickArea.setLayoutParams(layoutParamsHelper);
+                System.out.println("helper height " + targetHeight);
+            });
+            animation.setDuration(400); // Adjust duration as needed
+            animation.start();
 
-        isExpanded = !isExpanded;
+            isExpanded = !isExpanded;
+            Fragment notifFragment = getSupportFragmentManager().findFragmentByTag("notifications");
+            if (notifFragment instanceof NotificationFragment) {
+                ((NotificationFragment) notifFragment).refreshView(); // create this method
+            }
+        }
+
     }
 
     public boolean loadFragment(Fragment fragment) {
@@ -132,14 +144,36 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("main")
                     .commit();
+//            getSupportFragmentManager().executePendingTransactions(); // Ensure the fragment is committed
+            if (fragment instanceof NotificationFragment) {
+                ((NotificationFragment) fragment).setOnNotificationsReadyListener(this::checkAndSetNotificationVisibility);
+            }
             return true;
         }
         return false;
     }
 
+    public void checkAndSetNotificationVisibility() {
+
+        if(checkNotificationEnabled()) {
+            Fragment notifFragment = getSupportFragmentManager().findFragmentByTag("notifications");
+            if (notifFragment instanceof NotificationFragment) {
+                boolean hasNotifs = ((NotificationFragment) notifFragment).hasNotifications();
+                notificationContainerFrame.setVisibility(hasNotifs ? View.VISIBLE : View.GONE);
+                notificationContainerFrameClickArea.setVisibility(hasNotifs ? View.VISIBLE : View.GONE);
+            }
+        }
+    }
+
+
     public void checkPermission(String permission, int requestCode) {
         // Checking if permission is not granted
         requestPermissions(new String[]{permission}, requestCode);
+    }
+
+    public boolean checkNotificationEnabled() {
+        SharedPreferences sharedPrefH = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        return sharedPrefH.getBoolean("notifications", false);
     }
 
     @Override
@@ -197,6 +231,9 @@ public class MainActivity extends AppCompatActivity {
         if (homeScreenFragment != null) {
             homeScreenFragment.recentsList(getApplicationContext());
         }
+        if(checkNotificationEnabled()) {
+            checkAndSetNotificationVisibility();
+        }
     }
 
     private boolean isUsageAccessGranted() {
@@ -205,16 +242,32 @@ public class MainActivity extends AppCompatActivity {
         return mode == AppOpsManager.MODE_ALLOWED;
     }
 
+    private boolean isNotificationServiceEnabled() {
+        String pkgName = getPackageName();
+        final String flat = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        if (flat != null && !flat.isEmpty()) {
+            final String[] names = flat.split(":");
+            for (String name : names) {
+                ComponentName cn = ComponentName.unflattenFromString(name);
+                if (cn != null && pkgName.equals(cn.getPackageName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     private void checkNotificationListenerPermission() {
         System.out.println("******* check notification");
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null && !notificationManager.isNotificationListenerAccessGranted(new ComponentName(this, NotificationListener.class))) {
-            // Notification listener permission not granted, launch settings intent
+
+        if (!isNotificationServiceEnabled()) {
             System.out.println("******* launching...");
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
             startActivity(intent);
         }
     }
+
 
     @Override
     protected void onUserLeaveHint() {

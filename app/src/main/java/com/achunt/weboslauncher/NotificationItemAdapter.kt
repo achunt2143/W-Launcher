@@ -37,7 +37,11 @@ class NotificationItemAdapter(
 
         // Set the app icon
 
-        holder.appIcon.setImageIcon(notification.appIcon)
+        try {
+            holder.appIcon.setImageIcon(notification.appIcon)
+        } catch (e: Exception) {
+            println("Failed to set app icon: ${e.message}")
+        }
 
     }
 

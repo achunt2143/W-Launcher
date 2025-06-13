@@ -138,6 +138,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expText" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/notificationSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:checked="false"
+        android:text="Notifications on Home Screen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recentsSwitch" />
+
     <Button
         android:id="@+id/setOkay"
         style="@style/Widget.Material3.Button"

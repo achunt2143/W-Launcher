@@ -4,7 +4,7 @@ import android.graphics.drawable.Icon
 
 // Notification.kt
 data class Notification(
-    val appIcon: Icon,
+    var appIcon: Icon,
     var title: String,
     var body: String,
     var date: String,

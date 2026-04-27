@@ -112,15 +112,15 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Context context = v.getContext();
                     String packageName = (String) appsListS.get(position).packageName;
                     Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                    Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
-                    gbl.remove(packageName);
-                    HomeScreenK.Companion.setGoodbyeList(gbl);
                     if (launchIntent != null) {
+                        Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                        gbl.remove(packageName);
+                        HomeScreenK.Companion.setGoodbyeList(gbl);
                         context.startActivity(launchIntent);
                     }
                 }

@@ -33,12 +33,10 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         appsListD = new ArrayList<>();
         PackageManager packageManager = context.getPackageManager();
 
-        // Populate the systemAppPackageNames set
         for (AppInfo appInfo : RAdapterSystem.appsListS) {
             systemAppPackageNames.add(appInfo.packageName.toString());
         }
 
-        // Populate the appsListD with non-system apps
         for (ResolveInfo resolveInfo : allApps) {
             String packageName = resolveInfo.activityInfo.packageName;
             ApplicationInfo applicationInfo;
@@ -55,7 +53,6 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
             }
         }
 
-        // Sort the appsListD
         appsListD.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
     }
 
@@ -72,7 +69,8 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         return appsListD.size();
     }
 
-    public void onBindViewHolder(RAdapterDownloads.ViewHolder viewHolder, int i) {
+    @Override
+    public void onBindViewHolder(@NonNull RAdapterDownloads.ViewHolder viewHolder, int i) {
         String appLabel = appsListD.get(i).label.toString();
         Drawable appIcon = appsListD.get(i).icon;
         TextView textView = viewHolder.textView;
@@ -101,7 +99,8 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
     }
 
     @NonNull
-    public RAdapterDownloads.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public RAdapterDownloads.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_row_list_view, parent, false);
         return new ViewHolder(view);
@@ -109,8 +108,8 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        volatile public TextView textView;
-        volatile public ImageView img;
+        public TextView textView;
+        public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -118,13 +117,18 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsListD.get(pos).packageName.toString());
-                Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
-                gbl.remove(appsListD.get(pos).packageName);
-                HomeScreenK.Companion.setGoodbyeList(gbl);
-                context.startActivity(launchIntent);
+                int pos = getBindingAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    Context context = v.getContext();
+                    String packageName = appsListD.get(pos).packageName.toString();
+                    Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                    if (launchIntent != null) {
+                        Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                        gbl.remove(packageName);
+                        HomeScreenK.Companion.setGoodbyeList(gbl);
+                        context.startActivity(launchIntent);
+                    }
+                }
             });
         }
     }

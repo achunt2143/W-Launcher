@@ -14,6 +14,7 @@ import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.provider.ContactsContract
 import android.transition.Slide
 import android.util.Log
@@ -33,7 +34,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -55,9 +55,12 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val start = System.currentTimeMillis()
-        GlobalScope.launch(Dispatchers.IO) {
+        // Use viewLifecycleOwner scope via lifecycleScope on the fragment itself —
+        // safe because onCreate fires before view creation but the fragment lifecycle
+        // is still valid here. IO work + Main dispatch avoids race conditions.
+        lifecycleScope.launch(Dispatchers.IO) {
             val adapter = RAdapter(requireContext())
-            launch(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
                 apps = adapter.appsList
                 appsToPass = adapter.resolveList
                 adapterSystem = RAdapterSystem(requireContext(), appsToPass)
@@ -147,7 +150,7 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                     browserIntent,
                     PackageManager.MATCH_DEFAULT_ONLY
                 )
-                val phoneNumber = "1234567890" // Replace with the desired phone number
+                val phoneNumber = "1234567890"
                 val dialIntent = Intent(Intent.ACTION_DIAL).apply {
                     data = Uri.parse("tel:$phoneNumber")
                 }
@@ -174,7 +177,6 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                         )
                     )
                 } else {
-                    // Phone app not found
                     imageViewPhone.setImageResource(R.drawable.phone)
                 }
                 if (resolveContactsInfo != null) {
@@ -184,7 +186,6 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                         )
                     )
                 } else {
-                    // Contacts app not found
                     imageViewContacts.setImageResource(R.drawable.cnt)
                 }
                 if (resolveSmsInfo != null) {
@@ -194,7 +195,6 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                         )
                     )
                 } else {
-                    // Messaging app not found
                     imageViewMessages.setImageResource(R.drawable.msg)
                 }
                 if (resolveBrowserInfo != null) {
@@ -204,7 +204,6 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                         )
                     )
                 } else {
-                    // Browser app not found
                     imageViewBrowser.setImageResource(R.drawable.brs)
                 }
                 gridDock.background =
@@ -230,7 +229,7 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
             val context = v.context
             val phonePackageName = sharedPrefs.getString("PhonePackageName", null)
             if (phonePackageName != null) {
-                goodbyeList.remove(phonePackageName) // Remove the package name from the goodbyeList
+                goodbyeList.remove(phonePackageName)
                 val launchIntent =
                     context.packageManager.getLaunchIntentForPackage(phonePackageName)
                 context.startActivity(launchIntent)
@@ -244,7 +243,7 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
             val context = v.context
             val contactsPackageName = sharedPrefs.getString("ContactsPackageName", null)
             if (contactsPackageName != null) {
-                goodbyeList.remove(contactsPackageName) // Remove the package name from the goodbyeList
+                goodbyeList.remove(contactsPackageName)
                 val launchIntent =
                     context.packageManager.getLaunchIntentForPackage(contactsPackageName)
                 context.startActivity(launchIntent)
@@ -255,7 +254,7 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
             val context = v.context
             val messagesPackageName = sharedPrefs.getString("MessagesPackageName", null)
             if (messagesPackageName != null) {
-                goodbyeList.remove(messagesPackageName) // Remove the package name from the goodbyeList
+                goodbyeList.remove(messagesPackageName)
                 val launchIntent =
                     context.packageManager.getLaunchIntentForPackage(messagesPackageName)
                 context.startActivity(launchIntent)
@@ -293,31 +292,14 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
     }
 
     override fun onBackStackChanged() {
-        // Get the current fragment from the back stack
         val currentFragment = parentFragmentManager.findFragmentById(R.id.container)
-
-        // Check if the AppsDrawer fragment is on the top of the stack
         val isAppsDrawerFragmentVisible = currentFragment is AppsDrawer
-
-        // Show or hide the dock images based on the current fragment visibility
         val animationDuration = 500L
         animateImageViewTranslation(imageViewDrawer, animationDuration, isAppsDrawerFragmentVisible)
         animateImageViewTranslation(imageViewPhone, animationDuration, isAppsDrawerFragmentVisible)
-        animateImageViewTranslation(
-            imageViewContacts,
-            animationDuration,
-            isAppsDrawerFragmentVisible
-        )
-        animateImageViewTranslation(
-            imageViewMessages,
-            animationDuration,
-            isAppsDrawerFragmentVisible
-        )
-        animateImageViewTranslation(
-            imageViewBrowser,
-            animationDuration,
-            isAppsDrawerFragmentVisible
-        )
+        animateImageViewTranslation(imageViewContacts, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewMessages, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewBrowser, animationDuration, isAppsDrawerFragmentVisible)
         if (isAppsDrawerFragmentVisible) {
             gridDock.animate().alpha(0f).setDuration(500L).start()
         } else {
@@ -341,7 +323,6 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                 .beginTransaction()
                 .add(R.id.container, fragment, "apps")
                 .addToBackStack("home")
-                //.setReorderingAllowed(true)
                 .commit()
             return true
         }
@@ -355,14 +336,12 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
         mAppWidgetHost: AppWidgetHost,
         mAppWidgetManager: AppWidgetManager
     ): Boolean = withContext(Dispatchers.IO) {
-        // Get the list of installed widgets
         var newAppWidgetProviderInfo: AppWidgetProviderInfo? = null
         val appWidgetInfos: List<AppWidgetProviderInfo>
         appWidgetInfos = mAppWidgetManager.installedProviders
         var widgetIsFound = false
         for (j in appWidgetInfos.indices) {
             if (appWidgetInfos[j].provider.packageName == packageName && appWidgetInfos[j].provider.className == className) {
-                // Get the full info of the required widget
                 newAppWidgetProviderInfo = appWidgetInfos[j]
                 widgetIsFound = true
                 break
@@ -371,17 +350,14 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
         return@withContext if (!widgetIsFound) {
             false
         } else {
-            // Create Widget
             val appWidgetId = mAppWidgetHost.allocateAppWidgetId()
             val hostView =
                 mAppWidgetHost.createView(view.context, appWidgetId, newAppWidgetProviderInfo)
             hostView.setAppWidget(appWidgetId, newAppWidgetProviderInfo)
 
-            // Add it to your layout
             val widgetLayout = view.findViewById<LinearLayout>(R.id.widgets)
             widgetLayout.addView(hostView)
 
-            // And bind widget IDs to make them actually work
             val allowed = mAppWidgetManager.bindAppWidgetIdIfAllowed(
                 appWidgetId,
                 newAppWidgetProviderInfo!!.provider
@@ -415,9 +391,10 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                     Context.USAGE_STATS_SERVICE
                 ) as UsageStatsManager
                 val time = System.currentTimeMillis()
+                // Query window expanded to match the 10-minute filter below
                 val aslist = usm.queryUsageStats(
                     UsageStatsManager.INTERVAL_DAILY,
-                    time - 10000, time
+                    time - 600000, time
                 ).toMutableList()
 
                 appStatsList = aslist.sortedBy {
@@ -430,9 +407,9 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                                 if (!usm.isAppInactive(asl.packageName)) {
                                     if (!asl.packageName.equals("com.achunt.weboslauncher")) {
                                         if (!asl.packageName.equals("com.achunt.justtype")) {
-                                            if (!goodbyeList.contains(asl.packageName)) { // Check if the app is not in the closedAppSet
+                                            if (!goodbyeList.contains(asl.packageName)) {
                                                 recentsList.add(app)
-                                                println(app.packageName)
+                                                Log.d("Recents", app.packageName)
                                             }
                                         }
                                     }
@@ -455,10 +432,7 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
             }
         }
         val endFind = System.currentTimeMillis()
-        Log.d(
-            "Recents Finder",
-            "to call Recents " + (endFind - start)
-        )
+        Log.d("Recents Finder", "to call Recents " + (endFind - start))
     }
 
 
@@ -472,7 +446,7 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
         if (down) {
             imageView.translationY = 0F
             imageView.animate()
-                .translationY(screenHeight) // Set the final translation to the screenHeight (at the bottom)
+                .translationY(screenHeight)
                 .setDuration(animationDuration)
                 .start()
         } else {
@@ -491,7 +465,9 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
 
         private fun launchItem(v: View) {
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
-            val selectedItemPosition = recyclerView.getChildPosition(v)
+            // getChildAdapterPosition replaces deprecated getChildPosition
+            val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
+            if (selectedItemPosition == RecyclerView.NO_POSITION) return
             v.context.startActivity(
                 v.context.packageManager.getLaunchIntentForPackage(
                     recentsList[selectedItemPosition].packageName as String
@@ -513,12 +489,14 @@ class HomeScreenK : Fragment(), FragmentManager.OnBackStackChangedListener {
                 .start()
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
             val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
+            if (selectedItemPosition == RecyclerView.NO_POSITION) return
             val packageName = recentsList[selectedItemPosition].packageName
             val manager =
                 v.rootView.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             manager.killBackgroundProcesses(packageName as String?)
-            goodbyeList.add(packageName as String) // Add the closed app's package name to the set
-            Handler().postDelayed({
+            goodbyeList.add(packageName as String)
+            // Handler with explicit Looper — replaces deprecated no-arg Handler()
+            Handler(Looper.getMainLooper()).postDelayed({
                 recentsList.removeAt(selectedItemPosition)
                 recentsAdapter.notifyItemRemoved(selectedItemPosition)
             }, 500)

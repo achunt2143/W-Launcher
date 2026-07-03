@@ -14,6 +14,7 @@ import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout notificationContainerFrameClickArea = null;
     private boolean isExpanded = false;
 
+    private static final String TAG = "MainActivity";
 
     public static List<UsageStats> getUsageStatsList(Context context) {
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -57,36 +60,50 @@ public class MainActivity extends AppCompatActivity {
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
 
         if (!isUsageAccessGranted()) {
-            // Usage access permission not granted, launch settings intent
             Toast.makeText(this, "Please allow Usage Access", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivity(intent);
         } else {
-            System.out.println("******* else block to check notifications");
-            // Usage access permission granted, check notification listener access permission
             checkNotificationListenerPermission();
         }
-        System.out.println("******* loading fragments");
+
         loadFragment(new HomeScreenK());
-        if(checkNotificationEnabled()){
+
+        if (checkNotificationEnabled()) {
             checkNotificationListenerPermission();
             loadNotificationFragment(new NotificationFragment());
             notificationContainerFrame = findViewById(R.id.notificationContainer);
             notificationContainerFrameClickArea = findViewById(R.id.notificationContainerClickArea);
-            notificationContainerFrame.setOnClickListener(view -> {
-                toggleNotification();
-                System.out.println("gdfjshgkjfdhgklj,fdnv");
-            });
-            notificationContainerFrameClickArea.setOnClickListener(view -> {
-                toggleNotification();
-            });
-            System.out.println(findViewById(R.id.notificationContainer).getId());
+            notificationContainerFrame.setOnClickListener(view -> toggleNotification());
+            notificationContainerFrameClickArea.setOnClickListener(view -> toggleNotification());
         }
+
+        // Replace deprecated onBackPressed() override with OnBackPressedCallback
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                FragmentManager fm = getSupportFragmentManager();
+                if (fm.getBackStackEntryCount() > 2) {
+                    if (fm.findFragmentByTag("apps") != null) {
+                        fm.popBackStack("apps", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
+                    Window w = getWindow();
+                    w.setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.empty));
+                    LinearLayout widgets = findViewById(R.id.widgets);
+                    widgets.animate().alpha(1).setDuration(1000).start();
+                }
+                // If back stack count <= 2, let the system handle it (minimise/exit)
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            }
+        });
     }
 
     private void toggleNotification() {
-        if(checkNotificationEnabled()) {
-            int targetHeight = isExpanded ? getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed)
+        if (checkNotificationEnabled()) {
+            int targetHeight = isExpanded
+                    ? getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed)
                     : getResources().getDimensionPixelSize(R.dimen.notification_height_expanded);
 
             ValueAnimator animation = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), targetHeight);
@@ -98,18 +115,16 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams layoutParamsHelper = notificationContainerFrameClickArea.getLayoutParams();
                 layoutParamsHelper.height = targetHeight;
                 notificationContainerFrameClickArea.setLayoutParams(layoutParamsHelper);
-                System.out.println("helper height " + targetHeight);
             });
-            animation.setDuration(400); // Adjust duration as needed
+            animation.setDuration(400);
             animation.start();
 
             isExpanded = !isExpanded;
             Fragment notifFragment = getSupportFragmentManager().findFragmentByTag("notifications");
             if (notifFragment instanceof NotificationFragment) {
-                ((NotificationFragment) notifFragment).refreshView(); // create this method
+                ((NotificationFragment) notifFragment).refreshView();
             }
         }
-
     }
 
     public boolean loadFragment(Fragment fragment) {
@@ -144,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("main")
                     .commit();
-//            getSupportFragmentManager().executePendingTransactions(); // Ensure the fragment is committed
             if (fragment instanceof NotificationFragment) {
                 ((NotificationFragment) fragment).setOnNotificationsReadyListener(this::checkAndSetNotificationVisibility);
             }
@@ -154,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkAndSetNotificationVisibility() {
-
-        if(checkNotificationEnabled()) {
+        if (checkNotificationEnabled()) {
             Fragment notifFragment = getSupportFragmentManager().findFragmentByTag("notifications");
             if (notifFragment instanceof NotificationFragment) {
                 boolean hasNotifs = ((NotificationFragment) notifFragment).hasNotifications();
@@ -165,9 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void checkPermission(String permission, int requestCode) {
-        // Checking if permission is not granted
         requestPermissions(new String[]{permission}, requestCode);
     }
 
@@ -179,32 +190,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == 69420) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // The permission was granted, continue with your app logic here
+                // Permission granted
             } else {
-                // The permission was denied, handle it as appropriate for your app
                 Toast.makeText(this, "Please allow Usage Access", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 startActivity(intent);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 2) {
-            if (getSupportFragmentManager().findFragmentByTag("apps") != null) {
-                getSupportFragmentManager().popBackStack("apps", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }
-            Window w = getWindow();
-            w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
-            LinearLayout widgets = findViewById(R.id.widgets);
-            widgets.animate().alpha(1).setDuration(1000).start();
-            super.onBackPressed();
-        }
-
     }
 
     @Override
@@ -231,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         if (homeScreenFragment != null) {
             homeScreenFragment.recentsList(getApplicationContext());
         }
-        if(checkNotificationEnabled()) {
+        if (checkNotificationEnabled()) {
             checkAndSetNotificationVisibility();
         }
     }
@@ -257,17 +251,13 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
     private void checkNotificationListenerPermission() {
-        System.out.println("******* check notification");
-
         if (!isNotificationServiceEnabled()) {
-            System.out.println("******* launching...");
+            Log.d(TAG, "Notification listener not enabled, launching settings");
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
             startActivity(intent);
         }
     }
-
 
     @Override
     protected void onUserLeaveHint() {
@@ -298,5 +288,4 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }

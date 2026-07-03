@@ -56,6 +56,9 @@ class HomeScreenK : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val start = System.currentTimeMillis()
+        // Use viewLifecycleOwner scope via lifecycleScope on the fragment itself —
+        // safe because onCreate fires before view creation but the fragment lifecycle
+        // is still valid here. IO work + Main dispatch avoids race conditions.
         lifecycleScope.launch(Dispatchers.IO) {
             val adapter = RAdapter(requireContext())
             withContext(Dispatchers.Main) {
@@ -120,6 +123,165 @@ class HomeScreenK : Fragment(),
         val w = requireActivity().window
         w.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.empty)
         widgets.animate().alpha(1f).setDuration(1000).start()
+
+
+        when (theme) {
+            "Classic" -> {
+                imageViewPhone.setImageResource(R.drawable.phone)
+                imageViewContacts.setImageResource(R.drawable.cnt)
+                imageViewMessages.setImageResource(R.drawable.msg)
+                imageViewBrowser.setImageResource(R.drawable.brs)
+            }
+
+            "Classic3" -> {
+                imageViewPhone.setImageResource(R.drawable.phone)
+                imageViewContacts.setImageResource(R.drawable.cnt)
+                imageViewMessages.setImageResource(R.drawable.msg)
+                imageViewBrowser.setImageResource(R.drawable.brs)
+            }
+            "Mochi" -> {
+                imageViewPhone.setImageResource(R.drawable.mochiphone)
+                imageViewContacts.setImageResource(R.drawable.mochicontacts)
+                imageViewMessages.setImageResource(R.drawable.mochimessages)
+                imageViewBrowser.setImageResource(R.drawable.mochibrowser)
+                gridDock.background =
+                    context?.let { AppCompatResources.getDrawable(it, R.color.mochilight) }
+            }
+            "Modern" -> {
+                imageViewPhone.setImageResource(R.drawable.modernphone)
+                imageViewContacts.setImageResource(R.drawable.moderncontact)
+                imageViewMessages.setImageResource(R.drawable.modernmessages)
+                imageViewBrowser.setImageResource(R.drawable.modernbrowser)
+                gridDock.background =
+                    context?.let { AppCompatResources.getDrawable(it, R.drawable.modern_dock) }
+            }
+            "System" -> {
+                val browserIntent = Intent("android.intent.action.VIEW", Uri.parse("http://"))
+                val resolveBrowserInfo = view.context.packageManager.resolveActivity(
+                    browserIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+                val phoneNumber = "1234567890"
+                val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$phoneNumber")
+                }
+                val resolvePhoneInfo = view.context.packageManager.resolveActivity(
+                    dialIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+                val contactsIntent = Intent(Intent.ACTION_VIEW)
+                contactsIntent.data = ContactsContract.Contacts.CONTENT_URI
+                val resolveContactsInfo = view.context.packageManager.resolveActivity(
+                    contactsIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+                val smsUri = Uri.parse("smsto:$phoneNumber")
+                val smsIntent = Intent(Intent.ACTION_SENDTO, smsUri)
+                val resolveSmsInfo = view.context.packageManager.resolveActivity(
+                    smsIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+                if (resolvePhoneInfo != null) {
+                    imageViewPhone.setImageDrawable(
+                        resolvePhoneInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    imageViewPhone.setImageResource(R.drawable.phone)
+                }
+                if (resolveContactsInfo != null) {
+                    imageViewContacts.setImageDrawable(
+                        resolveContactsInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    imageViewContacts.setImageResource(R.drawable.cnt)
+                }
+                if (resolveSmsInfo != null) {
+                    imageViewMessages.setImageDrawable(
+                        resolveSmsInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    imageViewMessages.setImageResource(R.drawable.msg)
+                }
+                if (resolveBrowserInfo != null) {
+                    imageViewBrowser.setImageDrawable(
+                        resolveBrowserInfo.activityInfo.applicationInfo.loadIcon(
+                            requireContext().packageManager
+                        )
+                    )
+                } else {
+                    imageViewBrowser.setImageResource(R.drawable.brs)
+                }
+                gridDock.background =
+                    context?.let { AppCompatResources.getDrawable(it, R.color.abt) }
+            }
+        }
+
+        val sharedPrefs: SharedPreferences =
+            view.context.getSharedPreferences("SpecialApps", Context.MODE_PRIVATE)
+        imageViewDrawer.setOnClickListener {
+            widgets.animate().alpha(0f).setDuration(1000).start()
+            view.post {
+                val animationDuration = 500L
+                animateImageViewTranslation(imageViewDrawer, animationDuration, true)
+                animateImageViewTranslation(imageViewPhone, animationDuration, true)
+                animateImageViewTranslation(imageViewContacts, animationDuration, true)
+                animateImageViewTranslation(imageViewMessages, animationDuration, true)
+                animateImageViewTranslation(imageViewBrowser, animationDuration, true)
+            }
+            loadFragment(AppsDrawer())
+        }
+        imageViewPhone.setOnClickListener { v: View ->
+            val context = v.context
+            val phonePackageName = sharedPrefs.getString("PhonePackageName", null)
+            if (phonePackageName != null) {
+                goodbyeList.remove(phonePackageName)
+                val launchIntent =
+                    context.packageManager.getLaunchIntentForPackage(phonePackageName)
+                context.startActivity(launchIntent)
+            } else {
+                val intent = Intent(Intent.ACTION_DIAL)
+                context.startActivity(intent)
+            }
+        }
+
+        imageViewContacts.setOnClickListener { v: View ->
+            val context = v.context
+            val contactsPackageName = sharedPrefs.getString("ContactsPackageName", null)
+            if (contactsPackageName != null) {
+                goodbyeList.remove(contactsPackageName)
+                val launchIntent =
+                    context.packageManager.getLaunchIntentForPackage(contactsPackageName)
+                context.startActivity(launchIntent)
+            }
+        }
+
+        imageViewMessages.setOnClickListener { v: View ->
+            val context = v.context
+            val messagesPackageName = sharedPrefs.getString("MessagesPackageName", null)
+            if (messagesPackageName != null) {
+                goodbyeList.remove(messagesPackageName)
+                val launchIntent =
+                    context.packageManager.getLaunchIntentForPackage(messagesPackageName)
+                context.startActivity(launchIntent)
+            }
+        }
+
+        imageViewBrowser.setOnClickListener {
+            val browser = Intent(Intent.ACTION_MAIN)
+            browser.addCategory(Intent.CATEGORY_APP_BROWSER)
+            val mainLauncherList = context?.packageManager?.queryIntentActivities(browser, 0)
+            if (mainLauncherList != null) {
+                goodbyeList.remove(mainLauncherList.first().activityInfo.packageName)
+            }
+            startActivity(browser)
+        }
+
 
         lifecycleScope.launch(Dispatchers.Default) {
             val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
@@ -187,6 +349,15 @@ class HomeScreenK : Fragment(),
 
     override fun onBackStackChanged() {
         val currentFragment = parentFragmentManager.findFragmentById(R.id.container)
+        val isAppsDrawerFragmentVisible = currentFragment is AppsDrawer
+        val animationDuration = 500L
+        animateImageViewTranslation(imageViewDrawer, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewPhone, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewContacts, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewMessages, animationDuration, isAppsDrawerFragmentVisible)
+        animateImageViewTranslation(imageViewBrowser, animationDuration, isAppsDrawerFragmentVisible)
+        if (isAppsDrawerFragmentVisible) {
+            gridDock.animate().alpha(0f).setDuration(500L).start()
         val isAppsDrawerVisible = currentFragment is AppsDrawer
         animateDock(500L, isAppsDrawerVisible)
         if (isAppsDrawerVisible) {
@@ -259,6 +430,7 @@ class HomeScreenK : Fragment(),
         val appWidgetInfos = mAppWidgetManager.installedProviders
         var widgetIsFound = false
         for (j in appWidgetInfos.indices) {
+            if (appWidgetInfos[j].provider.packageName == packageName && appWidgetInfos[j].provider.className == className) {
             if (appWidgetInfos[j].provider.packageName == packageName
                 && appWidgetInfos[j].provider.className == className) {
                 newAppWidgetProviderInfo = appWidgetInfos[j]
@@ -272,8 +444,10 @@ class HomeScreenK : Fragment(),
             val appWidgetId = mAppWidgetHost.allocateAppWidgetId()
             val hostView = mAppWidgetHost.createView(view.context, appWidgetId, newAppWidgetProviderInfo)
             hostView.setAppWidget(appWidgetId, newAppWidgetProviderInfo)
+
             val widgetLayout = view.findViewById<LinearLayout>(R.id.widgets)
             widgetLayout.addView(hostView)
+
             val allowed = mAppWidgetManager.bindAppWidgetIdIfAllowed(
                 appWidgetId, newAppWidgetProviderInfo!!.provider
             )
@@ -299,8 +473,10 @@ class HomeScreenK : Fragment(),
                 recents.itemAnimator = DefaultItemAnimator()
                 val usm = requireContext().getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
                 val time = System.currentTimeMillis()
+                // Query window expanded to match the 10-minute filter below
                 val aslist = usm.queryUsageStats(
-                    UsageStatsManager.INTERVAL_DAILY, time - 600000, time
+                    UsageStatsManager.INTERVAL_DAILY,
+                    time - 600000, time
                 ).toMutableList()
 
                 appStatsList = aslist.sortedBy { it.lastTimeUsed }.reversed() as MutableList<UsageStats>
@@ -329,6 +505,32 @@ class HomeScreenK : Fragment(),
                 e.printStackTrace()
             }
         }
+        val endFind = System.currentTimeMillis()
+        Log.d("Recents Finder", "to call Recents " + (endFind - start))
+    }
+
+
+    private fun animateImageViewTranslation(
+        imageView: ImageView,
+        animationDuration: Long,
+        down: Boolean
+    ) {
+        val screenHeight = resources.displayMetrics.heightPixels.toFloat()
+        imageView.visibility = View.VISIBLE
+        if (down) {
+            imageView.translationY = 0F
+            imageView.animate()
+                .translationY(screenHeight)
+                .setDuration(animationDuration)
+                .start()
+        } else {
+            imageView.translationY = screenHeight
+            imageView.animate()
+                .translationY(0f)
+                .setDuration(animationDuration)
+                .start()
+        }
+    }
         Log.d("Recents Finder", "to call Recents " + (System.currentTimeMillis() - start))
     }
 
@@ -337,8 +539,9 @@ class HomeScreenK : Fragment(),
     class RecentsClickListener : View.OnClickListener {
         override fun onClick(v: View) {
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
-            val pos = recyclerView.getChildAdapterPosition(v)
-            if (pos == RecyclerView.NO_POSITION) return
+            // getChildAdapterPosition replaces deprecated getChildPosition
+            val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
+            if (selectedItemPosition == RecyclerView.NO_POSITION) return
             v.context.startActivity(
                 v.context.packageManager.getLaunchIntentForPackage(
                     recentsList[pos].packageName as String
@@ -350,16 +553,17 @@ class HomeScreenK : Fragment(),
     class RecentsLongClickListener : View.OnLongClickListener {
         override fun onLongClick(v: View): Boolean {
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
-            val pos = recyclerView.getChildAdapterPosition(v)
-            if (pos == RecyclerView.NO_POSITION) return true
-            v.animate().translationY(-2000f).setDuration(500).start()
-            val packageName = recentsList[pos].packageName
-            val manager = v.rootView.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
+            if (selectedItemPosition == RecyclerView.NO_POSITION) return
+            val packageName = recentsList[selectedItemPosition].packageName
+            val manager =
+                v.rootView.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             manager.killBackgroundProcesses(packageName as String?)
             goodbyeList.add(packageName as String)
+            // Handler with explicit Looper — replaces deprecated no-arg Handler()
             Handler(Looper.getMainLooper()).postDelayed({
-                recentsList.removeAt(pos)
-                recentsAdapter.notifyItemRemoved(pos)
+                recentsList.removeAt(selectedItemPosition)
+                recentsAdapter.notifyItemRemoved(selectedItemPosition)
             }, 500)
             return true
         }

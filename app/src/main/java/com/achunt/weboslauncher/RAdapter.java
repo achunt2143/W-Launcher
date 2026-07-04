@@ -48,7 +48,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             sortAppsList();
             findSpecialApps(c);
         } catch (Exception e) {
-            Log.d("Error", String.valueOf(e));
+            Log.e("RAdapter", "Error loading apps: " + e.getMessage(), e);
         }
     }
 
@@ -56,7 +56,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         try {
             appsList.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
         } catch (Exception e) {
-            Log.e("Error", "Sorting error: " + e.getMessage());
+            Log.e("RAdapter", "Sorting error: " + e.getMessage());
         }
     }
 
@@ -80,7 +80,6 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         editor.apply();
     }
 
-
     @Override
     public int getItemCount() {
         return appsList.size();
@@ -94,14 +93,16 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
         return allApps;
     }
 
-    public void onBindViewHolder(RAdapter.ViewHolder viewHolder, int i) {
+    @Override
+    public void onBindViewHolder(@NonNull RAdapter.ViewHolder viewHolder, int i) {
         AppInfo appInfo = appsList.get(i);
         viewHolder.textView.setText(appInfo.label.toString());
         viewHolder.img.setImageDrawable(appInfo.icon);
     }
 
     @NonNull
-    public RAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public RAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_row_list_view, parent, false);
         return new ViewHolder(view);
@@ -109,8 +110,8 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        volatile public TextView textView;
-        volatile public ImageView img;
+        public TextView textView;
+        public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -130,6 +131,4 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             });
         }
     }
-
-
 }

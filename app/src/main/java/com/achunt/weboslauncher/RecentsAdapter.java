@@ -35,14 +35,10 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-
-        TextView textViewName = holder.textViewName;
-        //TextView textViewVersion = holder.textViewVersion;
-        ImageView imageView = holder.imageViewIcon;
-        textViewName.setText(dataSet.get(listPosition).label);
-        //textViewName.setTag(dataSet.get(listPosition).packageName);
-        //textViewVersion.setText(dataSet.get(listPosition));
-        imageView.setImageDrawable(dataSet.get(listPosition).icon);
+        AppInfo app = dataSet.get(listPosition);
+        holder.textViewName.setText(app.label);
+        holder.imageViewIcon.setImageDrawable(app.icon);
+        holder.imageViewIconSmall.setImageDrawable(app.icon);
     }
 
 
@@ -54,14 +50,14 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.MyViewHo
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName;
-        TextView textViewVersion;
         ImageView imageViewIcon;
+        ImageView imageViewIconSmall;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             this.textViewName = itemView.findViewById(R.id.recentName);
-            //this.textViewVersion = (TextView) itemView.findViewById(R.id.textViewVersion);
             this.imageViewIcon = itemView.findViewById(R.id.recentIcon);
+            this.imageViewIconSmall = itemView.findViewById(R.id.recentIconSmall);
         }
     }
 

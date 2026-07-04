@@ -37,6 +37,10 @@ building.
 
 ## Commit History
 
+7/4/2026 Version 3.0 is out! A full webOS Mojo/Enyo visual overhaul — new Light/Dark themes, a
+redesigned frosted-glass drawer and dock, long-press app actions, and W Launcher can finally be set
+as your actual Home app. See [RELEASE_NOTES.md](RELEASE_NOTES.md) for the full rundown.
+
 3/22/2023 Version 2.0 is out! This brings some small stability enhancements and a big new feature!
 Recent apps are now displayed on the home screen as cards! Check out the release notes for more info!
 

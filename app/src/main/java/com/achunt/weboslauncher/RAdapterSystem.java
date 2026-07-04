@@ -2,7 +2,6 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHolder> {
 
@@ -72,28 +72,9 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
 
         textView.setText(appInfo.label);
         imageView.setImageDrawable(appInfo.icon);
+        imageView.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
 
-        SharedPreferences sharedPref = viewHolder.itemView.getContext()
-                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String theme = sharedPref.getString("themeName", "Classic");
-
-        int textColor;
-        switch (theme) {
-            case "Classic":
-            case "Modern":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-            case "Mochi":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
-                break;
-            case "System":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
-                break;
-            default:
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-        }
-        textView.setTextColor(textColor);
+        textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }
 
     @Override
@@ -117,9 +98,18 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
                     String packageName = (String) appsListS.get(position).packageName;
                     Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
                     if (launchIntent != null) {
+                        Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                        gbl.remove(packageName);
+                        HomeScreenK.Companion.setGoodbyeList(gbl);
                         context.startActivity(launchIntent);
                     }
                 }
+            });
+            itemView.setOnLongClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position == RecyclerView.NO_POSITION) return false;
+                AppActionsMenu.show(v, (String) appsListS.get(position).packageName, AppActionsMenu.Source.DRAWER);
+                return true;
             });
         }
     }

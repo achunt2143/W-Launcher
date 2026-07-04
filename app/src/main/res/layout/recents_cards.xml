@@ -1,50 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:tag="cards main container">
 
+    <!-- Width + horizontal margins here sum to R.dimen.recents_card_slot_width (270dp),
+         which HomeScreenK.kt uses to center the carousel — keep them in sync. -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        app:cardBackgroundColor="@color/card_color"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="50dp"
-        app:cardUseCompatPadding="true">
-
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/notif_panel_bg"
+        app:cardCornerRadius="26dp"
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:layout_weight="2"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/recentIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp" />
+            <!-- webOS-style card title bar: small icon + app name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/notif_card_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp">
 
-            <TextView
-                android:id="@+id/recentName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Android Name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/black" />
+                <ImageView
+                    android:id="@+id/recentIconSmall"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside" />
 
+                <TextView
+                    android:id="@+id/recentName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Android Name"
+                    android:textColor="@color/notif_title_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
+            <!-- Stands in for a live app preview, which third-party launchers can't get to
+                 on modern Android — a big centered icon on its own backdrop instead. -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/recentIcon"
+                    android:layout_width="112dp"
+                    android:layout_height="112dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/recents_icon_backdrop"
+                    android:contentDescription="@null"
+                    android:padding="22dp"
+                    android:scaleType="centerInside" />
+            </FrameLayout>
         </LinearLayout>
-
 
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+</FrameLayout>

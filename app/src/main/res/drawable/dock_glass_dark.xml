@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp" />
+    <gradient
+        android:angle="270"
+        android:startColor="@color/webos_dock_glass_dark_top"
+        android:endColor="@color/webos_dock_glass_dark_bottom" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/webos_dock_glass_highlight" />
+</shape>

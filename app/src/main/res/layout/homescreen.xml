@@ -7,7 +7,6 @@
     app:defaultNavHost="true"
     app:navGraph="@navigation/nav_graph">
 
-
     <LinearLayout
         android:id="@+id/widgets"
         android:layout_width="match_parent"
@@ -15,10 +14,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </LinearLayout>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recents"
@@ -27,102 +23,22 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/dock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widgets">
+        app:layout_constraintTop_toBottomOf="@+id/widgets" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-
-    <GridLayout
+    <!--
+        Dock: replaced the hardcoded GridLayout + 5 fixed ImageViews with a
+        RecyclerView. Items are managed by DockAdapter / DockRepository.
+        The background and height are preserved from the original GridLayout.
+    -->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dock"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:animateLayoutChanges="true"
-        android:background="@drawable/quicklaunchbg"
-        android:columnCount="5"
+        android:layout_height="@dimen/dock_height"
+        android:elevation="8dp"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/phone"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/dockshadow"
-            android:cropToPadding="true"
-            android:scaleType="centerInside"
-            android:visibility="invisible"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/cnt"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/dockshadow"
-            android:cropToPadding="true"
-            android:scaleType="centerInside"
-            android:visibility="invisible"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/msg"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/dockshadow"
-            android:cropToPadding="true"
-            android:scaleType="centerInside"
-            android:visibility="invisible"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/brs"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/dockshadow"
-            android:cropToPadding="true"
-            android:scaleType="centerInside"
-            android:visibility="invisible"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/icon_drawer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/dockshadow"
-            android:cropToPadding="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/applauncher"
-            android:visibility="invisible"
-            tools:ignore="MissingConstraints" />
-        <!--android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"-->
-
-
-    </GridLayout>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

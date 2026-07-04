@@ -2,7 +2,6 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.ViewHolder> {
 
@@ -32,12 +32,10 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         appsListD = new ArrayList<>();
         PackageManager packageManager = context.getPackageManager();
 
-        // Populate the systemAppPackageNames set
         for (AppInfo appInfo : RAdapterSystem.appsListS) {
             systemAppPackageNames.add(appInfo.packageName.toString());
         }
 
-        // Populate the appsListD with non-system apps
         for (ResolveInfo resolveInfo : allApps) {
             String packageName = resolveInfo.activityInfo.packageName;
             ApplicationInfo applicationInfo;
@@ -54,7 +52,6 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
             }
         }
 
-        // Sort the appsListD
         appsListD.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
     }
 
@@ -71,36 +68,21 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         return appsListD.size();
     }
 
-    public void onBindViewHolder(RAdapterDownloads.ViewHolder viewHolder, int i) {
+    @Override
+    public void onBindViewHolder(@NonNull RAdapterDownloads.ViewHolder viewHolder, int i) {
         String appLabel = appsListD.get(i).label.toString();
         Drawable appIcon = appsListD.get(i).icon;
         TextView textView = viewHolder.textView;
         textView.setText(appLabel);
         ImageView imageView = viewHolder.img;
         imageView.setImageDrawable(appIcon);
-        SharedPreferences sharedPref = viewHolder.itemView.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String theme = sharedPref.getString("themeName", "Classic");
-        int textColor;
-        switch (theme) {
-            case "Classic":
-            case "Modern":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-            case "Mochi":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
-                break;
-            case "System":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
-                break;
-            default:
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-        }
-        textView.setTextColor(textColor);
+        imageView.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
+        textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }
 
     @NonNull
-    public RAdapterDownloads.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public RAdapterDownloads.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_row_list_view, parent, false);
         return new ViewHolder(view);
@@ -108,8 +90,8 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        volatile public TextView textView;
-        volatile public ImageView img;
+        public TextView textView;
+        public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -118,9 +100,23 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
-                Context context = v.getContext();
-                Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appsListD.get(pos).packageName.toString());
-                context.startActivity(launchIntent);
+                if (pos != RecyclerView.NO_POSITION) {
+                    Context context = v.getContext();
+                    String packageName = appsListD.get(pos).packageName.toString();
+                    Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                    if (launchIntent != null) {
+                        Set<String> gbl = HomeScreenK.Companion.getGoodbyeList();
+                        gbl.remove(packageName);
+                        HomeScreenK.Companion.setGoodbyeList(gbl);
+                        context.startActivity(launchIntent);
+                    }
+                }
+            });
+            itemView.setOnLongClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION) return false;
+                AppActionsMenu.show(v, appsListD.get(pos).packageName.toString(), AppActionsMenu.Source.DRAWER);
+                return true;
             });
         }
     }

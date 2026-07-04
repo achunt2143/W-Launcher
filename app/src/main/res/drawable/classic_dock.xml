@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="88"
+    android:viewportHeight="88">
+
+    <!-- Background Rounded Square -->
+    <path
+        android:alpha="0.5"
+        android:fillColor="#696969"
+        android:pathData="M8,0L80,0C84.42,0 88,3.58 88,8L88,80C88,84.42 84.42,88 80,88L8,88C3.58,88 0,84.42 0,80L0,8C0,3.58 3.58,0 8,0Z" />
+
+    <!-- Gradient Overlay -->
+    <path
+        android:alpha="0.5"
+        android:fillColor="@drawable/dock_gradient"
+        android:pathData="M8,8L80,8L80,80L8,80Z" />
+
+</vector>
+
+

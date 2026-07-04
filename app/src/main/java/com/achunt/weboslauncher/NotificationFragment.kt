@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,11 +12,9 @@ class NotificationFragment : Fragment() {
 
     private lateinit var notificationRecyclerView: RecyclerView
     private lateinit var notificationRecyclerViewSmall: RecyclerView
-    private lateinit var notificationAdapter: NotificationItemAdapter
+    private lateinit var groupAdapter: NotificationGroupAdapter
     private lateinit var notificationIconAdapter: NotificationItemIconAdapter
     private var readyListener: OnNotificationsReadyListener? = null
-
-    private var isExpanded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,110 +26,112 @@ class NotificationFragment : Fragment() {
         notificationRecyclerViewSmall = view.findViewById(R.id.notificationRecyclerViewSmall)
 
         notificationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        // reverseLayout=true so icons are right-aligned with the oldest notification at the
+        // rightmost position — new ones are appended to the end of the data list but visually
+        // land to the left of it, growing the cluster leftward as it accumulates.
         notificationRecyclerViewSmall.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, true)
 
-        notificationAdapter = NotificationItemAdapter(requireContext(), NotificationRepository.getNotifications())
+        val initialGroups = NotificationRepository.getNotifications().grouped()
+        groupAdapter = NotificationGroupAdapter(requireContext(), initialGroups) {
+            (activity as? MainActivity)?.collapseNotificationPanel()
+        }
         notificationIconAdapter = NotificationItemIconAdapter(
             requireContext(),
-            NotificationRepository.getNotificationsIcons()
-        ) { iconClicked ->
-            isExpanded = true
-            // Expand logic: scroll to the first matching item
-            val notifications = NotificationRepository.getNotifications()
-            val matchIndex = notifications.indexOfFirst { it.appIcon == iconClicked }
+            initialGroups
+        ) { groupClicked ->
+            val matchIndex = groupAdapter.indexOfPackage(groupClicked.packageName)
+            (activity as? MainActivity)?.expandNotificationPanel()
             if (matchIndex != -1) {
-                notificationRecyclerView.scrollToPosition(matchIndex)
-                notificationAdapter.updateData(NotificationRepository.getNotifications())
-
+                notificationRecyclerView.post { notificationRecyclerView.scrollToPosition(matchIndex) }
             }
-            notificationRecyclerView.visibility = View.VISIBLE
         }
         readyListener?.onNotificationsReady()
 
-        notificationRecyclerView.adapter = notificationAdapter
+        notificationRecyclerView.adapter = groupAdapter
         notificationRecyclerViewSmall.adapter = notificationIconAdapter
 
         NotificationRepository.getNotificationLiveData().observe(viewLifecycleOwner) { notifications ->
-            notificationAdapter.updateData(notifications)
+            val groups = notifications.grouped()
+            groupAdapter.updateData(groups)
+            notificationIconAdapter.updateData(groups)
             (activity as? MainActivity)?.checkAndSetNotificationVisibility()
+            (activity as? MainActivity)?.refreshNotificationPanelHeight()
         }
 
-
-        NotificationRepository.getNotificationIconLiveData().observe(viewLifecycleOwner) { icons ->
-            notificationIconAdapter.updateData(icons)
-            (activity as? MainActivity)?.checkAndSetNotificationVisibility()
-        }
-
-        // Click small icons row to toggle expanded view
+        // Tap the collapsed icon row to expand; tap the expanded list's background to collapse.
         notificationRecyclerViewSmall.setOnClickListener {
-            toggleView()
+            (activity as? MainActivity)?.toggleNotification()
         }
-
-        // Click full list to collapse
         notificationRecyclerView.setOnClickListener {
-            toggleView()
+            (activity as? MainActivity)?.toggleNotification()
         }
 
         // Start collapsed
-        setExpanded(false, immediate = true)
-
-        val swipeToDeleteCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean = false
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val notification = NotificationRepository.getNotifications()[position]
-                NotificationRepository.removeNotification(notification)
-            }
-        }
-
-        ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(notificationRecyclerView)
+        applyExpandedState(false, immediate = false)
 
         return view
     }
 
-    private fun toggleView() {
-        isExpanded = !isExpanded
-        setExpanded(isExpanded)
-    }
+    /**
+     * Shows the full swipeable card list when [expand], otherwise just the collapsed icon row.
+     * Both directions slide rather than fade: expanding slides the icon row up and out while
+     * the list slides up into place from just below it (like a drawer opening); collapsing is
+     * the same motion in reverse.
+     */
+    @JvmOverloads
+    fun applyExpandedState(expand: Boolean, immediate: Boolean = false) {
+        val shownView = if (expand) notificationRecyclerView else notificationRecyclerViewSmall
+        val hiddenView = if (expand) notificationRecyclerViewSmall else notificationRecyclerView
 
-    private fun setExpanded(expand: Boolean, immediate: Boolean = false) {
-        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = if (immediate) 0 else 300 }
-        val fadeOut = AlphaAnimation(1f, 0f).apply { duration = if (immediate) 0 else 300 }
-
-        if (expand) {
-            notificationRecyclerViewSmall.startAnimation(fadeOut)
-            notificationRecyclerView.startAnimation(fadeIn)
-            notificationRecyclerViewSmall.visibility = View.VISIBLE
-            notificationRecyclerView.visibility = View.VISIBLE
-        } else {
-            notificationRecyclerView.startAnimation(fadeOut)
-            notificationRecyclerViewSmall.startAnimation(fadeIn)
-            notificationRecyclerView.visibility = View.VISIBLE
-            notificationRecyclerViewSmall.visibility = View.VISIBLE
+        if (immediate) {
+            hiddenView.visibility = View.GONE
+            hiddenView.translationY = 0f
+            shownView.visibility = View.VISIBLE
+            shownView.translationY = 0f
+            return
         }
-    }
-    fun refreshView() {
-        notificationAdapter.notifyDataSetChanged()
-        notificationIconAdapter.notifyDataSetChanged()
-        (activity as? MainActivity)?.checkAndSetNotificationVisibility()
 
+        val slideDistance = resources.displayMetrics.density * 40f
+        val enterFrom = if (expand) slideDistance else -slideDistance
+        val exitTo = if (expand) -slideDistance else slideDistance
+
+        shownView.translationY = enterFrom
+        shownView.visibility = View.VISIBLE
+        shownView.animate().translationY(0f).setDuration(220).start()
+
+        hiddenView.animate().translationY(exitTo).setDuration(220).withEndAction {
+            hiddenView.visibility = View.GONE
+            hiddenView.translationY = 0f
+        }.start()
+    }
+
+    /**
+     * Measures how tall the panel needs to be for [expand]'s target row alone. Both rows stay
+     * VISIBLE together for the duration of [applyExpandedState]'s cross-slide, so measuring the
+     * whole LinearLayout mid-transition sums both rows' heights and hands MainActivity's panel
+     * height animator an inflated target — which then has to correct itself once the old row
+     * actually goes GONE, visible as the dock jumping into place a beat late.
+     */
+    fun computeTargetHeight(expand: Boolean, width: Int): Int {
+        if (!this::notificationRecyclerView.isInitialized) return 0
+        val root = notificationRecyclerView.parent as? View ?: return 0
+        val other = if (expand) notificationRecyclerViewSmall else notificationRecyclerView
+        val otherWasVisible = other.visibility
+        other.visibility = View.GONE
+        val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
+        val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        root.measure(widthSpec, heightSpec)
+        val measured = root.measuredHeight
+        other.visibility = otherWasVisible
+        return measured
     }
 
     fun hasNotifications(): Boolean {
         return this::notificationIconAdapter.isInitialized && notificationIconAdapter.itemCount > 0
     }
 
-
     fun setOnNotificationsReadyListener(listener: OnNotificationsReadyListener) {
         readyListener = listener
     }
-
-
 }
-

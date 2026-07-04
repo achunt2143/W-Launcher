@@ -2,7 +2,6 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.graphics.drawable.Drawable;
@@ -40,7 +39,9 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
             List<UserHandle> userProfiles = userManager.getUserProfiles();
             for (UserHandle userHandle : userProfiles) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                    if (userManager.isManagedProfile(userHandle)) {
+                    // isManagedProfile(UserHandle) isn't a public API; a profile
+                    // returned by getUserProfiles() that isn't our own is the work profile.
+                    if (!userHandle.equals(android.os.Process.myUserHandle())) {
                         foundHandle = userHandle;
                         try {
                             List<LauncherActivityInfo> activities = launcherApps.getActivityList(null, userHandle);
@@ -71,27 +72,9 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
 
         viewHolder.textView.setText(appLabel);
         viewHolder.img.setImageDrawable(appIcon);
+        viewHolder.img.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
 
-        SharedPreferences sharedPref = viewHolder.itemView.getContext()
-                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String theme = sharedPref.getString("themeName", "Classic");
-        int textColor;
-        switch (theme) {
-            case "Classic":
-            case "Modern":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-            case "Mochi":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
-                break;
-            case "System":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
-                break;
-            default:
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-        }
-        viewHolder.textView.setTextColor(textColor);
+        viewHolder.textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }
 
     @NonNull
@@ -113,7 +96,7 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int pos = getBindingAdapterPosition();
+                int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION && workProfileHandle != null && launcherApps != null) {
                     LauncherActivityInfo appInfo = workProfileApps.get(pos);
                     try {
@@ -130,6 +113,12 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
                         Log.e("RAdapterWork", "Failed to launch work app: " + e.getMessage(), e);
                     }
                 }
+            });
+            itemView.setOnLongClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION || workProfileHandle == null) return false;
+                AppActionsMenu.show(v, workProfileApps.get(pos).getApplicationInfo().packageName, workProfileHandle, AppActionsMenu.Source.DRAWER);
+                return true;
             });
         }
     }

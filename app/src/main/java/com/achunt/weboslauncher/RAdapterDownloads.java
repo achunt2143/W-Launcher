@@ -2,7 +2,6 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -77,25 +76,8 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         textView.setText(appLabel);
         ImageView imageView = viewHolder.img;
         imageView.setImageDrawable(appIcon);
-        SharedPreferences sharedPref = viewHolder.itemView.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String theme = sharedPref.getString("themeName", "Classic");
-        int textColor;
-        switch (theme) {
-            case "Classic":
-            case "Modern":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-            case "Mochi":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
-                break;
-            case "System":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
-                break;
-            default:
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-        }
-        textView.setTextColor(textColor);
+        imageView.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
+        textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }
 
     @NonNull
@@ -117,7 +99,7 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int pos = getBindingAdapterPosition();
+                int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
                     Context context = v.getContext();
                     String packageName = appsListD.get(pos).packageName.toString();
@@ -129,6 +111,12 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
                         context.startActivity(launchIntent);
                     }
                 }
+            });
+            itemView.setOnLongClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION) return false;
+                AppActionsMenu.show(v, appsListD.get(pos).packageName.toString(), AppActionsMenu.Source.DRAWER);
+                return true;
             });
         }
     }

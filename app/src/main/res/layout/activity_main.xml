@@ -8,43 +8,44 @@
     app:defaultNavHost="true"
     app:navGraph="@navigation/nav_graph">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/launcher">
-    </ImageView>
-
+    <!-- clipToOutline + the transparent rounded-rect background below clip this container's
+         content (home screen, apps drawer, About & Settings, Credits — whichever fragment is
+         loaded) to rounded corners, edge-to-edge with the live wallpaper showing through
+         everywhere else in the window. -->
     <FrameLayout
         android:layout_width="match_parent"
         android:id="@+id/container"
         android:layout_height="0dp"
+        android:background="@drawable/homescreen_rounded_clip"
+        android:clipToOutline="true"
         app:layout_constraintBottom_toTopOf="@+id/notificationContainer"
         app:layout_constraintTop_toTopOf="parent">
     </FrameLayout>
 
-    <FrameLayout
+    <!-- Fills the gap between the home screen's rounded bottom corners and the notification
+         panel's rounded top corners while the panel is present; sized automatically by its
+         own top/bottom constraints to whatever gap container's bottomMargin currently reserves. -->
+    <View
+        android:id="@+id/notificationGapFill"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        android:layout_marginBottom="-20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/container"
+        app:layout_constraintBottom_toTopOf="@id/notificationContainer" />
+
+    <com.achunt.weboslauncher.MaxHeightFrameLayout
         android:id="@+id/notificationContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/notification_height_collapsed"
-        android:background="@color/card_color"
+        android:layout_height="wrap_content"
+        android:background="@drawable/notif_panel_background"
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/container">
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/notificationContainerClickArea"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/notification_height_collapsed"
-        android:clickable="true"
-        android:visibility="gone"
-        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent">
 
-    </FrameLayout>
+    </com.achunt.weboslauncher.MaxHeightFrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

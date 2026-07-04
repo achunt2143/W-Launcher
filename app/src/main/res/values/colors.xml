@@ -10,9 +10,6 @@
     <color name="status">#ff737373</color>
     <color name="empty">#00000000</color>
     <color name="abt">#5b92b7</color>
-    <color name="systemBG">#dd5b92b7</color>
-    <color name="modernBG">#dd696969</color>
-    <color name="mochiBG">#e3e3e3</color>
     <color name="first">#00aa55</color>
     <color name="second">#5500aa</color>
     <color name="third">#aa5500</color>
@@ -20,7 +17,43 @@
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
-    <color name="mochigrey">#696969</color>
     <color name="mochilight">#e3e3e3</color>
-    <color name="card_color">#FFC6D6C3</color>
+    <!-- webOS-style notification dashboard: dark, solid (not translucent), flat rows -->
+    <color name="notif_panel_bg">#FF161614</color>
+    <color name="notif_icon_bg">#FF5C5C58</color>
+    <color name="notif_card_bg">#FF504F4B</color>
+    <color name="notif_title_text">#FFFFFFFF</color>
+    <color name="notif_subtitle_text">#CCEAEAEA</color>
+    <color name="notif_date_text">#99EAEAEA</color>
+    <color name="notif_badge_bg">#FF938D4A</color>
+
+    <!-- webOS Mojo/Enyo-style chrome: gunmetal header gradient, light grouped list cards -->
+    <color name="webos_header_start">#FF4A4A4A</color>
+    <color name="webos_header_end">#FF202020</color>
+    <color name="webos_list_bg">#FFF7F7F7</color>
+    <color name="webos_divider">#FFDADADA</color>
+    <color name="webos_section_label">#FF8A8A8A</color>
+    <color name="webos_body_text">#FF333333</color>
+    <color name="webos_accent_blue_dark">#FF3E6C88</color>
+    <color name="webos_switch_track_off">#FFCCCCCC</color>
+    <!-- Light theme's own icon squircle — frosted white instead of Dark theme's gunmetal,
+         so icons read as part of the blue wallpaper rather than dark chrome pasted onto it -->
+    <color name="webos_icon_bg_light">#4DFFFFFF</color>
+    <!-- Dims the wallpaper behind text/labels that sit directly on it (not inside an opaque
+         list-group card) so they stay readable regardless of how bright that patch of the
+         blue/gradient wallpaper happens to be. -->
+    <color name="webos_content_scrim">#66000000</color>
+    <!-- Legibility shadow for icon labels in the apps drawer grid, which also sit directly
+         on the wallpaper — same problem, smaller footprint, so a shadow suits it better than
+         a full scrim. -->
+    <color name="webos_label_shadow">#B3000000</color>
+
+    <!-- Dock "frosted glass" tray: same blue/gunmetal gradient family as the matching header,
+         just translucent so it reads as glass sitting over the wallpaper (or the apps-drawer
+         backdrop) rather than a flat opaque bar. -->
+    <color name="webos_dock_glass_light_top">#E65B92B7</color>
+    <color name="webos_dock_glass_light_bottom">#F53E6C88</color>
+    <color name="webos_dock_glass_dark_top">#E64A4A4A</color>
+    <color name="webos_dock_glass_dark_bottom">#F5202020</color>
+    <color name="webos_dock_glass_highlight">#33FFFFFF</color>
 </resources>

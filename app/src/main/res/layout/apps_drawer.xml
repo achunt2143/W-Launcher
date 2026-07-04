@@ -10,18 +10,19 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/white">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
-            android:background="@color/status"
+            android:background="@drawable/webos_header_bg"
             app:tabGravity="start"
+            app:tabIndicatorColor="@color/abt"
+            app:tabIndicatorHeight="3dp"
             app:tabMode="scrollable"
-            app:tabTextColor="@color/white">
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="#B3FFFFFF">
 
         </com.google.android.material.tabs.TabLayout>
 

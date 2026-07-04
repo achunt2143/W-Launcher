@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="6dp"
+    android:clipChildren="false">
+
+    <!-- The next notification in the stack, shown for real (icon, title, body) but scaled
+         down and dimmed slightly — it grows into full size as the front card is dragged or
+         flies away, then this becomes invisible again once frontCard re-renders on top of it
+         for the notification after that. Not touchable; NotificationGroupAdapter drives its
+         transform directly in sync with the front card's gesture. -->
+    <include
+        android:id="@+id/nextCard"
+        layout="@layout/notification_item" />
+
+    <include
+        android:id="@+id/frontCard"
+        layout="@layout/notification_item" />
+
+</FrameLayout>

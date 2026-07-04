@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fully transparent — this exists only to give the home screen container a rounded-rect
+     outline for clipToOutline to clip its content against, not to paint anything itself. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+    <corners android:radius="20dp" />
+</shape>

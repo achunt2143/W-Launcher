@@ -12,11 +12,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract
 import android.transition.Slide
 import android.util.Log
 import android.view.Gravity
@@ -24,13 +24,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -39,17 +39,24 @@ import kotlinx.coroutines.withContext
 
 
 class HomeScreenK : Fragment(),
-    FragmentManager.OnBackStackChangedListener,
     DockAdapter.DockInteractionListener {
 
     // Dock
     private lateinit var dockRecycler: RecyclerView
     private lateinit var dockAdapter: DockAdapter
     private lateinit var dockRepository: DockRepository
+    private lateinit var dockTouchHelper: ItemTouchHelper
 
     lateinit var widgets: LinearLayout
     lateinit var recents: RecyclerView
     lateinit var sharedPrefH: SharedPreferences
+
+    // recentsList(...) can run more than once (it's re-invoked once the async app list
+    // finishes loading if it wasn't ready on the first pass) — these are set up once and
+    // reused rather than recreated on every call, since RecyclerView throws if a second
+    // SnapHelper is attached without detaching the first.
+    private var recentsSnapHelper: LinearSnapHelper? = null
+    private var recentsSwipeHelper: ItemTouchHelper? = null
     var apps: List<AppInfo>? = null
     var appsToPass: List<ResolveInfo>? = null
 
@@ -89,9 +96,7 @@ class HomeScreenK : Fragment(),
         recents = view.findViewById(R.id.recents)
         dockRecycler = view.findViewById(R.id.dock)
         sharedPrefH = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val theme = sharedPrefH.getString("themeName", "Classic")
         val recentsT = sharedPrefH.getBoolean("recents", false)
-        parentFragmentManager.addOnBackStackChangedListener(this)
 
         // ---- Dock setup ----
         dockRepository = DockRepository(requireContext())
@@ -109,12 +114,26 @@ class HomeScreenK : Fragment(),
             this
         )
         dockRecycler.adapter = dockAdapter
-        applyDockTheme(theme)
+        dockTouchHelper = ItemTouchHelper(
+            DockTouchHelperCallback(
+                adapter = dockAdapter,
+                onReorderFinished = { from, to ->
+                    if (from != to) dockRepository.moveItem(from, to)
+                },
+                onLongPressWithoutMove = { position, itemView ->
+                    dockAdapter.getItem(position)?.let {
+                        AppActionsMenu.show(itemView, it.packageName, AppActionsMenu.Source.DOCK)
+                    }
+                }
+            )
+        )
+        dockTouchHelper.attachToRecyclerView(dockRecycler)
+        applyDockTheme()
 
         // ---- Entry animations ----
         view.post {
             val animationDuration = 500L
-            animateDock(animationDuration, false)
+            animateDock(animationDuration)
             if (recentsT) {
                 launchWithDelay(500) { recentsList(requireContext()) }
             }
@@ -123,165 +142,6 @@ class HomeScreenK : Fragment(),
         val w = requireActivity().window
         w.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.empty)
         widgets.animate().alpha(1f).setDuration(1000).start()
-
-
-        when (theme) {
-            "Classic" -> {
-                imageViewPhone.setImageResource(R.drawable.phone)
-                imageViewContacts.setImageResource(R.drawable.cnt)
-                imageViewMessages.setImageResource(R.drawable.msg)
-                imageViewBrowser.setImageResource(R.drawable.brs)
-            }
-
-            "Classic3" -> {
-                imageViewPhone.setImageResource(R.drawable.phone)
-                imageViewContacts.setImageResource(R.drawable.cnt)
-                imageViewMessages.setImageResource(R.drawable.msg)
-                imageViewBrowser.setImageResource(R.drawable.brs)
-            }
-            "Mochi" -> {
-                imageViewPhone.setImageResource(R.drawable.mochiphone)
-                imageViewContacts.setImageResource(R.drawable.mochicontacts)
-                imageViewMessages.setImageResource(R.drawable.mochimessages)
-                imageViewBrowser.setImageResource(R.drawable.mochibrowser)
-                gridDock.background =
-                    context?.let { AppCompatResources.getDrawable(it, R.color.mochilight) }
-            }
-            "Modern" -> {
-                imageViewPhone.setImageResource(R.drawable.modernphone)
-                imageViewContacts.setImageResource(R.drawable.moderncontact)
-                imageViewMessages.setImageResource(R.drawable.modernmessages)
-                imageViewBrowser.setImageResource(R.drawable.modernbrowser)
-                gridDock.background =
-                    context?.let { AppCompatResources.getDrawable(it, R.drawable.modern_dock) }
-            }
-            "System" -> {
-                val browserIntent = Intent("android.intent.action.VIEW", Uri.parse("http://"))
-                val resolveBrowserInfo = view.context.packageManager.resolveActivity(
-                    browserIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY
-                )
-                val phoneNumber = "1234567890"
-                val dialIntent = Intent(Intent.ACTION_DIAL).apply {
-                    data = Uri.parse("tel:$phoneNumber")
-                }
-                val resolvePhoneInfo = view.context.packageManager.resolveActivity(
-                    dialIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY
-                )
-                val contactsIntent = Intent(Intent.ACTION_VIEW)
-                contactsIntent.data = ContactsContract.Contacts.CONTENT_URI
-                val resolveContactsInfo = view.context.packageManager.resolveActivity(
-                    contactsIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY
-                )
-                val smsUri = Uri.parse("smsto:$phoneNumber")
-                val smsIntent = Intent(Intent.ACTION_SENDTO, smsUri)
-                val resolveSmsInfo = view.context.packageManager.resolveActivity(
-                    smsIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY
-                )
-                if (resolvePhoneInfo != null) {
-                    imageViewPhone.setImageDrawable(
-                        resolvePhoneInfo.activityInfo.applicationInfo.loadIcon(
-                            requireContext().packageManager
-                        )
-                    )
-                } else {
-                    imageViewPhone.setImageResource(R.drawable.phone)
-                }
-                if (resolveContactsInfo != null) {
-                    imageViewContacts.setImageDrawable(
-                        resolveContactsInfo.activityInfo.applicationInfo.loadIcon(
-                            requireContext().packageManager
-                        )
-                    )
-                } else {
-                    imageViewContacts.setImageResource(R.drawable.cnt)
-                }
-                if (resolveSmsInfo != null) {
-                    imageViewMessages.setImageDrawable(
-                        resolveSmsInfo.activityInfo.applicationInfo.loadIcon(
-                            requireContext().packageManager
-                        )
-                    )
-                } else {
-                    imageViewMessages.setImageResource(R.drawable.msg)
-                }
-                if (resolveBrowserInfo != null) {
-                    imageViewBrowser.setImageDrawable(
-                        resolveBrowserInfo.activityInfo.applicationInfo.loadIcon(
-                            requireContext().packageManager
-                        )
-                    )
-                } else {
-                    imageViewBrowser.setImageResource(R.drawable.brs)
-                }
-                gridDock.background =
-                    context?.let { AppCompatResources.getDrawable(it, R.color.abt) }
-            }
-        }
-
-        val sharedPrefs: SharedPreferences =
-            view.context.getSharedPreferences("SpecialApps", Context.MODE_PRIVATE)
-        imageViewDrawer.setOnClickListener {
-            widgets.animate().alpha(0f).setDuration(1000).start()
-            view.post {
-                val animationDuration = 500L
-                animateImageViewTranslation(imageViewDrawer, animationDuration, true)
-                animateImageViewTranslation(imageViewPhone, animationDuration, true)
-                animateImageViewTranslation(imageViewContacts, animationDuration, true)
-                animateImageViewTranslation(imageViewMessages, animationDuration, true)
-                animateImageViewTranslation(imageViewBrowser, animationDuration, true)
-            }
-            loadFragment(AppsDrawer())
-        }
-        imageViewPhone.setOnClickListener { v: View ->
-            val context = v.context
-            val phonePackageName = sharedPrefs.getString("PhonePackageName", null)
-            if (phonePackageName != null) {
-                goodbyeList.remove(phonePackageName)
-                val launchIntent =
-                    context.packageManager.getLaunchIntentForPackage(phonePackageName)
-                context.startActivity(launchIntent)
-            } else {
-                val intent = Intent(Intent.ACTION_DIAL)
-                context.startActivity(intent)
-            }
-        }
-
-        imageViewContacts.setOnClickListener { v: View ->
-            val context = v.context
-            val contactsPackageName = sharedPrefs.getString("ContactsPackageName", null)
-            if (contactsPackageName != null) {
-                goodbyeList.remove(contactsPackageName)
-                val launchIntent =
-                    context.packageManager.getLaunchIntentForPackage(contactsPackageName)
-                context.startActivity(launchIntent)
-            }
-        }
-
-        imageViewMessages.setOnClickListener { v: View ->
-            val context = v.context
-            val messagesPackageName = sharedPrefs.getString("MessagesPackageName", null)
-            if (messagesPackageName != null) {
-                goodbyeList.remove(messagesPackageName)
-                val launchIntent =
-                    context.packageManager.getLaunchIntentForPackage(messagesPackageName)
-                context.startActivity(launchIntent)
-            }
-        }
-
-        imageViewBrowser.setOnClickListener {
-            val browser = Intent(Intent.ACTION_MAIN)
-            browser.addCategory(Intent.CATEGORY_APP_BROWSER)
-            val mainLauncherList = context?.packageManager?.queryIntentActivities(browser, 0)
-            if (mainLauncherList != null) {
-                goodbyeList.remove(mainLauncherList.first().activityInfo.packageName)
-            }
-            startActivity(browser)
-        }
-
 
         lifecycleScope.launch(Dispatchers.Default) {
             val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
@@ -310,24 +170,23 @@ class HomeScreenK : Fragment(),
     }
 
     override fun onDockDrawerClicked() {
-        widgets.animate().alpha(0f).setDuration(1000).start()
-        view?.post {
-            animateDock(500L, true)
+        // The drawer button is part of the dock, which now stays visible and tappable even
+        // while AppsDrawer is open on top of this fragment (see loadFragment/AppsDrawer) — so
+        // without this check, tapping it again while already open just added another AppsDrawer
+        // instance on top of the last one instead of closing it.
+        if (parentFragmentManager.findFragmentByTag("apps") != null) {
+            parentFragmentManager.popBackStack()
+        } else {
+            widgets.animate().alpha(0f).setDuration(1000).start()
+            loadFragment(AppsDrawer())
         }
-        loadFragment(AppsDrawer())
     }
 
-    override fun onDockItemLongPressed(item: DockItem) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(item.label)
-            .setItems(arrayOf("Remove from dock")) { _, _ ->
-                dockRepository.removeItem(item.packageName)
-                dockAdapter.updateItems(dockRepository.getDockItems())
-            }
-            .show()
+    override fun onDockDragRequested(viewHolder: RecyclerView.ViewHolder) {
+        dockTouchHelper.startDrag(viewHolder)
     }
 
-    // ---- Public API: called from RAdapterSystem / RAdapterDownloads long-press ----
+    // ---- Public API: called from AppActionsMenu's long-press popup ----
 
     fun addToDock(packageName: String) {
         val added = dockRepository.addItem(packageName)
@@ -345,26 +204,9 @@ class HomeScreenK : Fragment(),
         }
     }
 
-    // ---- Fragment back-stack listener ----
-
-    override fun onBackStackChanged() {
-        val currentFragment = parentFragmentManager.findFragmentById(R.id.container)
-        val isAppsDrawerFragmentVisible = currentFragment is AppsDrawer
-        val animationDuration = 500L
-        animateImageViewTranslation(imageViewDrawer, animationDuration, isAppsDrawerFragmentVisible)
-        animateImageViewTranslation(imageViewPhone, animationDuration, isAppsDrawerFragmentVisible)
-        animateImageViewTranslation(imageViewContacts, animationDuration, isAppsDrawerFragmentVisible)
-        animateImageViewTranslation(imageViewMessages, animationDuration, isAppsDrawerFragmentVisible)
-        animateImageViewTranslation(imageViewBrowser, animationDuration, isAppsDrawerFragmentVisible)
-        if (isAppsDrawerFragmentVisible) {
-            gridDock.animate().alpha(0f).setDuration(500L).start()
-        val isAppsDrawerVisible = currentFragment is AppsDrawer
-        animateDock(500L, isAppsDrawerVisible)
-        if (isAppsDrawerVisible) {
-            dockRecycler.animate().alpha(0f).setDuration(500L).start()
-        } else {
-            dockRecycler.animate().alpha(1.0f).setDuration(500L).start()
-        }
+    fun removeFromDock(packageName: String) {
+        dockRepository.removeItem(packageName)
+        dockAdapter.updateItems(dockRepository.getDockItems())
     }
 
     // ---- Fragment loading ----
@@ -378,6 +220,9 @@ class HomeScreenK : Fragment(),
 
     fun loadFragment(fragment: Fragment?): Boolean {
         if (fragment != null) {
+            if (fragment is AppsDrawer) {
+                AppsDrawer.pendingBackdrop = captureFrostedBackdrop()
+            }
             fragment.retainInstance = true
             fragment.enterTransition = Slide(Gravity.BOTTOM)
             fragment.exitTransition = Slide(Gravity.BOTTOM)
@@ -391,30 +236,43 @@ class HomeScreenK : Fragment(),
         return false
     }
 
+    /**
+     * Snapshots the home screen (recents + dock, still fully visible at this point since
+     * the drawer hasn't been added yet) at a heavily downscaled size. Upscaling this back
+     * up in AppsDrawer is a cheap, dependency-free stand-in for a real Gaussian blur — it
+     * smears the recents cards/dock icons into soft blobs instead of legible shapes, which
+     * is what lets AppsDrawer's frosted-glass background read as intentional instead of
+     * the old raw-transparency ghosting.
+     */
+    private fun captureFrostedBackdrop(): Bitmap? {
+        val container = requireActivity().findViewById<View>(R.id.container)
+        if (container.width == 0 || container.height == 0) return null
+        val targetWidth = 24
+        val scale = targetWidth.toFloat() / container.width
+        val targetHeight = (container.height * scale).toInt().coerceAtLeast(1)
+        val bitmap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888)
+        Canvas(bitmap).apply {
+            scale(scale, scale)
+            container.draw(this)
+        }
+        return bitmap
+    }
+
     // ---- Dock animation (replaces per-ImageView animation) ----
 
-    private fun animateDock(duration: Long, slideDown: Boolean) {
+    /** Slides the dock up into view on first entry. The dock otherwise stays put — including
+     * while AppsDrawer is open on top of it, since the drawer now leaves room for it. */
+    private fun animateDock(duration: Long) {
         val screenHeight = resources.displayMetrics.heightPixels.toFloat()
         dockRecycler.visibility = View.VISIBLE
-        if (slideDown) {
-            dockRecycler.translationY = 0f
-            dockRecycler.animate().translationY(screenHeight).setDuration(duration).start()
-        } else {
-            dockRecycler.translationY = screenHeight
-            dockRecycler.animate().translationY(0f).setDuration(duration).start()
-        }
+        dockRecycler.translationY = screenHeight
+        dockRecycler.animate().translationY(0f).setDuration(duration).start()
     }
 
     // ---- Theme helper ----
 
-    private fun applyDockTheme(theme: String?) {
-        val bg = when (theme) {
-            "Mochi" -> AppCompatResources.getDrawable(requireContext(), R.color.mochilight)
-            "Modern" -> AppCompatResources.getDrawable(requireContext(), R.drawable.modern_dock)
-            "System" -> AppCompatResources.getDrawable(requireContext(), R.color.abt)
-            else    -> AppCompatResources.getDrawable(requireContext(), R.drawable.quicklaunchbg)
-        }
-        dockRecycler.background = bg
+    private fun applyDockTheme() {
+        dockRecycler.setBackgroundResource(ThemePreference.dockBackgroundRes(requireContext()))
     }
 
     // ---- Widget helper ----
@@ -430,7 +288,6 @@ class HomeScreenK : Fragment(),
         val appWidgetInfos = mAppWidgetManager.installedProviders
         var widgetIsFound = false
         for (j in appWidgetInfos.indices) {
-            if (appWidgetInfos[j].provider.packageName == packageName && appWidgetInfos[j].provider.className == className) {
             if (appWidgetInfos[j].provider.packageName == packageName
                 && appWidgetInfos[j].provider.className == className) {
                 newAppWidgetProviderInfo = appWidgetInfos[j]
@@ -469,7 +326,6 @@ class HomeScreenK : Fragment(),
         if (sharedPrefH1.getBoolean("recents", false)) {
             try {
                 if (!recentsList.isEmpty()) recentsList = mutableListOf()
-                recents.layoutManager = LinearLayoutManager(context)
                 recents.itemAnimator = DefaultItemAnimator()
                 val usm = requireContext().getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
                 val time = System.currentTimeMillis()
@@ -479,7 +335,10 @@ class HomeScreenK : Fragment(),
                     time - 600000, time
                 ).toMutableList()
 
-                appStatsList = aslist.sortedBy { it.lastTimeUsed }.reversed() as MutableList<UsageStats>
+                // Oldest first, newest last — so as cards are appended below, the oldest
+                // still-open app lands at the left end of the deck and each newer one takes
+                // its place further right, same as webOS's card stack.
+                appStatsList = aslist.sortedBy { it.lastTimeUsed } as MutableList<UsageStats>
                 appStatsList.forEach { asl ->
                     if (asl.lastTimeUsed > time - 600000) {
                         apps?.forEach { app ->
@@ -489,7 +348,7 @@ class HomeScreenK : Fragment(),
                                     && asl.packageName != "com.achunt.justtype"
                                     && !goodbyeList.contains(asl.packageName)) {
                                     recentsList.add(app)
-                                    Log.d("Recents", app.packageName)
+                                    Log.d("Recents", app.packageName.toString())
                                 }
                             }
                         }
@@ -501,6 +360,44 @@ class HomeScreenK : Fragment(),
                 )
                 recentsAdapter = RecentsAdapter(recentsList)
                 recents.adapter = recentsAdapter
+
+                // Snap card-to-card like webOS's card carousel instead of resting wherever
+                // a scroll happens to stop. Created once and reused — attaching a second
+                // SnapHelper without detaching the first throws.
+                if (recentsSnapHelper == null) {
+                    recentsSnapHelper = LinearSnapHelper().also { it.attachToRecyclerView(recents) }
+                }
+
+                // Side padding equal to half the leftover width lets the first and last
+                // cards snap to the same centered position as every card in between,
+                // instead of stopping flush against the RecyclerView's edge.
+                recents.post {
+                    val cardSlotWidthPx = resources.getDimensionPixelSize(R.dimen.recents_card_slot_width)
+                    val sidePadding = ((recents.width - cardSlotWidthPx) / 2).coerceAtLeast(0)
+                    recents.clipToPadding = false
+                    recents.setPadding(sidePadding, recents.paddingTop, sidePadding, recents.paddingBottom)
+
+                    // Open on the most recently used app — the last (rightmost) card —
+                    // instead of defaulting to the oldest one at the far left. The
+                    // RecyclerView is freshly laid out at scrollX=0 with the first card
+                    // already centered (thanks to the padding above), so shifting over by
+                    // (count-1) card-widths lands exactly on the last card, centered too.
+                    if (recentsList.size > 1) {
+                        recents.scrollBy((recentsList.size - 1) * cardSlotWidthPx, 0)
+                    }
+                }
+
+                // Flick a card up to close it — kills the app immediately, same as the
+                // long-press path, but removes it from the carousel right away since
+                // ItemTouchHelper's own fling animation already carries it off-screen.
+                // Also created once and reused, for the same reason as the SnapHelper above.
+                if (recentsSwipeHelper == null) {
+                    recentsSwipeHelper = ItemTouchHelper(RecentsSwipeToDismissCallback { position ->
+                        if (position == RecyclerView.NO_POSITION || position !in recentsList.indices) return@RecentsSwipeToDismissCallback
+                        killAndForget(context, recentsList[position].packageName as String)
+                        removeRecentCard(position)
+                    }).also { it.attachToRecyclerView(recents) }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -509,30 +406,6 @@ class HomeScreenK : Fragment(),
         Log.d("Recents Finder", "to call Recents " + (endFind - start))
     }
 
-
-    private fun animateImageViewTranslation(
-        imageView: ImageView,
-        animationDuration: Long,
-        down: Boolean
-    ) {
-        val screenHeight = resources.displayMetrics.heightPixels.toFloat()
-        imageView.visibility = View.VISIBLE
-        if (down) {
-            imageView.translationY = 0F
-            imageView.animate()
-                .translationY(screenHeight)
-                .setDuration(animationDuration)
-                .start()
-        } else {
-            imageView.translationY = screenHeight
-            imageView.animate()
-                .translationY(0f)
-                .setDuration(animationDuration)
-                .start()
-        }
-    }
-        Log.d("Recents Finder", "to call Recents " + (System.currentTimeMillis() - start))
-    }
 
     // ---- Recents click listeners ----
 
@@ -544,7 +417,7 @@ class HomeScreenK : Fragment(),
             if (selectedItemPosition == RecyclerView.NO_POSITION) return
             v.context.startActivity(
                 v.context.packageManager.getLaunchIntentForPackage(
-                    recentsList[pos].packageName as String
+                    recentsList[selectedItemPosition].packageName as String
                 )
             )
         }
@@ -554,16 +427,11 @@ class HomeScreenK : Fragment(),
         override fun onLongClick(v: View): Boolean {
             val recyclerView = v.rootView.findViewById<RecyclerView>(R.id.recents)
             val selectedItemPosition = recyclerView.getChildAdapterPosition(v)
-            if (selectedItemPosition == RecyclerView.NO_POSITION) return
-            val packageName = recentsList[selectedItemPosition].packageName
-            val manager =
-                v.rootView.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            manager.killBackgroundProcesses(packageName as String?)
-            goodbyeList.add(packageName as String)
+            if (selectedItemPosition == RecyclerView.NO_POSITION) return false
+            killAndForget(v.context, recentsList[selectedItemPosition].packageName as String)
             // Handler with explicit Looper — replaces deprecated no-arg Handler()
             Handler(Looper.getMainLooper()).postDelayed({
-                recentsList.removeAt(selectedItemPosition)
-                recentsAdapter.notifyItemRemoved(selectedItemPosition)
+                removeRecentCard(selectedItemPosition)
             }, 500)
             return true
         }
@@ -581,5 +449,19 @@ class HomeScreenK : Fragment(),
         var recentsList = mutableListOf<AppInfo>()
         var goodbyeList = mutableSetOf<String>()
         var isHasWorkApps = false
+
+        /** Kills the app's background process and marks it so it won't reappear in recents. */
+        fun killAndForget(context: Context, packageName: String) {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            manager.killBackgroundProcesses(packageName)
+            goodbyeList.add(packageName)
+        }
+
+        /** Removes the card at [position] from the recents list and adapter. */
+        fun removeRecentCard(position: Int) {
+            if (position == RecyclerView.NO_POSITION || position !in recentsList.indices) return
+            recentsList.removeAt(position)
+            recentsAdapter.notifyItemRemoved(position)
+        }
     }
 }

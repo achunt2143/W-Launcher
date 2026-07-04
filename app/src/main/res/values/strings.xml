@@ -6,10 +6,9 @@
     <string name="title_activity_appsdrawer">AppsdrawerActivity</string>
     <string name="title_activity_applaunch">ApplaunchActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="about_text">This launcher is aimed to provide a replacement to the very intuitive launcher found on classic webOS devices and LuneOS, for Android. The styling is based after some of the best parts of webOS and LuneOS, notably the Just Type… feature and quick settings right in your app drawer. This launcher is a passion project that is meant to provide the ability to re-experience webOS now that it has had yet another nail in its coffin after the shutdown of 3G. The usefulness is basically gone from these really incredible devices. Now with Android having native gesture support that heavily emulates webOS, this launcher just adds to the experience we all have been missing.
+    <string name="about_text">W Launcher brings the best parts of Palm and HP webOS to modern Android: a card-based multitasking view you can flick closed like the original, a notification dashboard that lives right on your home screen, and quick settings built straight into the app drawer — all wrapped in a look inspired by the classic Enyo and Mojo interfaces. It\'s an actively developed passion project, not just a tribute to old hardware — the goal is to keep that webOS feel alive and genuinely useful as a daily-driver launcher.
 \n\n
-Check out my github for project updates.\n</string>
-    <string name="github">https://github.com/achunt2143/webOS-Launcher</string>
+Check out the GitHub for project updates.\n</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
@@ -52,4 +51,10 @@ Icons by <a href="https://freeicons.io/profile/722">Fasil</a> on <a href="https:
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Long-press "app actions" popup -->
+    <string name="app_action_add_to_dock">Add to Dock</string>
+    <string name="app_action_remove_from_dock">Remove from Dock</string>
+    <string name="app_action_app_info">App Info</string>
+    <string name="app_action_uninstall">Uninstall</string>
 </resources>

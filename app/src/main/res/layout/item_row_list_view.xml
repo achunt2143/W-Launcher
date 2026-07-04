@@ -27,6 +27,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:clickable="false"
+            android:padding="10dp"
             android:scaleType="fitCenter" />
 
 
@@ -41,6 +42,10 @@
             android:fontFamily="sans-serif-medium"
             android:layoutDirection="locale"
             android:lines="2"
+            android:shadowColor="@color/webos_label_shadow"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="3"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="12sp" />

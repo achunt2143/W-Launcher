@@ -119,7 +119,7 @@ public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int pos = getBindingAdapterPosition();
+                int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
                     Context context = v.getContext();
                     String packageName = appsList.get(pos).packageName.toString();

@@ -4,6 +4,10 @@
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
-    <dimen name="notification_height_collapsed">32dp</dimen>
-    <dimen name="notification_height_expanded">0dp</dimen>
+    <dimen name="notification_height_collapsed">54dp</dimen>
+    <dimen name="notification_panel_gap">10dp</dimen>
+    <!-- recents_cards.xml's card width (250dp) + its start/end margins (10dp each) —
+         kept as one value so the carousel's centering math in HomeScreenK.kt can't drift
+         out of sync with the card layout. Update both if either one changes. -->
+    <dimen name="recents_card_slot_width">270dp</dimen>
 </resources>

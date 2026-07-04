@@ -2,7 +2,6 @@ package com.achunt.weboslauncher;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -73,28 +72,9 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
 
         textView.setText(appInfo.label);
         imageView.setImageDrawable(appInfo.icon);
+        imageView.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
 
-        SharedPreferences sharedPref = viewHolder.itemView.getContext()
-                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String theme = sharedPref.getString("themeName", "Classic");
-
-        int textColor;
-        switch (theme) {
-            case "Classic":
-            case "Modern":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-            case "Mochi":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochigrey);
-                break;
-            case "System":
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
-                break;
-            default:
-                textColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight);
-                break;
-        }
-        textView.setTextColor(textColor);
+        textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }
 
     @Override
@@ -112,7 +92,7 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
             img = itemView.findViewById(R.id.app_icon);
 
             itemView.setOnClickListener(v -> {
-                int position = getBindingAdapterPosition();
+                int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Context context = v.getContext();
                     String packageName = (String) appsListS.get(position).packageName;
@@ -124,6 +104,12 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
                         context.startActivity(launchIntent);
                     }
                 }
+            });
+            itemView.setOnLongClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position == RecyclerView.NO_POSITION) return false;
+                AppActionsMenu.show(v, (String) appsListS.get(position).packageName, AppActionsMenu.Source.DRAWER);
+                return true;
             });
         }
     }

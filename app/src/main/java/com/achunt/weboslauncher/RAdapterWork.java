@@ -23,9 +23,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> {
+public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> implements AppFilterable {
 
-    private final List<LauncherActivityInfo> workProfileApps;
+    private List<LauncherActivityInfo> workProfileApps;
+    private final List<LauncherActivityInfo> fullList;
     private final UserHandle workProfileHandle;
     private final LauncherApps launcherApps;
 
@@ -57,6 +58,23 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
 
         workProfileHandle = foundHandle;
         workProfileApps.sort(Comparator.comparing(info -> info.getLabel().toString()));
+        fullList = new ArrayList<>(workProfileApps);
+    }
+
+    public void filter(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            workProfileApps = new ArrayList<>(fullList);
+        } else {
+            String lower = query.trim().toLowerCase();
+            List<LauncherActivityInfo> filtered = new ArrayList<>();
+            for (LauncherActivityInfo info : fullList) {
+                if (info.getLabel() != null && info.getLabel().toString().toLowerCase().contains(lower)) {
+                    filtered.add(info);
+                }
+            }
+            workProfileApps = filtered;
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,7 +90,7 @@ public class RAdapterWork extends RecyclerView.Adapter<RAdapterWork.ViewHolder> 
 
         viewHolder.textView.setText(appLabel);
         viewHolder.img.setImageDrawable(appIcon);
-        viewHolder.img.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
+        viewHolder.img.setBackground(null);
 
         viewHolder.textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }

@@ -25,9 +25,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.ViewHolder> {
+public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.ViewHolder> implements AppFilterable {
 
     volatile public static List<AppInfo> appsList;
+    private List<AppInfo> fullList;
     volatile Intent i;
     volatile List<ResolveInfo> allApps;
     volatile Intent launchIntent;
@@ -216,6 +217,23 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
         appInfo.label = "Help";
         appInfo.packageName = "";
         appsList.add(appInfo);
+        fullList = new ArrayList<>(appsList);
+    }
+
+    public void filter(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            appsList = new ArrayList<>(fullList);
+        } else {
+            String lower = query.trim().toLowerCase();
+            List<AppInfo> filtered = new ArrayList<>();
+            for (AppInfo info : fullList) {
+                if (info.label != null && info.label.toString().toLowerCase().contains(lower)) {
+                    filtered.add(info);
+                }
+            }
+            appsList = filtered;
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -264,7 +282,7 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
             appIcon = appsList.get(i).icon;
         }
         viewHolder.img.setImageDrawable(appIcon);
-        viewHolder.img.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
+        viewHolder.img.setBackground(null);
 
         TextView textView = viewHolder.textView;
         textView.setText(appLabel);
@@ -337,7 +355,10 @@ public class RAdapterSettings extends RecyclerView.Adapter<RAdapterSettings.View
                         Fragment myFragment = new HelpPage();
                         myFragment.setExitTransition(new Slide(Gravity.TOP));
                         myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+                        activity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, myFragment)
+                                .addToBackStack("help")
+                                .commit();
                     } else if (label.contentEquals(NFC_LABEL)) {
                         launchIntent = new Intent(Settings.ACTION_NFC_SETTINGS);
                         context.startActivity(launchIntent);

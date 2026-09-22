@@ -17,4 +17,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <!-- Shared corner radius for the app's rounded "card" chrome (notification panel, dock
          tray, apps-drawer card) — keep this in sync with the radii baked into those drawables. -->
     <dimen name="webos_card_corner_radius">20dp</dimen>
+
+    <!-- Gap between the bottom of the floating app drawer card and the top of the launcher dock -->
+    <dimen name="drawer_dock_gap">12dp</dimen>
 </resources>

@@ -1,15 +1,23 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
+# Build artifacts
+.gradle/
+build/
 /captures
 .externalNativeBuild
 .cxx
+
+# IDE files
+*.iml
+.idea/
+.DS_Store
+
+# Local configuration
 local.properties
+
+# Kotlin
+.kotlin/
+
+# Fastlane
+# fastlane/report.xml
+# fastlane/Preview.html
+# fastlane/screenshots/
+# fastlane/test_output/

@@ -51,6 +51,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Android Name"
+                    android:fontFamily="@font/lato"
                     android:textColor="@color/notif_title_text"
                     android:textSize="15sp"
                     android:textStyle="bold" />

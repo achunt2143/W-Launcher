@@ -43,17 +43,24 @@ public class CreditsPage extends Fragment {
         boolean isDark = ThemePreference.isDark(sharedPref.getString("themeName", ThemePreference.LIGHT));
         view.findViewById(R.id.creditsRoot)
                 .setBackgroundResource(isDark ? R.drawable.classic3_bg : R.drawable.classic_bg);
-        view.findViewById(R.id.creditsHeader).setBackgroundResource(
-                isDark ? R.drawable.webos_header_bg : R.drawable.webos_header_bg_light);
-        w.setStatusBarColor(ContextCompat.getColor(context, isDark ? R.color.webos_header_start : R.color.abt));
+        view.findViewById(R.id.creditsHeader).setBackground(
+                ThemePreference.getHeaderDrawable(context));
+        w.setStatusBarColor(ContextCompat.getColor(context, R.color.empty));
 
         TextView okay = view.findViewById(R.id.credClose);
         TextView t2 = (TextView) view.findViewById(R.id.cText);
+        int bottomInset = (getActivity() instanceof MainActivity) ? ((MainActivity) getActivity()).getCurrentBottomInset() : 0;
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), bottomInset);
+
         t2.setMovementMethod(LinkMovementMethod.getInstance());
         okay.setOnClickListener(v -> {
-            Fragment myFragment = new HomeScreenK();
-            myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                getParentFragmentManager().popBackStack();
+            } else {
+                Fragment myFragment = new HomeScreenK();
+                myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+                getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            }
         });
 
     }

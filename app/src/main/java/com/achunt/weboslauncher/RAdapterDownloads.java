@@ -22,11 +22,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.ViewHolder> {
+public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.ViewHolder> implements AppFilterable {
 
     private static final HashSet<String> systemAppPackageNames = new HashSet<>();
 
-    private final List<AppInfo> appsListD;
+    private List<AppInfo> appsListD;
+    private final List<AppInfo> fullList;
 
     public RAdapterDownloads(Context context, List<ResolveInfo> allApps) {
         appsListD = new ArrayList<>();
@@ -53,6 +54,23 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         }
 
         appsListD.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
+        fullList = new ArrayList<>(appsListD);
+    }
+
+    public void filter(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            appsListD = new ArrayList<>(fullList);
+        } else {
+            String lower = query.trim().toLowerCase();
+            List<AppInfo> filtered = new ArrayList<>();
+            for (AppInfo info : fullList) {
+                if (info.label != null && info.label.toString().toLowerCase().contains(lower)) {
+                    filtered.add(info);
+                }
+            }
+            appsListD = filtered;
+        }
+        notifyDataSetChanged();
     }
 
     private AppInfo createAppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
@@ -76,7 +94,7 @@ public class RAdapterDownloads extends RecyclerView.Adapter<RAdapterDownloads.Vi
         textView.setText(appLabel);
         ImageView imageView = viewHolder.img;
         imageView.setImageDrawable(appIcon);
-        imageView.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
+        imageView.setBackground(null);
         textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }
 

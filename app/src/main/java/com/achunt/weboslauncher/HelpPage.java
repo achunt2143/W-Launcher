@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,8 @@ public class HelpPage extends Fragment {
         Context context = requireContext();
         SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         View root = view.findViewById(R.id.helpRoot);
+        int bottomInset = (getActivity() instanceof MainActivity) ? ((MainActivity) getActivity()).getCurrentBottomInset() : 0;
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), bottomInset);
 
         view.findViewById(R.id.rowGithub).setOnClickListener(v ->
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.github.com/achunt2143/W-Launcher/"))));
@@ -54,27 +57,46 @@ public class HelpPage extends Fragment {
         view.findViewById(R.id.rowCredits).setOnClickListener(v -> {
             Fragment myFragment = new CreditsPage();
             myFragment.setExitTransition(new Slide(Gravity.TOP));
-            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.container, myFragment)
+                    .addToBackStack("credits")
+                    .commit();
+        });
+
+        view.findViewById(R.id.btnRestart).setOnClickListener(v -> {
+            Toast.makeText(context, "Restarting...", Toast.LENGTH_SHORT).show();
+            MainActivity.restart(context);
         });
 
         view.findViewById(R.id.btnClose).setOnClickListener(v -> {
-            Fragment myFragment = new HomeScreenK();
-            myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-            getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                getParentFragmentManager().popBackStack();
+            } else {
+                Fragment myFragment = new HomeScreenK();
+                myFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+                getParentFragmentManager().beginTransaction().replace(R.id.container, myFragment).commit();
+            }
         });
 
         // ---- Theme: tapping a row applies it immediately, live-previewed on this page's
         // own background, instead of requiring a separate save step. ----
-        boolean isDark = ThemePreference.isDark(sharedPref.getString("themeName", ThemePreference.LIGHT));
-        applyTheme(view, root, w, isDark);
+        String currentTheme = ThemePreference.getTheme(context);
+        applyTheme(view, root, w, currentTheme);
 
+        View rowMaterialYou = view.findViewById(R.id.rowThemeMaterialYou);
+        if (rowMaterialYou != null) {
+            rowMaterialYou.setOnClickListener(v -> {
+                sharedPref.edit().putString("themeName", ThemePreference.MATERIAL_YOU).apply();
+                applyTheme(view, root, w, ThemePreference.MATERIAL_YOU);
+            });
+        }
         view.findViewById(R.id.rowThemeLight).setOnClickListener(v -> {
             sharedPref.edit().putString("themeName", ThemePreference.LIGHT).apply();
-            applyTheme(view, root, w, false);
+            applyTheme(view, root, w, ThemePreference.LIGHT);
         });
         view.findViewById(R.id.rowThemeDark).setOnClickListener(v -> {
             sharedPref.edit().putString("themeName", ThemePreference.DARK).apply();
-            applyTheme(view, root, w, true);
+            applyTheme(view, root, w, ThemePreference.DARK);
         });
 
         // ---- Preferences: each switch persists on change, no OKAY button needed. ----
@@ -106,20 +128,23 @@ public class HelpPage extends Fragment {
     }
 
     /**
-     * Applies [isDark] to everything on this page that depends on it: the page background,
-     * the header bar (gunmetal for Dark, blue for Light — matching the apps drawer), the
-     * status bar tint, and which row shows a checkmark. The about blurb and section labels
-     * don't need a per-theme color anymore — they sit on a fixed dark scrim over the
-     * wallpaper (see the ScrollView's background in the layout) that's dark enough in both
-     * themes for light text to stay readable.
+     * Applies [themeName] to this page: the page background, the header bar (dynamic for
+     * Material You, gunmetal for Dark, blue for Classic Light), and toggles checkmarks.
      */
-    private void applyTheme(View view, View root, Window window, boolean isDark) {
+    private void applyTheme(View view, View root, Window window, String themeName) {
+        boolean isDark = ThemePreference.isDark(themeName);
+        boolean isMY = ThemePreference.isMaterialYou(themeName);
+
         root.setBackgroundResource(isDark ? R.drawable.classic3_bg : R.drawable.classic_bg);
-        view.findViewById(R.id.helpHeader).setBackgroundResource(
-                isDark ? R.drawable.webos_header_bg : R.drawable.webos_header_bg_light);
+        view.findViewById(R.id.helpHeader).setBackground(ThemePreference.getHeaderDrawable(view.getContext()));
         window.setStatusBarColor(ContextCompat.getColor(
-                view.getContext(), isDark ? R.color.webos_header_start : R.color.abt));
-        view.findViewById(R.id.checkLight).setVisibility(isDark ? View.GONE : View.VISIBLE);
+                view.getContext(), R.color.empty));
+
+        View checkMY = view.findViewById(R.id.checkMaterialYou);
+        if (checkMY != null) {
+            checkMY.setVisibility(isMY ? View.VISIBLE : View.GONE);
+        }
+        view.findViewById(R.id.checkLight).setVisibility((!isDark && !isMY) ? View.VISIBLE : View.GONE);
         view.findViewById(R.id.checkDark).setVisibility(isDark ? View.VISIBLE : View.GONE);
     }
 }

@@ -28,6 +28,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -50,32 +56,12 @@ public class AppsDrawer extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.apps_drawer, null);
+        view = inflater.inflate(R.layout.apps_drawer, container, false);
         tabLayout = view.findViewById(R.id.tabs);
         final ViewPager viewPager = view.findViewById(R.id.viewpager);
         PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        tabLayout.addTab(tabLayout.newTab().setText("System"));
-        tabLayout.addTab(tabLayout.newTab().setText("Downloads"));
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         return view;
     }
 
@@ -85,30 +71,18 @@ public class AppsDrawer extends Fragment {
         Window w = requireActivity().getWindow();
         Context context = getActivity();
         appsBG = view.findViewById(R.id.appsBG);
-        // Leaves the dock's own strip at the bottom of the shared container uncovered, so it
-        // stays visible and tappable instead of the drawer's opaque grid painting over it.
-        // Set here rather than in the XML: this fragment's root is inflated with a null parent
-        // (see onCreateView), so a layout_marginBottom on the root would be silently dropped —
-        // it only takes effect once applied after the view is actually attached to its parent.
-        ViewGroup.LayoutParams appsBGParams = appsBG.getLayoutParams();
-        if (appsBGParams instanceof ViewGroup.MarginLayoutParams) {
-            ((ViewGroup.MarginLayoutParams) appsBGParams).bottomMargin =
-                    context.getResources().getDimensionPixelSize(R.dimen.dock_height);
-            appsBG.setLayoutParams(appsBGParams);
-        }
-        // Rounds only the bottom corners, so the drawer reads as a card sitting just above the
-        // dock's own rounded-top tray instead of butting squarely against it. Top corners stay
-        // square by placing the round-rect's top edge above the visible bounds (y = -radius) —
-        // the rounding curve for the top corners then falls entirely outside [0, height] and
-        // never renders, while the bottom corners (within bounds) round normally.
+        updateBottomMargin();
+
+        // Rounds all 4 corners (top and bottom) so the drawer reads as a floating webOS card sheet.
         int cornerRadius = context.getResources().getDimensionPixelSize(R.dimen.webos_card_corner_radius);
         appsBG.setClipToOutline(true);
         appsBG.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View v, Outline outline) {
-                outline.setRoundRect(0, -cornerRadius, v.getWidth(), v.getHeight(), cornerRadius);
+                outline.setRoundRect(0, 0, v.getWidth(), v.getHeight(), cornerRadius);
             }
         });
+        appsBG.setElevation(8 * context.getResources().getDisplayMetrics().density);
 // Initialize gesture detector for swipe down to close
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -122,18 +96,47 @@ public class AppsDrawer extends Fragment {
                 // Check for downward swipe with sufficient distance and velocity
                 if (Math.abs(deltaY) > Math.abs(deltaX) && deltaY > 100 && velocityY > 1000) {
                     // Close the fragment
-                    requireActivity().getSupportFragmentManager().popBackStack();
+                    getParentFragmentManager().popBackStack();
                     return true;
                 }
                 return false;
             }
         });
 
-        // Set touch listener to detect gestures
-        view.setOnTouchListener((v, event) -> {
-            gestureDetector.onTouchEvent(event);
-            return true; // Consume the touch event
-        });
+        // Set touch listener on header container to detect swipe-down-to-close gestures
+        View headerContainer = view.findViewById(R.id.drawerHeaderContainer);
+        if (headerContainer != null) {
+            headerContainer.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
+        }
+
+        // Just Type search listener
+        EditText searchInput = view.findViewById(R.id.justTypeSearchInput);
+        ImageView searchClear = view.findViewById(R.id.justTypeSearchClear);
+        View searchContainer = view.findViewById(R.id.justTypeSearchContainer);
+
+        if (searchInput != null) {
+            searchInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String query = (s != null) ? s.toString().trim() : "";
+                    if (searchClear != null) {
+                        searchClear.setVisibility(query.isEmpty() ? View.GONE : View.VISIBLE);
+                    }
+                    filterAllAdapters(query);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
+
+        if (searchClear != null && searchInput != null) {
+            searchClear.setOnClickListener(v -> searchInput.setText(""));
+        }
+
         assert context != null;
         SharedPreferences sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String theme = sharedPref.getString("themeName", ThemePreference.LIGHT);
@@ -153,11 +156,67 @@ public class AppsDrawer extends Fragment {
             appsBG.setBackground(buildFrostedGlassBackground(context));
         }
 
-        // Dark theme keeps the gunmetal header; Light theme gets its own blue-toned header
-        // (same accent-blue gradient as the About & Settings buttons) instead of reusing
-        // Dark's gray chrome on top of the blue wallpaper.
-        tabLayout.setBackgroundResource(isDark ? R.drawable.webos_header_bg : R.drawable.webos_header_bg_light);
+        if (headerContainer != null) {
+            headerContainer.setBackground(ThemePreference.getHeaderDrawable(context));
+        }
+        if (searchContainer != null) {
+            searchContainer.setBackground(ThemePreference.getSearchPillDrawable(context));
+        }
+        ImageView searchIcon = view.findViewById(R.id.justTypeSearchIcon);
+        if (searchInput != null) {
+            searchInput.setTextColor(ThemePreference.getSearchTextColor(context));
+            searchInput.setHintTextColor(ThemePreference.getSearchHintColor(context));
+        }
+        if (searchIcon != null) {
+            searchIcon.setColorFilter(ThemePreference.getSearchIconColor(context));
+        }
+        if (searchClear != null) {
+            searchClear.setColorFilter(ThemePreference.getSearchIconColor(context));
+        }
+        if (tabLayout != null) {
+            tabLayout.setSelectedTabIndicator(ThemePreference.getTabIndicator(context));
+        }
         w.setStatusBarColor(ContextCompat.getColor(context, R.color.empty));
+    }
+
+    public void filterAllAdapters(String query) {
+        filterAdapter(HomeScreenK.Companion.getAdapterSystem(), query);
+        filterAdapter(HomeScreenK.Companion.getAdapterDownloads(), query);
+        filterAdapter(HomeScreenK.Companion.getAdapterSettings(), query);
+        filterAdapter(HomeScreenK.Companion.getAdapterWork(), query);
+    }
+
+    private void filterAdapter(Object adapter, String query) {
+        if (adapter instanceof AppFilterable) {
+            ((AppFilterable) adapter).filter(query);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        filterAllAdapters("");
+    }
+
+    /**
+     * Recomputes and applies the bottom margin for appsBG so it rests cleanly above the dock
+     * with an intentional visual gap (drawer_dock_gap), ensuring the card and dock do not touch.
+     */
+    public void updateBottomMargin() {
+        if (appsBG == null || getContext() == null) return;
+        int dockBottomPadding = 0;
+        if (getActivity() instanceof MainActivity) {
+            dockBottomPadding = ((MainActivity) getActivity()).getDockBottomPadding();
+        }
+        int baseDockHeight = getContext().getResources().getDimensionPixelSize(R.dimen.dock_height);
+        int drawerDockGap = getContext().getResources().getDimensionPixelSize(R.dimen.drawer_dock_gap);
+        int totalDockHeight = baseDockHeight + dockBottomPadding + drawerDockGap;
+
+        ViewGroup.LayoutParams appsBGParams = appsBG.getLayoutParams();
+        if (appsBGParams instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) appsBGParams).bottomMargin = totalDockHeight;
+            appsBG.setLayoutParams(appsBGParams);
+        }
     }
 
     /**
@@ -173,8 +232,7 @@ public class AppsDrawer extends Fragment {
      */
     private Drawable buildFrostedGlassBackground(Context context) {
         Drawable wallpaper = AppCompatResources.getDrawable(context, R.drawable.classic_bg);
-        Drawable tint = new ColorDrawable(ContextCompat.getColor(context, R.color.webos_accent_blue_dark));
-        tint.setAlpha(190);
+        Drawable tint = new ColorDrawable(ThemePreference.getBackdropTintColor(context));
 
         Bitmap backdrop = pendingBackdrop;
         pendingBackdrop = null;

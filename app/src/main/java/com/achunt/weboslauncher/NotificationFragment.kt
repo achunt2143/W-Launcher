@@ -68,7 +68,7 @@ class NotificationFragment : Fragment() {
         }
 
         // Start collapsed
-        applyExpandedState(false, immediate = false)
+        applyExpandedState(false, immediate = true)
 
         return view
     }
@@ -83,6 +83,9 @@ class NotificationFragment : Fragment() {
     fun applyExpandedState(expand: Boolean, immediate: Boolean = false) {
         val shownView = if (expand) notificationRecyclerView else notificationRecyclerViewSmall
         val hiddenView = if (expand) notificationRecyclerViewSmall else notificationRecyclerView
+
+        shownView.animate().cancel()
+        hiddenView.animate().cancel()
 
         if (immediate) {
             hiddenView.visibility = View.GONE
@@ -115,16 +118,21 @@ class NotificationFragment : Fragment() {
      */
     fun computeTargetHeight(expand: Boolean, width: Int): Int {
         if (!this::notificationRecyclerView.isInitialized) return 0
-        val root = notificationRecyclerView.parent as? View ?: return 0
-        val other = if (expand) notificationRecyclerViewSmall else notificationRecyclerView
-        val otherWasVisible = other.visibility
-        other.visibility = View.GONE
-        val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
+        val target = if (expand) notificationRecyclerView else notificationRecyclerViewSmall
+        val root = target.parent as? ViewGroup ?: return 0
+        val rootLp = root.layoutParams as? ViewGroup.MarginLayoutParams
+        val rootHorizontalMargins = (rootLp?.marginStart ?: 0) + (rootLp?.marginEnd ?: 0)
+        val rootHorizontalPadding = root.paddingStart + root.paddingEnd
+        val targetLp = target.layoutParams as? ViewGroup.MarginLayoutParams
+        val targetHorizontalMargins = (targetLp?.marginStart ?: 0) + (targetLp?.marginEnd ?: 0)
+
+        val targetWidth = (width - rootHorizontalMargins - rootHorizontalPadding - targetHorizontalMargins).coerceAtLeast(0)
+        val widthSpec = View.MeasureSpec.makeMeasureSpec(targetWidth, View.MeasureSpec.EXACTLY)
         val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        root.measure(widthSpec, heightSpec)
-        val measured = root.measuredHeight
-        other.visibility = otherWasVisible
-        return measured
+        target.measure(widthSpec, heightSpec)
+        val margins = (targetLp?.topMargin ?: 0) + (targetLp?.bottomMargin ?: 0)
+        val padding = root.paddingTop + root.paddingBottom
+        return target.measuredHeight + margins + padding
     }
 
     fun hasNotifications(): Boolean {

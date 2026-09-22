@@ -56,4 +56,29 @@
     <color name="webos_dock_glass_dark_top">#E64A4A4A</color>
     <color name="webos_dock_glass_dark_bottom">#F5202020</color>
     <color name="webos_dock_glass_highlight">#33FFFFFF</color>
+
+    <!-- Palm webOS Authentic Color Palette & Material Tones -->
+    <color name="webos_obsidian_base">#FF121214</color>
+    <color name="webos_glass_frosted_dark">#D91C1C1F</color>
+    <color name="webos_glass_frosted_light">#D9F0F2F5</color>
+    <color name="webos_specular_edge">#4DFFFFFF</color>
+    <color name="webos_specular_edge_subtle">#26FFFFFF</color>
+    <color name="webos_palm_blue">#FF0099FF</color>
+    <color name="webos_palm_orange">#FFFF6600</color>
+    <color name="webos_palm_green">#FF00CC88</color>
+    <color name="webos_card_shadow">#80000000</color>
+    <color name="webos_search_pill_bg_dark">#80202024</color>
+    <color name="webos_search_pill_bg_light">#CCFFFFFF</color>
+    <color name="webos_search_pill_stroke_dark">#33FFFFFF</color>
+    <color name="webos_search_pill_stroke_light">#26000000</color>
+    <color name="webos_tab_pill_active">#33FFFFFF</color>
+    <color name="webos_tab_pill_active_light">#4DFFFFFF</color>
+    <color name="webos_tab_text_unselected">#99FFFFFF</color>
+    <color name="webos_tab_text_selected">#FFFFFFFF</color>
+    <color name="webos_search_text_dark">#FFFFFFFF</color>
+    <color name="webos_search_text_light">#FF1C1C1E</color>
+    <color name="webos_search_hint_dark">#80FFFFFF</color>
+    <color name="webos_search_hint_light">#8A1C1C1E</color>
+    <color name="webos_search_icon_dark">#B3FFFFFF</color>
+    <color name="webos_search_icon_light">#801C1C1E</color>
 </resources>

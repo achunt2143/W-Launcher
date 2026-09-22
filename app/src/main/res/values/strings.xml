@@ -29,14 +29,7 @@ Check out the GitHub for project updates.\n</string>
         along with this program.  If not, see <a href="https://www.gnu.org/licenses/">the license here.</a>\n\nAssets have been gathered from:
 \n
 webOS OSE, licensed under Apache License 2.0 Copyright © 2013-2018 LG Electronics, Inc.\nYou may obtain a copy of the License <a href="http://www.apache.org/licenses/LICENSE-2.0">here.</a>\n
-webOS-Ports, licenced under the GNU GPL 3.0 Copyright © 2012-2023\n\n
-Icons by <a href="https://freeicons.io/profile/714">Raj Dev</a> on <a href="https://freeicons.io">freeicons.io</a>\n
-Icons by <a href="https://freeicons.io/profile/3">icon king1</a> on <a href="https://freeicons.io">freeicons.io</a>\n
-Icons by <a href="https://freeicons.io/profile/5790">ColourCreatype</a> on <a href="https://freeicons.io">freeicons.io</a>\n
-Icons by <a href="https://freeicons.io/profile/6156">Reda</a> on <a href="https://freeicons.io">freeicons.io</a>\n
-Icons by <a href="https://freeicons.io/profile/75801">Hilmy Abiyyu Asad</a> on <a href="https://freeicons.io">freeicons.io</a>\n
-Icons by <a href="https://freeicons.io/profile/726">Free Preloaders</a> on <a href="https://freeicons.io">freeicons.io</a>\n
-Icons by <a href="https://freeicons.io/profile/722">Fasil</a> on <a href="https://freeicons.io">freeicons.io</a>\n</string>
+webOS-Ports, licenced under the GNU GPL 3.0 Copyright © 2012-2023\n</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>

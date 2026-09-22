@@ -3,6 +3,7 @@ package com.achunt.weboslauncher;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.AppOpsManager;
 import android.app.NotificationManager;
 import android.app.usage.UsageStats;
@@ -29,6 +30,9 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -40,9 +44,48 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout notificationContainerFrame = null;
     private FrameLayout container = null;
     private View notificationGapFill = null;
+    private View statusBarShadow = null;
     private boolean isExpanded = false;
+    private int currentTopInset = 0;
+    private int currentBottomInset = 0;
+    private ValueAnimator panelHeightAnimator = null;
 
     private static final String TAG = "MainActivity";
+
+    private void initWindowInsets() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            android.view.WindowManager wm = getSystemService(android.view.WindowManager.class);
+            if (wm != null) {
+                try {
+                    android.view.WindowMetrics metrics = wm.getCurrentWindowMetrics();
+                    android.view.WindowInsets windowInsets = metrics.getWindowInsets();
+                    android.graphics.Insets insets = windowInsets.getInsets(
+                            android.view.WindowInsets.Type.systemBars() | android.view.WindowInsets.Type.displayCutout()
+                    );
+                    android.graphics.Insets gestureInsets = windowInsets.getInsets(
+                            android.view.WindowInsets.Type.mandatorySystemGestures()
+                    );
+                    if (insets.top > 0) currentTopInset = insets.top;
+                    int bottom = Math.max(insets.bottom, gestureInsets.bottom);
+                    if (bottom > 0) currentBottomInset = bottom;
+                } catch (Exception e) {
+                    Log.w(TAG, "Failed to get insets from WindowMetrics", e);
+                }
+            }
+        }
+        if (currentBottomInset == 0) {
+            int navBarResId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            if (navBarResId > 0) {
+                currentBottomInset = getResources().getDimensionPixelSize(navBarResId);
+            }
+        }
+        if (currentTopInset == 0) {
+            int statusBarResId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (statusBarResId > 0) {
+                currentTopInset = getResources().getDimensionPixelSize(statusBarResId);
+            }
+        }
+    }
 
     public static List<UsageStats> getUsageStatsList(Context context) {
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -59,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initWindowInsets();
+
         Window w = getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.empty));
 
@@ -70,10 +115,58 @@ public class MainActivity extends AppCompatActivity {
             checkNotificationListenerPermission();
         }
 
-        loadFragment(new HomeScreenK());
-
         container = findViewById(R.id.container);
         notificationGapFill = findViewById(R.id.notificationGapFill);
+        statusBarShadow = findViewById(R.id.statusBarShadow);
+
+        if (container != null && currentTopInset > 0) {
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) container.getLayoutParams();
+            if (lp.topMargin != currentTopInset) {
+                lp.topMargin = currentTopInset;
+                container.setLayoutParams(lp);
+            }
+        }
+        if (statusBarShadow != null && currentTopInset > 0) {
+            int shadowBleed = (int) (16 * getResources().getDisplayMetrics().density);
+            ViewGroup.LayoutParams slp = statusBarShadow.getLayoutParams();
+            if (slp.height != currentTopInset + shadowBleed) {
+                slp.height = currentTopInset + shadowBleed;
+                statusBarShadow.setLayoutParams(slp);
+            }
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+            Insets gestureInsets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.mandatorySystemGestures()
+            );
+            currentTopInset = insets.top;
+            currentBottomInset = Math.max(insets.bottom, gestureInsets.bottom);
+
+            if (container != null) {
+                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) container.getLayoutParams();
+                if (lp.topMargin != currentTopInset) {
+                    lp.topMargin = currentTopInset;
+                    container.setLayoutParams(lp);
+                }
+            }
+            if (statusBarShadow != null) {
+                int shadowBleed = (int) (16 * getResources().getDisplayMetrics().density);
+                ViewGroup.LayoutParams slp = statusBarShadow.getLayoutParams();
+                if (slp.height != currentTopInset + shadowBleed) {
+                    slp.height = currentTopInset + shadowBleed;
+                    statusBarShadow.setLayoutParams(slp);
+                }
+            }
+            updateBottomPadding();
+            return windowInsets;
+        });
+
+        getSupportFragmentManager().addOnBackStackChangedListener(this::updateStatusBarShadow);
+
+        loadFragment(new HomeScreenK());
 
         if (checkNotificationEnabled()) {
             checkNotificationListenerPermission();
@@ -82,24 +175,55 @@ public class MainActivity extends AppCompatActivity {
             notificationContainerFrame.setOnClickListener(view -> toggleNotification());
         }
 
-        // Replace deprecated onBackPressed() override with OnBackPressedCallback
+        // OnBackPressedCallback: progressively closes open sub-surfaces without closing the main UI
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                // 1. If notification panel is expanded, collapse it first
+                if (isExpanded) {
+                    collapseNotificationPanel();
+                    return;
+                }
+
                 FragmentManager fm = getSupportFragmentManager();
-                if (fm.getBackStackEntryCount() > 2) {
-                    if (fm.findFragmentByTag("apps") != null) {
-                        fm.popBackStack("apps", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    }
+
+                // 2. If AppsDrawer is open, pop it and restore home screen widgets
+                if (homeScreenFragment != null && homeScreenFragment.isAdded() && homeScreenFragment.closeAppsDrawer()) {
                     Window w = getWindow();
                     w.setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.empty));
+                    setStatusBarShadowVisible(false);
                     LinearLayout widgets = findViewById(R.id.widgets);
-                    widgets.animate().alpha(1).setDuration(1000).start();
+                    if (widgets != null) {
+                        widgets.animate().alpha(1).setDuration(1000).start();
+                    }
+                    return;
                 }
-                // If back stack count <= 2, let the system handle it (minimise/exit)
-                setEnabled(false);
-                getOnBackPressedDispatcher().onBackPressed();
-                setEnabled(true);
+                if (fm.findFragmentByTag("apps") != null) {
+                    fm.popBackStack("apps", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    Window w = getWindow();
+                    w.setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.empty));
+                    setStatusBarShadowVisible(false);
+                    LinearLayout widgets = findViewById(R.id.widgets);
+                    if (widgets != null) {
+                        widgets.animate().alpha(1).setDuration(1000).start();
+                    }
+                    return;
+                }
+
+                // 3. If any back stack entry exists (e.g. HelpPage / CreditsPage)
+                if (fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack();
+                    return;
+                }
+
+                // 4. If currently showing HelpPage or CreditsPage in container without a backstack entry
+                Fragment currentFragment = fm.findFragmentById(R.id.container);
+                if (currentFragment instanceof HelpPage || currentFragment instanceof CreditsPage) {
+                    loadFragment(new HomeScreenK());
+                    return;
+                }
+
+                // 5. On the root home screen: do nothing so the launcher main UI stays permanently
             }
         });
     }
@@ -133,6 +257,101 @@ public class MainActivity extends AppCompatActivity {
         animatePanelToTargetHeight();
     }
 
+    public void updateBottomPadding() {
+        boolean notifVisible = notificationContainerFrame != null && notificationContainerFrame.getVisibility() == View.VISIBLE;
+        if (notifVisible) {
+            notificationContainerFrame.setPadding(
+                    notificationContainerFrame.getPaddingLeft(),
+                    notificationContainerFrame.getPaddingTop(),
+                    notificationContainerFrame.getPaddingRight(),
+                    currentBottomInset
+            );
+            if (!isExpanded) {
+                int targetHeight = getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed) + currentBottomInset;
+                if (panelHeightAnimator != null && panelHeightAnimator.isRunning()) {
+                    panelHeightAnimator.cancel();
+                    ViewGroup.LayoutParams lp = notificationContainerFrame.getLayoutParams();
+                    int startH = lp != null ? lp.height : 0;
+                    panelHeightAnimator = ValueAnimator.ofInt(startH, targetHeight);
+                    panelHeightAnimator.addUpdateListener(va -> {
+                        ViewGroup.LayoutParams p = notificationContainerFrame.getLayoutParams();
+                        p.height = (int) va.getAnimatedValue();
+                        notificationContainerFrame.setLayoutParams(p);
+                    });
+                    panelHeightAnimator.setDuration(200);
+                    panelHeightAnimator.start();
+                } else {
+                    ViewGroup.LayoutParams lp = notificationContainerFrame.getLayoutParams();
+                    if (lp != null && lp.height != targetHeight && lp.height > 0) {
+                        lp.height = targetHeight;
+                        notificationContainerFrame.setLayoutParams(lp);
+                    }
+                }
+            } else {
+                int targetHeight = computeExpandedTargetHeight();
+                if (panelHeightAnimator == null || !panelHeightAnimator.isRunning()) {
+                    ViewGroup.LayoutParams lp = notificationContainerFrame.getLayoutParams();
+                    if (lp != null && lp.height != targetHeight && lp.height > 0) {
+                        lp.height = targetHeight;
+                        notificationContainerFrame.setLayoutParams(lp);
+                    }
+                }
+            }
+            if (homeScreenFragment != null) {
+                homeScreenFragment.updateDockBottomPadding(0);
+            }
+        } else {
+            if (notificationContainerFrame != null) {
+                notificationContainerFrame.setPadding(
+                        notificationContainerFrame.getPaddingLeft(),
+                        notificationContainerFrame.getPaddingTop(),
+                        notificationContainerFrame.getPaddingRight(),
+                        0
+                );
+            }
+            if (homeScreenFragment != null) {
+                homeScreenFragment.updateDockBottomPadding(currentBottomInset);
+            }
+        }
+    }
+
+    public int getDockBottomPadding() {
+        boolean notifVisible = notificationContainerFrame != null && notificationContainerFrame.getVisibility() == View.VISIBLE;
+        return notifVisible ? 0 : currentBottomInset;
+    }
+
+    public int getCurrentBottomInset() {
+        return currentBottomInset;
+    }
+
+    public void setStatusBarShadowVisible(boolean visible) {
+        if (statusBarShadow == null) return;
+        if (visible) {
+            if (statusBarShadow.getVisibility() != View.VISIBLE) {
+                statusBarShadow.setAlpha(0f);
+                statusBarShadow.setVisibility(View.VISIBLE);
+            }
+            statusBarShadow.animate().cancel();
+            statusBarShadow.animate().alpha(1f).setDuration(250).start();
+        } else {
+            statusBarShadow.animate().cancel();
+            statusBarShadow.animate().alpha(0f).setDuration(250).withEndAction(() -> {
+                statusBarShadow.setVisibility(View.GONE);
+            }).start();
+        }
+    }
+
+    public void updateStatusBarShadow() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment appsDrawer = fm.findFragmentByTag("apps");
+        boolean hasAppsDrawer = (appsDrawer != null && !appsDrawer.isRemoving())
+                || (homeScreenFragment != null && homeScreenFragment.isAdded() && homeScreenFragment.hasAppsDrawer());
+        Fragment currentInContainer = fm.findFragmentById(R.id.container);
+        boolean isHelpOrCredits = (currentInContainer instanceof HelpPage) || (currentInContainer instanceof CreditsPage);
+        boolean show = hasAppsDrawer || isHelpOrCredits;
+        setStatusBarShadowVisible(show);
+    }
+
     /**
      * Recomputes and animates the panel to whatever height its current content
      * (collapsed icon row, or the full expanded list) actually needs — capped at
@@ -144,22 +363,25 @@ public class MainActivity extends AppCompatActivity {
     private void animatePanelToTargetHeight() {
         int targetHeight = isExpanded
                 ? computeExpandedTargetHeight()
-                : getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed);
+                : (getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed) + currentBottomInset);
 
-        ValueAnimator animation = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), targetHeight);
-        animation.addUpdateListener(valueAnimator -> {
+        if (panelHeightAnimator != null) {
+            panelHeightAnimator.cancel();
+        }
+        panelHeightAnimator = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), targetHeight);
+        panelHeightAnimator.addUpdateListener(valueAnimator -> {
             int value = (int) valueAnimator.getAnimatedValue();
             ViewGroup.LayoutParams layoutParams = notificationContainerFrame.getLayoutParams();
             layoutParams.height = value;
             notificationContainerFrame.setLayoutParams(layoutParams);
         });
-        animation.setDuration(300);
-        animation.start();
+        panelHeightAnimator.setDuration(300);
+        panelHeightAnimator.start();
     }
 
     private int computeExpandedTargetHeight() {
         Fragment notifFragment = getSupportFragmentManager().findFragmentByTag("notifications");
-        int fallbackHeight = getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed);
+        int fallbackHeight = getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed) + currentBottomInset;
         if (!(notifFragment instanceof NotificationFragment) || notifFragment.getView() == null) {
             Log.d(TAG, "computeExpandedTargetHeight: no content view, using fallback " + fallbackHeight);
             return fallbackHeight;
@@ -174,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
         int measured = ((NotificationFragment) notifFragment).computeTargetHeight(true, width);
         Log.d(TAG, "computeExpandedTargetHeight: width=" + width + " measured=" + measured
                 + " containerCurrentHeight=" + notificationContainerFrame.getHeight());
-        return measured;
+        return measured + currentBottomInset;
     }
 
     /** Called by NotificationFragment whenever the notification list changes size. */
@@ -192,13 +414,14 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.container, fragment, "home")
                     .setReorderingAllowed(true)
-                    .addToBackStack("main")
                     .commit();
             if (fragment instanceof HomeScreenK) {
                 homeScreenFragment = (HomeScreenK) fragment;
+                updateBottomPadding();
             } else {
                 homeScreenFragment = null;
             }
+            updateStatusBarShadow();
             return true;
         }
         return false;
@@ -213,7 +436,6 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.notificationContainer, fragment, "notifications")
                     .setReorderingAllowed(true)
-                    .addToBackStack("main")
                     .commit();
             if (fragment instanceof NotificationFragment) {
                 ((NotificationFragment) fragment).setOnNotificationsReadyListener(this::checkAndSetNotificationVisibility);
@@ -250,36 +472,48 @@ public class MainActivity extends AppCompatActivity {
         container.setLayoutParams(containerParams);
         notificationGapFill.setVisibility(View.VISIBLE);
 
+        if (currentBottomInset == 0) {
+            initWindowInsets();
+        }
+
         ViewGroup.LayoutParams params = notificationContainerFrame.getLayoutParams();
         params.height = 0;
         notificationContainerFrame.setLayoutParams(params);
         notificationContainerFrame.setVisibility(View.VISIBLE);
+        updateBottomPadding();
 
-        int collapsedHeight = getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed);
-        ValueAnimator animation = ValueAnimator.ofInt(0, collapsedHeight);
-        animation.addUpdateListener(va -> {
+        int collapsedHeight = getResources().getDimensionPixelSize(R.dimen.notification_height_collapsed) + currentBottomInset;
+        if (panelHeightAnimator != null) {
+            panelHeightAnimator.cancel();
+        }
+        panelHeightAnimator = ValueAnimator.ofInt(0, collapsedHeight);
+        panelHeightAnimator.addUpdateListener(va -> {
             ViewGroup.LayoutParams lp = notificationContainerFrame.getLayoutParams();
             lp.height = (int) va.getAnimatedValue();
             notificationContainerFrame.setLayoutParams(lp);
         });
-        animation.setDuration(300);
-        animation.start();
+        panelHeightAnimator.setDuration(300);
+        panelHeightAnimator.start();
     }
 
     /** Slides the panel down out of view, then closes the gap. */
     private void hideNotificationPanel() {
-        ValueAnimator animation = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), 0);
-        animation.addUpdateListener(va -> {
+        if (panelHeightAnimator != null) {
+            panelHeightAnimator.cancel();
+        }
+        panelHeightAnimator = ValueAnimator.ofInt(notificationContainerFrame.getHeight(), 0);
+        panelHeightAnimator.addUpdateListener(va -> {
             ViewGroup.LayoutParams lp = notificationContainerFrame.getLayoutParams();
             lp.height = (int) va.getAnimatedValue();
             notificationContainerFrame.setLayoutParams(lp);
         });
-        animation.setDuration(300);
-        animation.addListener(new AnimatorListenerAdapter() {
+        panelHeightAnimator.setDuration(300);
+        panelHeightAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator anim) {
                 notificationContainerFrame.setVisibility(View.GONE);
                 isExpanded = false;
+                updateBottomPadding();
                 Fragment notifFragment = getSupportFragmentManager().findFragmentByTag("notifications");
                 if (notifFragment instanceof NotificationFragment) {
                     // Reset to the collapsed icon row so the next notification to arrive
@@ -293,7 +527,7 @@ public class MainActivity extends AppCompatActivity {
                 container.setLayoutParams(containerParams);
             }
         });
-        animation.start();
+        panelHeightAnimator.start();
     }
 
     public void checkPermission(String permission, int requestCode) {
@@ -332,6 +566,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initWindowInsets();
+        updateBottomPadding();
         try {
             LinearLayout widgets = findViewById(R.id.widgets);
             widgets.animate().alpha(1).setDuration(1000).start();
@@ -346,6 +582,7 @@ public class MainActivity extends AppCompatActivity {
         if (checkNotificationEnabled()) {
             checkAndSetNotificationVisibility();
         }
+        updateStatusBarShadow();
     }
 
     private boolean isUsageAccessGranted() {
@@ -400,6 +637,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+    }
+
+    /**
+     * Completely restarts the launcher activity from scratch, re-running onCreate with a clean task state.
+     */
+    public static void restart(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+        if (context instanceof Activity) {
+            ((Activity) context).finish();
+        }
     }
 
     @Override

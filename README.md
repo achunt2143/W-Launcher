@@ -1,18 +1,20 @@
 # W Launcher
-Fast and lightweight launcher for Android.
-This is an attempt to create a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order. Recent apps will be displayed on home screen.
+Fast and lightweight launcher for Android inspired by Palm webOS.
+
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid2.png" alt="Get it on IzzyOnDroid" height="60">](https://apt.izzysoft.de/packages/com.achunt.weboslauncher)
+[<img src="https://shields.rbtlog.dev/simple/com.achunt.weboslauncher" alt="Reproducible Build">](https://shields.rbtlog.dev/com.achunt.weboslauncher)
 
 <a href="https://play.google.com/store/apps/details?id=com.achunt.weboslauncher">W Launcher on Play Store</a>
 
 ## Screenshots
-<p>
-  <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_home.png" width="135" title="home">
-  <img src="https://github.com/achunt2143/W-Launcher/blob/main/screenshots/Screenshot_20230320_164111.png" width="135" alt="settings drawer">
-  <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_appdrawer.png" width="135" alt="app drawer">
-  <img src="https://github.com/achunt2143/W-Launcher/blob/d7e7e2ced77f16d7022f7d26e9106a49fc3739a9/screenshots/Screenshot_settings.png" width="135" alt="settings drawer">
+<p align="center">
+  <img src="screenshots/main_screen.png" width="160" alt="Main Screen">
+  <img src="screenshots/app_launcher.png" width="160" alt="App Drawer (Light)">
+  <img src="screenshots/app_launcher_dark.png" width="160" alt="App Drawer (Dark)">
+  <img src="screenshots/recents_on_home.png" width="160" alt="Recents on Home">
+  <img src="screenshots/notifications_expanded.png" width="160" alt="Notifications Expanded">
+  <img src="screenshots/notification_intents.png" width="160" alt="Notification Actions">
 </p>
-
-
 
 ## Known bugs
 * ~~Pressing back on home screen opens recent apps. We will call this one a feature.~~ This should be fixed.
@@ -32,10 +34,12 @@ This is an attempt to create a launcher inspired by webOS. The shortcuts will la
 
 All the necessary files should be in place for loading into Android Studio and clicking build. This
 project is built with Android Studio, so any other tools to build are not currently supported.
-Minimum API is Android 8 (SDK ver 26) with a target of Android 12 API 32. Gradle is used for
+Minimum API is Android 8 (SDK ver 26) with a target of Android 15 (API 35/37). Gradle is used for
 building.
 
 ## Commit History
+
+9/22/2026 Version 3.5.0 is out! A comprehensive visual refresh honoring authentic Palm webOS 2.2.4 heritage — bundled open-source Lato typography, frosted glass Quick Launch dock with top specular highlight, persistent "Just Type" real-time search (Fixes #15), proper window insets and screen scaling across modern devices (Fixes #24), Material 3 tonal pill tab indicators, 3-way theming (Material You dynamic system wallpaper colors, Classic Light, and Obsidian Dark), and an overhauled notification dashboard with 3D card stacking, gesture cycling, and action pills. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
 
 7/4/2026 Version 3.0 is out! A full webOS Mojo/Enyo visual overhaul — new Light/Dark themes, a
 redesigned frosted-glass drawer and dock, long-press app actions, and W Launcher can finally be set

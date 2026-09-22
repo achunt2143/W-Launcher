@@ -20,9 +20,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHolder> {
+public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHolder> implements AppFilterable {
 
     public static List<AppInfo> appsListS;
+    private final List<AppInfo> fullList;
 
     public RAdapterSystem(Context context, List<ResolveInfo> allApps) {
         appsListS = new ArrayList<>();
@@ -45,6 +46,23 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
         }
 
         appsListS.sort(Comparator.comparing(appInfo -> appInfo.label.toString()));
+        fullList = new ArrayList<>(appsListS);
+    }
+
+    public void filter(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            appsListS = new ArrayList<>(fullList);
+        } else {
+            String lower = query.trim().toLowerCase();
+            List<AppInfo> filtered = new ArrayList<>();
+            for (AppInfo info : fullList) {
+                if (info.label != null && info.label.toString().toLowerCase().contains(lower)) {
+                    filtered.add(info);
+                }
+            }
+            appsListS = filtered;
+        }
+        notifyDataSetChanged();
     }
 
     private AppInfo createAppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
@@ -72,7 +90,7 @@ public class RAdapterSystem extends RecyclerView.Adapter<RAdapterSystem.ViewHold
 
         textView.setText(appInfo.label);
         imageView.setImageDrawable(appInfo.icon);
-        imageView.setBackgroundResource(ThemePreference.iconBackgroundRes(viewHolder.itemView.getContext()));
+        imageView.setBackground(null);
 
         textView.setTextColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.mochilight));
     }

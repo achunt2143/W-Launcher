@@ -87,7 +87,20 @@ class DockAdapter(
             }
         }
 
-        holder.icon.setBackgroundResource(ThemePreference.iconBackgroundRes(context))
+        holder.icon.background = null
+        holder.itemView.setOnTouchListener { v, event ->
+            when (event.actionMasked) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.88f).scaleY(0.88f).setDuration(120).start()
+                }
+                android.view.MotionEvent.ACTION_UP,
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(160).start()
+                }
+            }
+            false
+        }
+
         if (item.isDrawerButton) {
             // Drawer launcher — always uses the static applauncher drawable
             val drawable = ResourcesCompat.getDrawable(

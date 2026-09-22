@@ -165,9 +165,9 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/rowThemeLight"
+                        android:id="@+id/rowThemeMaterialYou"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="56dp"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
@@ -176,13 +176,73 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Light"
-                            android:textColor="@color/webos_body_text"
-                            android:textSize="16sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Material You"
+                                android:textColor="@color/webos_body_text"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Dynamic system wallpaper colors (Android 12+)"
+                                android:textColor="@color/webos_section_label"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/checkMaterialYou"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/webos_checkmark" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@color/webos_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/rowThemeLight"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Classic (Light)"
+                                android:textColor="@color/webos_body_text"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Authentic Palm webOS blue"
+                                android:textColor="@color/webos_section_label"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
                         <ImageView
                             android:id="@+id/checkLight"
@@ -201,7 +261,7 @@
                     <LinearLayout
                         android:id="@+id/rowThemeDark"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="56dp"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
@@ -210,13 +270,26 @@
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Dark"
-                            android:textColor="@color/webos_body_text"
-                            android:textSize="16sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Obsidian (Dark)"
+                                android:textColor="@color/webos_body_text"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Authentic Palm webOS onyx glass"
+                                android:textColor="@color/webos_section_label"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
                         <ImageView
                             android:id="@+id/checkDark"
@@ -331,24 +404,51 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/btnClose"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
-                    android:background="@drawable/webos_button_bg"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:gravity="center"
-                    android:paddingStart="32dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="32dp"
-                    android:paddingBottom="10dp"
-                    android:text="Close"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btnRestart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/webos_button_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingStart="24dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="10dp"
+                        android:text="Restart App"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/btnClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/webos_button_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingStart="24dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="10dp"
+                        android:text="Close"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

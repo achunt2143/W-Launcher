@@ -1,1 +1,1 @@
-<p><i>W Launcher</i> is a launcher inspired by webOS. The shortcuts will launch the appropriate application. The apps drawer lists apps in alphabetical order.</p>
+<p><i>W Launcher</i> is a fast, lightweight launcher inspired by Palm webOS. Features an authentic webOS heritage visual design, frosted glass Quick Launch dock, "Just Type" real-time search, Material You dynamic system theming, and an interactive card-stack notification dashboard.</p>

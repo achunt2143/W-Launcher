@@ -97,21 +97,28 @@ class NotificationListener : NotificationListenerService() {
             return
         }
 
+        val actionsList = sbn.notification.actions?.mapNotNull { action ->
+            if (action != null && !action.title.isNullOrBlank()) {
+                NotificationAction(
+                    title = action.title,
+                    intent = action.actionIntent,
+                    icon = action.getIcon()
+                )
+            } else null
+        } ?: emptyList()
+        val isAutoCancel = (sbn.notification.flags and Notification.FLAG_AUTO_CANCEL) != 0
+
         val existing = NotificationRepository.getNotificationByKey(sbn.key)
 
         if (existing != null) {
-            if (existing.title == title && existing.body == text) {
-                existing.date = friendlyTime
-                NotificationRepository.notifyItemChanged(existing)
-                Log.d(TAG, "Updated timestamp of existing notification: $title")
-            } else {
-                existing.title = title
-                existing.body = text
-                existing.date = friendlyTime
-                existing.appIcon = icon
-                NotificationRepository.notifyItemChanged(existing)
-                Log.d(TAG, "Updated content of existing notification: $title")
-            }
+            existing.title = title
+            existing.body = text
+            existing.date = friendlyTime
+            existing.appIcon = icon
+            existing.intent = intent
+            existing.actions = actionsList
+            NotificationRepository.notifyItemChanged(existing)
+            Log.d(TAG, "Updated existing notification: $title with ${actionsList.size} action(s)")
         } else {
             val newNotification = Notification(
                 id = id,
@@ -122,9 +129,11 @@ class NotificationListener : NotificationListenerService() {
                 appIcon = icon,
                 date = friendlyTime,
                 intent = intent,
+                actions = actionsList,
+                isAutoCancel = isAutoCancel
             )
             NotificationRepository.addNotification(newNotification)
-            Log.d(TAG, "Added new notification: $title")
+            Log.d(TAG, "Added new notification: $title with ${actionsList.size} action(s)")
         }
     }
 

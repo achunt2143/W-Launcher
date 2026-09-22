@@ -1,0 +1,8 @@
+* Palm webOS 2.2.4 heritage redesign with open-source Lato typography.
+* Frosted glass Quick Launch dock with specular highlight and floating icons.
+* Persistent "Just Type" search bar with instant app filtering (Fixes #15).
+* Fixed navigation pill overlap and scaling on modern devices (Fixes #24).
+* Material 3 tonal pill tab indicators with comfortable touch padding.
+* 3-Way Theming: Material You dynamic system colors, Classic Light, and Obsidian Dark.
+* Overhauled notifications: 3D card stacking, gesture cycling, and action intent pills.
+* Android 15 & reproducible build optimizations (#13, #21).

@@ -1,74 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appsBG"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/appsBG">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
-            android:background="@drawable/webos_header_bg"
-            app:tabGravity="start"
-            app:tabIndicatorColor="@color/abt"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="#B3FFFFFF">
-
-        </com.google.android.material.tabs.TabLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/apps"
+        <!-- Top Header Container with webOS chrome gradient -->
+        <LinearLayout
+            android:id="@+id/drawerHeaderContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/webos_header_bg"
+            android:paddingTop="8dp"
+            android:paddingBottom="6dp">
 
-
+            <!-- "Just Type" Search Bar Pill (webOS search-pill.png heritage) -->
             <LinearLayout
+                android:id="@+id/justTypeSearchContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                app:layout_constraintTop_toBottomOf="@+id/tabs"
-                tools:ignore="NotSibling">
+                android:layout_height="42dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/search_pill_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="12dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/appDrawer"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/justTypeSearchIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="#B3FFFFFF"
+                    android:contentDescription="@null" />
+
+                <EditText
+                    android:id="@+id/justTypeSearchInput"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@null"
+                    android:fontFamily="@font/lato"
+                    android:hint="Just type..."
+                    android:imeOptions="actionSearch|flagNoExtractUi"
+                    android:inputType="text|textCapSentences|textNoSuggestions"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="#80FFFFFF"
+                    android:textCursorDrawable="@null"
+                    android:textSize="15sp" />
 
-                    app:layout_constraintTop_toBottomOf="@+id/tabs">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-
+                <ImageView
+                    android:id="@+id/justTypeSearchClear"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:padding="2dp"
+                    android:visibility="gone"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="#80FFFFFF"
+                    android:contentDescription="Clear search" />
             </LinearLayout>
 
+            <!-- Pill-Styled Tabs (webOS launcher-edit-title-pill.png style) -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@android:color/transparent"
+                app:tabBackground="@android:color/transparent"
+                app:tabGravity="center"
+                app:tabIndicator="@drawable/tab_pill_indicator"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorGravity="stretch"
+                app:tabIndicatorAnimationMode="elastic"
+                app:tabIndicatorFullWidth="false"
+                app:tabPaddingStart="16dp"
+                app:tabPaddingEnd="16dp"
+                app:tabMode="fixed"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/webos_tab_text_selected"
+                app:tabTextColor="@color/webos_tab_text_unselected"
+                app:tabTextAppearance="@style/WebOSTabTextAppearance" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null" />
+        <!-- ViewPager hosting tab app grids -->
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@null" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

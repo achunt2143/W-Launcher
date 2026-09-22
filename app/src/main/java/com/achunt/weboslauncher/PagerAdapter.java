@@ -7,13 +7,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 class PagerAdapter extends FragmentPagerAdapter {
 
-    private String[] TAB_TITLES = {"System", "Downloads", "Settings"};
+    private String[] TAB_TITLES = {"Apps", "Downloads", "Settings"};
     private int NUM_TABS = 3;
 
     public PagerAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         if (HomeScreenK.Companion.isHasWorkApps()) {
-            TAB_TITLES = new String[]{"System", "Downloads", "Settings", "Work"};
+            TAB_TITLES = new String[]{"Apps", "Downloads", "Settings", "Work"};
             NUM_TABS = 4;
         }
     }

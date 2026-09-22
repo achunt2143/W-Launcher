@@ -44,8 +44,19 @@
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent">
-
     </com.achunt.weboslauncher.MaxHeightFrameLayout>
 
+    <!-- Status bar shadow scrim: shown when AppsDrawer, HelpPage, or CreditsPage is open -->
+    <View
+        android:id="@+id/statusBarShadow"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/status_bar_shadow"
+        android:visibility="gone"
+        android:alpha="0"
+        android:elevation="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

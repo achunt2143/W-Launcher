@@ -17,7 +17,7 @@ public class FragmentTabDownloads extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.apps_drawer, container, false);
+        View view = inflater.inflate(R.layout.tab_app_grid, container, false);
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.appDrawer);
         layoutManager = new GridLayoutManager(getContext(), 4);

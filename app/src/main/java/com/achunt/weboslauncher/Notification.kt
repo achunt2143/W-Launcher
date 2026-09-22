@@ -3,6 +3,12 @@ package com.achunt.weboslauncher
 import android.app.PendingIntent
 import android.graphics.drawable.Icon
 
+data class NotificationAction(
+    val title: CharSequence,
+    val intent: PendingIntent?,
+    val icon: Icon? = null
+)
+
 // Notification.kt
 data class Notification(
     var appIcon: Icon,
@@ -12,5 +18,7 @@ data class Notification(
     val id: Int,
     val key: String,
     val packageName: String,
-    val intent: PendingIntent?
+    var intent: PendingIntent?,
+    var actions: List<NotificationAction> = emptyList(),
+    val isAutoCancel: Boolean = true
 )

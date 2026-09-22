@@ -1,5 +1,35 @@
 # Release Notes
 
+## Version 3.5.0 — September 22, 2026
+
+This release brings an authentic Palm webOS 2.2.4 heritage visual refresh (recreated directly from Palm Pre 2 system assets) combined with modern Android 15 & Material You dynamic system theming.
+
+### Palm webOS 2.2.4 Heritage Visual Refresh
+- **Open-Source Lato Typography**: Bundled the complete Google Fonts Lato family (under SIL OFL) across all screens, headers, app labels, tabs, cards, and notification panels.
+- **Quick Launch Frosted Glass Dock**: Recreated the authentic webOS frosted glass shelf with a 1.5dp specular highlight line along the top edge, ambient edge stroke, and unconstrained 54dp adaptive floating icons with tactile spring press feedback.
+- **"Just Type" Real-Time Search**: Added a webOS-style 42dp pill search container with instant real-time app filtering across all tabs as you type, and a dedicated tap-to-clear button.
+- **Material 3 Tonal Pill Tabs**: Replaced plain text tabs with title-case Lato Bold labels and an active elastic pill indicator with generous touch padding.
+- **Clean App Drawer Grid**: Removed nested layout overhead, eliminated forced artificial squircle boxes, and styled floating 56dp icons with soft text legibility shadows.
+
+### 3-Way Theming System
+- **Material You (Dynamic System)**: Dynamically samples wallpaper palette using Android 12+ Monet (`system_accent1_*` and `system_neutral1_*`) across the Quick Launch dock, header gradient, search container, active tab pill, and frosted drawer backdrop tint.
+- **Classic (Light)**: Authentic Palm webOS blue header, frosted glass shelf, and high-contrast dark search text.
+- **Obsidian (Dark)**: Deep onyx glass, gunmetal chrome header, and obsidian dock.
+- Live real-time preview and switching in the About & Settings page.
+
+### Notification Dashboard Overhaul
+- **3D Card Stacking**: Visual stacked deck effect for multiple notifications from the same app with layered shadows.
+- **Gesture Cycling**: Swipe up/down to cycle through stacked notifications without dismissing them.
+- **Action Intent Pills**: Slide left to reveal interactive action pills directly on the notification card; slide right to dismiss.
+### Bug Fixes & Resolved Issues
+- **Fixed System Insets & Screen Scaling on Large Devices (Fixes #24)**: Improved window insets and layout scaling across modern displays (such as Pixel 9 Pro XL), ensuring the Quick Launch dock and notification panel respect gesture navigation pills and status bar cutouts without overlapping.
+- **Persistent "Just Type" Search (Fixes #15)**: Replaced ephemeral widget logic with a native, persistent "Just Type" search container in the App Drawer header that never disappears across screen locks or app pauses.
+- **Notification Edge Clipping**: Fixed horizontal clipping glitch affecting stacked notifications during cycle and dismiss transitions.
+
+### F-Droid & IzzyOnDroid Reproducible Builds
+- Implemented `compileSdk { version = release(37) { minorApiLevel = 0 } }` for compatibility with build environments (#21).
+- Disabled `dependenciesInfo.includeInApk` to eliminate proprietary binary blobs and ensure 100% reproducible builds (#13).
+
 ## Version 3.0.0 — July 4, 2026
 
 This is the biggest visual and functional update W Launcher has had since the original webOS-inspired look was introduced. It's a full pass at making the whole launcher — home screen, dock, and app drawer — actually feel like a classic Palm/HP webOS Mojo & Enyo device again, instead of just wearing a few webOS-flavored icons on top of a generic layout. Bumping to a major version because of how much of the UI changed and because it's now a real Home app for the first time.

@@ -58,10 +58,32 @@ class HomeScreenK : Fragment(),
     private var recentsSnapHelper: LinearSnapHelper? = null
     private var recentsSwipeHelper: ItemTouchHelper? = null
     var apps: List<AppInfo>? = null
+
+    private var mAppWidgetHost: AppWidgetHost? = null
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            mAppWidgetHost?.startListening()
+        } catch (e: Exception) {
+            Log.e("HomeScreenK", "Error starting AppWidgetHost listening", e)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        try {
+            mAppWidgetHost?.stopListening()
+        } catch (e: Exception) {
+            Log.e("HomeScreenK", "Error stopping AppWidgetHost listening", e)
+        }
+    }
+
     var appsToPass: List<ResolveInfo>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mAppWidgetHost = AppWidgetHost(requireContext().applicationContext, APPWIDGET_HOST_ID)
         val start = System.currentTimeMillis()
         // Use viewLifecycleOwner scope via lifecycleScope on the fragment itself —
         // safe because onCreate fires before view creation but the fragment lifecycle
@@ -95,6 +117,10 @@ class HomeScreenK : Fragment(),
         widgets = view.findViewById(R.id.widgets)
         recents = view.findViewById(R.id.recents)
         dockRecycler = view.findViewById(R.id.dock)
+
+        val initialDockPadding = (activity as? MainActivity)?.getDockBottomPadding() ?: 0
+        updateDockBottomPadding(initialDockPadding)
+
         sharedPrefH = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val recentsT = sharedPrefH.getBoolean("recents", false)
 
@@ -143,20 +169,30 @@ class HomeScreenK : Fragment(),
         w.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.empty)
         widgets.animate().alpha(1f).setDuration(1000).start()
 
-        lifecycleScope.launch(Dispatchers.Default) {
-            val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
-            val mAppWidgetHost = AppWidgetHost(view.context, APPWIDGET_HOST_ID)
-            try {
-                createWidget(
-                    view,
-                    "com.achunt.justtype",
-                    "com.achunt.justtype.JustTypeWidget",
-                    mAppWidgetHost,
-                    mAppWidgetManager
-                )
-            } catch (e: Exception) {
-                Log.d("JTError", e.toString())
+        val host = mAppWidgetHost
+        if (host != null) {
+            lifecycleScope.launch(Dispatchers.Default) {
+                val mAppWidgetManager = AppWidgetManager.getInstance(view.context)
+                try {
+                    createWidget(
+                        view,
+                        "com.achunt.justtype",
+                        "com.achunt.justtype.JustTypeWidget",
+                        host,
+                        mAppWidgetManager
+                    )
+                } catch (e: Exception) {
+                    Log.d("JTError", e.toString())
+                }
             }
+        }
+
+        childFragmentManager.addOnBackStackChangedListener {
+            val hasApps = childFragmentManager.findFragmentByTag("apps") != null
+            if (!hasApps) {
+                widgets.animate().alpha(1f).setDuration(500).start()
+            }
+            (activity as? MainActivity)?.updateStatusBarShadow()
         }
     }
 
@@ -170,12 +206,10 @@ class HomeScreenK : Fragment(),
     }
 
     override fun onDockDrawerClicked() {
-        // The drawer button is part of the dock, which now stays visible and tappable even
-        // while AppsDrawer is open on top of this fragment (see loadFragment/AppsDrawer) — so
-        // without this check, tapping it again while already open just added another AppsDrawer
-        // instance on top of the last one instead of closing it.
-        if (parentFragmentManager.findFragmentByTag("apps") != null) {
-            parentFragmentManager.popBackStack()
+        // The drawer button is part of the dock, which stays in front of appsDrawerContainer
+        // so tapping it again while already open closes it.
+        if (childFragmentManager.findFragmentByTag("apps") != null) {
+            childFragmentManager.popBackStack()
         } else {
             widgets.animate().alpha(0f).setDuration(1000).start()
             loadFragment(AppsDrawer())
@@ -209,6 +243,20 @@ class HomeScreenK : Fragment(),
         dockAdapter.updateItems(dockRepository.getDockItems())
     }
 
+    fun updateDockBottomPadding(bottomPadding: Int) {
+        if (this::dockRecycler.isInitialized) {
+            dockRecycler.setPadding(
+                dockRecycler.paddingLeft,
+                dockRecycler.paddingTop,
+                dockRecycler.paddingRight,
+                bottomPadding
+            )
+        }
+        if (isAdded) {
+            (childFragmentManager.findFragmentByTag("apps") as? AppsDrawer)?.updateBottomMargin()
+        }
+    }
+
     // ---- Fragment loading ----
 
     fun launchWithDelay(delayMillis: Long, action: () -> Unit) {
@@ -226,11 +274,25 @@ class HomeScreenK : Fragment(),
             fragment.retainInstance = true
             fragment.enterTransition = Slide(Gravity.BOTTOM)
             fragment.exitTransition = Slide(Gravity.BOTTOM)
-            requireActivity().supportFragmentManager
+            childFragmentManager
                 .beginTransaction()
-                .add(R.id.container, fragment, "apps")
-                .addToBackStack("home")
+                .add(R.id.appsDrawerContainer, fragment, "apps")
+                .addToBackStack("apps")
                 .commit()
+            (activity as? MainActivity)?.setStatusBarShadowVisible(true)
+            return true
+        }
+        return false
+    }
+
+    fun hasAppsDrawer(): Boolean {
+        val drawer = childFragmentManager.findFragmentByTag("apps")
+        return drawer != null && !drawer.isRemoving
+    }
+
+    fun closeAppsDrawer(): Boolean {
+        if (hasAppsDrawer()) {
+            childFragmentManager.popBackStack("apps", androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
             return true
         }
         return false
@@ -271,8 +333,15 @@ class HomeScreenK : Fragment(),
 
     // ---- Theme helper ----
 
+    override fun onResume() {
+        super.onResume()
+        if (this::dockRecycler.isInitialized) {
+            applyDockTheme()
+        }
+    }
+
     private fun applyDockTheme() {
-        dockRecycler.setBackgroundResource(ThemePreference.dockBackgroundRes(requireContext()))
+        dockRecycler.background = ThemePreference.getDockBackground(requireContext())
     }
 
     // ---- Widget helper ----
@@ -298,12 +367,21 @@ class HomeScreenK : Fragment(),
         return@withContext if (!widgetIsFound) {
             false
         } else {
-            val appWidgetId = mAppWidgetHost.allocateAppWidgetId()
+            val prefs = view.context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+            var appWidgetId = prefs.getInt("just_type_appwidget_id", AppWidgetManager.INVALID_APPWIDGET_ID)
+            if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+                appWidgetId = mAppWidgetHost.allocateAppWidgetId()
+                prefs.edit().putInt("just_type_appwidget_id", appWidgetId).apply()
+            }
+
             val hostView = mAppWidgetHost.createView(view.context, appWidgetId, newAppWidgetProviderInfo)
             hostView.setAppWidget(appWidgetId, newAppWidgetProviderInfo)
 
-            val widgetLayout = view.findViewById<LinearLayout>(R.id.widgets)
-            widgetLayout.addView(hostView)
+            withContext(Dispatchers.Main) {
+                val widgetLayout = view.findViewById<LinearLayout>(R.id.widgets)
+                widgetLayout.removeAllViews()
+                widgetLayout.addView(hostView)
+            }
 
             val allowed = mAppWidgetManager.bindAppWidgetIdIfAllowed(
                 appWidgetId, newAppWidgetProviderInfo!!.provider

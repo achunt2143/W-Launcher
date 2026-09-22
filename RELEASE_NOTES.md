@@ -21,11 +21,14 @@ This release brings an authentic Palm webOS 2.2.4 heritage visual refresh (recre
 - **3D Card Stacking**: Visual stacked deck effect for multiple notifications from the same app with layered shadows.
 - **Gesture Cycling**: Swipe up/down to cycle through stacked notifications without dismissing them.
 - **Action Intent Pills**: Slide left to reveal interactive action pills directly on the notification card; slide right to dismiss.
-- **Bug Fix**: Fixed notification right edge clipping glitch when cycling or dismissing stacked cards.
+### Bug Fixes & Resolved Issues
+- **Fixed System Insets & Screen Scaling on Large Devices (Fixes #24)**: Improved window insets and layout scaling across modern displays (such as Pixel 9 Pro XL), ensuring the Quick Launch dock and notification panel respect gesture navigation pills and status bar cutouts without overlapping.
+- **Persistent "Just Type" Search (Fixes #15)**: Replaced ephemeral widget logic with a native, persistent "Just Type" search container in the App Drawer header that never disappears across screen locks or app pauses.
+- **Notification Edge Clipping**: Fixed horizontal clipping glitch affecting stacked notifications during cycle and dismiss transitions.
 
 ### F-Droid & IzzyOnDroid Reproducible Builds
-- Implemented `compileSdk { version = release(37) { minorApiLevel = 0 } }` for compatibility with build environments.
-- Disabled `dependenciesInfo.includeInApk` to eliminate proprietary binary blobs and ensure 100% reproducible builds.
+- Implemented `compileSdk { version = release(37) { minorApiLevel = 0 } }` for compatibility with build environments (#21).
+- Disabled `dependenciesInfo.includeInApk` to eliminate proprietary binary blobs and ensure 100% reproducible builds (#13).
 
 ## Version 3.0.0 — July 4, 2026
 

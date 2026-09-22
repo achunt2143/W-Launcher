@@ -39,7 +39,7 @@ building.
 
 ## Commit History
 
-9/22/2026 Version 3.5.0 is out! A comprehensive visual refresh honoring authentic Palm webOS 2.2.4 heritage — bundled open-source Lato typography, frosted glass Quick Launch dock with top specular highlight, "Just Type" real-time search bar with instant app filtering, Material 3 tonal pill tab indicators, 3-way theming (Material You dynamic system wallpaper colors, Classic Light, and Obsidian Dark), and an overhauled notification dashboard with 3D card stacking, gesture cycling, and action pills. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
+9/22/2026 Version 3.5.0 is out! A comprehensive visual refresh honoring authentic Palm webOS 2.2.4 heritage — bundled open-source Lato typography, frosted glass Quick Launch dock with top specular highlight, persistent "Just Type" real-time search (Fixes #15), proper window insets and screen scaling across modern devices (Fixes #24), Material 3 tonal pill tab indicators, 3-way theming (Material You dynamic system wallpaper colors, Classic Light, and Obsidian Dark), and an overhauled notification dashboard with 3D card stacking, gesture cycling, and action pills. See [RELEASE_NOTES.md](RELEASE_NOTES.md).
 
 7/4/2026 Version 3.0 is out! A full webOS Mojo/Enyo visual overhaul — new Light/Dark themes, a
 redesigned frosted-glass drawer and dock, long-press app actions, and W Launcher can finally be set
